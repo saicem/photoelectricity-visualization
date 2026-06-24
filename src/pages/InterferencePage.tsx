@@ -124,7 +124,7 @@ export default function InterferencePage() {
               <span className="text-laser-cyan font-semibold">光波叠加原理：</span>
               当两列或多列波在空间相遇时，在相遇区域内每一点的振动是各列波单独作用于该点所产生的振动的合成。
             </p>
-            <div className="font-mono text-lab-text bg-lab-bg/50 px-3 py-2 rounded-lg overflow-x-auto text-sm">
+            <div className="bg-lab-bg/50 px-4 py-3 rounded-lg">
               <MathRenderer>{'$E = E_1 + E_2 = A_1\\cos(\\omega t + \\phi_1) + A_2\\cos(\\omega t + \\phi_2)$'}</MathRenderer>
             </div>
           </div>
@@ -133,7 +133,7 @@ export default function InterferencePage() {
               <span className="text-laser-green font-semibold">干涉强度：</span>
               两束相干光叠加后的光强不仅取决于各自的强度，还与它们之间的相位差有关。
             </p>
-            <div className="font-mono text-lab-text bg-lab-bg/50 px-3 py-2 rounded-lg overflow-x-auto text-sm">
+            <div className="bg-lab-bg/50 px-4 py-3 rounded-lg">
               <MathRenderer>{'$$I = I_1 + I_2 + 2\\sqrt{I_1 I_2}\\cos(\\Delta\\phi)$$'}</MathRenderer>
             </div>
           </div>

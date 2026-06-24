@@ -1,48 +1,57 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import katex from 'katex';
+import 'katex/dist/katex.min.css';
 
 interface MathRendererProps {
   children: string;
   className?: string;
+  displayMode?: boolean;
 }
 
-export default function MathRenderer({ children, className = '' }: MathRendererProps) {
-  const containerRef = useRef<HTMLSpanElement>(null);
+export default function MathRenderer({ children, className = '', displayMode }: MathRendererProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [html, setHtml] = useState('');
 
   useEffect(() => {
-    if (containerRef.current && window.katex) {
-      // Clear previous content
-      containerRef.current.innerHTML = '';
-      // Render the math
-      if (children.startsWith('$$') && children.endsWith('$$')) {
-        // Display math
-        window.katex.render(children.slice(2, -2), containerRef.current, {
-          displayMode: true,
-          throwOnError: false,
-          output: 'html',
-        });
-      } else {
-        // Inline math
-        window.katex.render(children, containerRef.current, {
-          displayMode: false,
-          throwOnError: false,
-          output: 'html',
-        });
-      }
+    let tex = children;
+    let isDisplay = displayMode;
+
+    if (tex.startsWith('$$') && tex.endsWith('$$')) {
+      tex = tex.slice(2, -2);
+      isDisplay = true;
+    } else if (tex.startsWith('$') && tex.endsWith('$')) {
+      tex = tex.slice(1, -1);
+      isDisplay = isDisplay ?? false;
     }
-  }, [children]);
 
-  return <span ref={containerRef} className={className} />;
-}
+    try {
+      const rendered = katex.renderToString(tex, {
+        displayMode: isDisplay ?? false,
+        throwOnError: false,
+        output: 'html',
+        strict: false,
+      });
+      setHtml(rendered);
+    } catch (e) {
+      setHtml(children);
+    }
+  }, [children, displayMode]);
 
-// Declare katex for TypeScript
-declare global {
-  interface Window {
-    katex: {
-      render: (tex: string, element: HTMLElement, options?: {
-        displayMode?: boolean;
-        throwOnError?: boolean;
-        output?: string;
-      }) => void;
-    };
+  if (displayMode || children.startsWith('$$')) {
+    return (
+      <div
+        ref={containerRef}
+        className={`katex-display-wrapper w-full overflow-x-auto overflow-y-hidden py-2 ${className}`}
+        dangerouslySetInnerHTML={{ __html: html }}
+      />
+    );
   }
+
+  return (
+    <span
+      ref={containerRef}
+      className={`katex-inline-wrapper ${className}`}
+      dangerouslySetInnerHTML={{ __html: html }}
+    />
+  );
 }
