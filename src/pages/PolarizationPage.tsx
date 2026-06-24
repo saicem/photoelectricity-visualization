@@ -166,7 +166,7 @@ export default function PolarizationPage() {
               对应庞加莱球面上的一个点。偏振度 DOP 表示光的偏振程度。
             </p>
             <div className="font-mono text-lab-text bg-lab-bg/50 px-3 py-2 rounded-lg overflow-x-auto text-sm">
-              $$\text{DOP} = \frac{\sqrt{S_1^2 + S_2^2 + S_3^2}}{S_0}$$
+              {'$$\\text{DOP} = \\frac{\\sqrt{S_1^2 + S_2^2 + S_3^2}}{S_0}$$'}
             </div>
           </div>
           <div>
@@ -176,7 +176,7 @@ export default function PolarizationPage() {
               可使光纤通信系统的容量翻倍，是现代高速光通信的关键技术。
             </p>
             <div className="font-mono text-lab-text bg-lab-bg/50 px-3 py-2 rounded-lg overflow-x-auto text-sm">
-              $$\vec{E}(t) = E_x\cos(\omega t)\hat{x} + E_y\cos(\omega t + \delta)\hat{y}$$
+              {'$$\\vec{E}(t) = E_x\\cos(\\omega t)\\hat{x} + E_y\\cos(\\omega t + \\delta)\\hat{y}$$'}
             </div>
           </div>
         </div>

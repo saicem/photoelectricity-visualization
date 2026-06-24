@@ -149,7 +149,7 @@ export default function IQModulatorPage() {
               然后合成为一个信号传输，频谱效率翻倍。
             </p>
             <div className="font-mono text-lab-text bg-lab-bg/50 px-3 py-2 rounded-lg overflow-x-auto text-sm">
-              $$s(t) = I\cos(\omega t) + Q\sin(\omega t)$$
+              {'$$s(t) = I\\cos(\\omega t) + Q\\sin(\\omega t)$$'}
             </div>
           </div>
           <div>
@@ -159,7 +159,7 @@ export default function IQModulatorPage() {
               其位置决定了信号的幅度和相位。
             </p>
             <div className="font-mono text-lab-text bg-lab-bg/50 px-3 py-2 rounded-lg overflow-x-auto text-sm">
-              $$A = \sqrt{I^2 + Q^2}, \quad \phi = \arctan\left(\frac{Q}{I}\right)$$
+              {'$$A = \\sqrt{I^2 + Q^2}, \\quad \\phi = \\arctan\\left(\\frac{Q}{I}\\right)$$'}
             </div>
           </div>
         </div>

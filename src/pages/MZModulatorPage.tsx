@@ -120,7 +120,7 @@ export default function MZModulatorPage() {
               通过电光效应改变其中一臂的折射率，从而控制两臂的相位差。
             </p>
             <div className="font-mono text-lab-text bg-lab-bg/50 px-3 py-2 rounded-lg overflow-x-auto text-sm">
-              $E_{out} = E_{in} \cdot \cos\left(\frac{\Delta\phi}{2}\right)$
+              {'$E_{out} = E_{in} \\cdot \\cos\\left(\\frac{\\Delta\\phi}{2}\\right)$'}
             </div>
           </div>
           <div>
@@ -130,7 +130,7 @@ export default function MZModulatorPage() {
               通过施加电压控制相位，实现对光强的调制。
             </p>
             <div className="font-mono text-lab-text bg-lab-bg/50 px-3 py-2 rounded-lg overflow-x-auto text-sm">
-              $$P_{out} = P_{in} \cdot \cos^2\left(\frac{\pi V}{2V_\pi}\right)$$
+              {'$$P_{out} = P_{in} \\cdot \\cos^2\\left(\\frac{\\pi V}{2V_\\pi}\\right)$$'}
             </div>
           </div>
         </div>
