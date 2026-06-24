@@ -185,3 +185,41 @@ S3 = 2·Ex·Ey·sin(δ)
 - 状态更新使用不可变更新模式
 - 动画计算使用 `useMemo` 缓存
 - 大量元素使用虚拟化渲染
+
+## 9. 部署方案
+
+### 9.1 GitHub Pages 自动部署
+
+项目使用 GitHub Actions 实现合并到 `main` 分支后自动构建并部署到 GitHub Pages。
+
+#### 工作流配置
+- **配置文件**: `.github/workflows/deploy.yml`
+- **触发条件**: push 到 `main` 分支，或手动触发 (`workflow_dispatch`)
+- **构建环境**: Ubuntu latest + Node.js 20 + pnpm 9
+
+#### 部署流程
+```mermaid
+graph LR
+    A["Push to main"] --> B["Checkout 代码"]
+    B --> C["安装 pnpm"]
+    C --> D["安装依赖"]
+    D --> E["构建项目 (pnpm build)"]
+    E --> F["上传构建产物"]
+    F --> G["部署到 GitHub Pages"]
+```
+
+#### Vite 配置说明
+- 构建时通过环境变量 `VITE_BASE_PATH` 设置 base 路径，值为仓库名 (`/仓库名/`)
+- `vite.config.ts` 中需读取 `process.env.VITE_BASE_PATH || '/'` 作为 base 配置
+- 确保 React Router 使用 `HashRouter` 或 `BrowserRouter` 配合正确的 basename
+
+#### 仓库设置要求
+在 GitHub 仓库 Settings → Pages 中：
+- Source 选择 **GitHub Actions**
+- 无需手动配置分支和目录，由 Actions 自动管理
+
+### 9.2 构建产物
+
+- 输出目录: `dist/`
+- 包含静态 HTML、CSS、JS 和资源文件
+- 构建命令: `pnpm build`
