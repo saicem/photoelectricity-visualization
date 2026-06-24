@@ -1,0 +1,154 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: "Inter", "Noto Sans SC", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color: #e2e8f0;
+  background-color: #0a0e17;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: #0a0e17;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a2332;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+.grid-bg {
+  background-image:
+    linear-gradient(rgba(51, 65, 85, 0.3) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(51, 65, 85, 0.3) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.glow-text {
+  text-shadow: 0 0 10px currentColor;
+}
+
+/* KaTeX math rendering styles */
+.katex-display-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.katex-display-wrapper .katex-display {
+  margin: 0;
+}
+
+.katex {
+  color: #e2e8f0 !important;
+  font-size: 1.15em !important;
+}
+
+.katex .katex-mathml {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.katex-display {
+  margin: 0.5rem 0 !important;
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  display: flex !important;
+  justify-content: center;
+}
+
+.katex-display > .katex {
+  display: inline-block;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.katex .mathnormal {
+  font-style: italic;
+}
+
+.katex .mathrm {
+  font-style: normal;
+}
+
+.katex .mord {
+  color: #e2e8f0;
+}
+
+.katex .mop {
+  color: #94a3b8;
+}
+
+.katex .mbin {
+  color: #00ff88;
+}
+
+.katex .mrel {
+  color: #00d4ff;
+}
+
+.katex .mopen,
+.katex .mclose {
+  color: #94a3b8;
+}
+
+.katex .mpunct {
+  color: #94a3b8;
+}
+
+.katex .mtext {
+  color: #e2e8f0;
+  font-family: "Inter", "Noto Sans SC", sans-serif;
+}
+
+.katex .mathit {
+  color: #e2e8f0;
+}
+
+.katex .mathbf {
+  color: #e2e8f0;
+}
+
+/* Inline math */
+.katex-inline-wrapper {
+  display: inline;
+  vertical-align: middle;
+}
+
+.katex-inline-wrapper .katex {
+  font-size: 1.05em !important;
+}
