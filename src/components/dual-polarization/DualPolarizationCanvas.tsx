@@ -484,7 +484,7 @@ export default function DualPolarizationCanvas() {
   return (
     <canvas
       ref={canvasRef}
-      className="w-full h-full rounded-xl"
+      className="w-full h-full rounded-lg"
       style={{ display: 'block' }}
     />
   );
