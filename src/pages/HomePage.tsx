@@ -137,7 +137,7 @@ export default function HomePage() {
         >
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-laser-cyan/10 border border-laser-cyan/20 text-laser-cyan text-sm font-medium mb-6">
             <Sparkles className="w-4 h-4" />
-            光通信调制实验室
+            光电通讯实验室
           </div>
         </motion.div>
 

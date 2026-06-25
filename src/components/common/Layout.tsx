@@ -11,9 +11,11 @@ export default function Layout() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
-        className="pt-20 pb-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto"
+        className="md:ml-56 pt-14 md:pt-0 pb-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto min-h-screen"
       >
-        <Outlet />
+        <div className="md:pt-8">
+          <Outlet />
+        </div>
       </motion.main>
     </div>
   );

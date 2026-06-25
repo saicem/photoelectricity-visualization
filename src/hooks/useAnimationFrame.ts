@@ -8,8 +8,8 @@ export function useAnimationFrame(
   callback: (deltaTime: number, timestamp: number) => void,
   options: UseAnimationFrameOptions = {}
 ) {
-  const requestRef = useRef<number>();
-  const previousTimeRef = useRef<number>();
+  const requestRef = useRef<number>(undefined);
+  const previousTimeRef = useRef<number>(undefined);
   const callbackRef = useRef(callback);
   const isRunningRef = useRef(false);
 

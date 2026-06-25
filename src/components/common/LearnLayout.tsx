@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, BookOpen, ChevronRight, FlaskConical } from 'lucide-react';
 
 export interface LearnChapter {
@@ -19,18 +19,6 @@ interface LearnLayoutProps {
   playgroundPath?: string;
 }
 
-const chapters = [
-  { path: '/learn/light-basics', title: '光波基础' },
-  { path: '/learn/laser', title: '激光器' },
-  { path: '/learn/interference', title: '干涉原理' },
-  { path: '/learn/mz-modulator', title: 'MZ 调制器' },
-  { path: '/learn/iq-modulator', title: 'IQ 调制器' },
-  { path: '/learn/polarization', title: '偏振复用' },
-  { path: '/learn/dual-polarization', title: '双偏振 IQ' },
-  { path: '/learn/receiver', title: '光接收器' },
-  { path: '/learn/glossary', title: '术语表' },
-];
-
 export default function LearnLayout({
   title,
   subtitle,
@@ -41,7 +29,6 @@ export default function LearnLayout({
   totalChapters,
   playgroundPath,
 }: LearnLayoutProps) {
-  const location = useLocation();
   const navigate = useNavigate();
 
   return (
@@ -59,39 +46,6 @@ export default function LearnLayout({
           <span className="text-laser-cyan">
             第 {currentIndex + 1} / {totalChapters} 章
           </span>
-        </div>
-
-        <div className="flex items-center gap-2 mb-4 overflow-x-auto pb-2">
-          {chapters.map((ch, idx) => {
-            const isActive = location.pathname === ch.path;
-            const isPast = idx < currentIndex;
-            return (
-              <Link
-                key={ch.path}
-                to={ch.path}
-                className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap transition-all ${
-                  isActive
-                    ? 'bg-laser-cyan/20 text-laser-cyan'
-                    : isPast
-                    ? 'text-lab-muted hover:text-lab-text bg-lab-surface/30'
-                    : 'text-lab-muted hover:text-lab-text'
-                }`}
-              >
-                <span
-                  className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold ${
-                    isActive
-                      ? 'bg-laser-cyan text-lab-bg'
-                      : isPast
-                      ? 'bg-laser-green/20 text-laser-green'
-                      : 'bg-lab-border/50 text-lab-muted'
-                  }`}
-                >
-                  {idx + 1}
-                </span>
-                {ch.title}
-              </Link>
-            );
-          })}
         </div>
 
         <div className="flex items-start justify-between gap-4">

@@ -1,6 +1,39 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+  --color-lab-bg: #0a0e17;
+  --color-lab-surface: #1a2332;
+  --color-lab-border: #334155;
+  --color-lab-text: #e2e8f0;
+  --color-lab-muted: #94a3b8;
+  --color-laser-red: #ff3366;
+  --color-laser-green: #00ff88;
+  --color-laser-blue: #3366ff;
+  --color-laser-cyan: #00d4ff;
+  --color-laser-purple: #a855f7;
+  --color-laser-orange: #ff8800;
+
+  --font-display: "Orbitron", "Rajdhani", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  --shadow-glow-red: 0 0 20px rgba(255, 51, 102, 0.5);
+  --shadow-glow-green: 0 0 20px rgba(0, 255, 136, 0.5);
+  --shadow-glow-blue: 0 0 20px rgba(51, 102, 255, 0.5);
+  --shadow-glow-cyan: 0 0 20px rgba(0, 212, 255, 0.5);
+
+  --animate-pulse-glow: pulse-glow 2s ease-in-out infinite;
+  --animate-wave: wave 2s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+@keyframes wave {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
 
 :root {
   font-family: "Inter", "Noto Sans SC", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -53,7 +86,6 @@ body {
   text-shadow: 0 0 10px currentColor;
 }
 
-/* KaTeX math rendering styles */
 .katex-display-wrapper {
   width: 100%;
   display: flex;
@@ -143,7 +175,6 @@ body {
   color: #e2e8f0;
 }
 
-/* Inline math */
 .katex-inline-wrapper {
   display: inline;
   vertical-align: middle;
