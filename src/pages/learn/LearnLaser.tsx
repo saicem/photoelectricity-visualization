@@ -8,7 +8,7 @@ export default function LearnLaser() {
       title="激光器原理"
       subtitle="光的产生：受激辐射、激光谐振腔与常见激光器类型"
       currentIndex={1}
-      totalChapters={8}
+      totalChapters={9}
       prevChapter={{ path: '/learn/light-basics', title: '光波基础', icon: <Waves className="w-4 h-4" /> }}
       nextChapter={{ path: '/learn/interference', title: '干涉原理', icon: <Waves className="w-4 h-4" /> }}
     >

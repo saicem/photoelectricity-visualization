@@ -89,7 +89,7 @@ export function calcDPIQ(
   yIBiasPhase: number,
   yQBiasPhase: number,
   yQuadraturePhase: number,
-  _polRotation: number
+  polRotation: number
 ): DPResult {
   const xIPhase = Math.PI * xSymbol.i + xIBiasPhase;
   const xQPhase = Math.PI * xSymbol.q + xQBiasPhase;
@@ -109,19 +109,30 @@ export function calcDPIQ(
   const yIQAngle = Math.PI / 2 + yQuadraturePhase;
   const yPower = yIOut + yQOut + 2 * Math.sqrt(yIOut * yQOut) * Math.cos(yIQAngle) * Math.sign(ySymbol.i * ySymbol.q);
 
+  const cosRot = Math.cos(polRotation);
+  const sinRot = Math.sin(polRotation);
+
+  const xIAfterRot = xSymbol.i * cosRot - ySymbol.i * sinRot;
+  const xQAfterRot = xSymbol.q * cosRot - ySymbol.q * sinRot;
+  const yIAfterRot = xSymbol.i * sinRot + ySymbol.i * cosRot;
+  const yQAfterRot = xSymbol.q * sinRot + ySymbol.q * cosRot;
+
+  const xPowerAfterRot = xPower * cosRot * cosRot + yPower * sinRot * sinRot;
+  const yPowerAfterRot = xPower * sinRot * sinRot + yPower * cosRot * cosRot;
+
   return {
-    xI: xSymbol.i,
-    xQ: xSymbol.q,
-    yI: ySymbol.i,
-    yQ: ySymbol.q,
-    xPower: Math.abs(xPower),
-    yPower: Math.abs(yPower),
+    xI: xIAfterRot,
+    xQ: xQAfterRot,
+    yI: yIAfterRot,
+    yQ: yQAfterRot,
+    xPower: Math.abs(xPowerAfterRot),
+    yPower: Math.abs(yPowerAfterRot),
     xPhaseError: xQuadraturePhase,
     yPhaseError: yQuadraturePhase,
     xImerror: xIBiasPhase / Math.PI,
     yImerror: yIBiasPhase / Math.PI,
     extinctionRatio: inputPower > 0.001
-      ? 10 * Math.log10(inputPower / Math.max(Math.min(xPower, yPower), 0.0001))
+      ? 10 * Math.log10(inputPower / Math.max(Math.min(xPowerAfterRot, yPowerAfterRot), 0.0001))
       : 0,
   };
 }

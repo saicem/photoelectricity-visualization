@@ -277,7 +277,6 @@ export default function IQCanvas() {
 
     const decodeY = waveTop + (waveH * 2 + waveGap) * 3 + 10;
     const decodeH = 40;
-    const decodeGap = 12;
     const decodeIW = waveformW / 2 - 10;
     const decodeQW = waveformW / 2 - 10;
 

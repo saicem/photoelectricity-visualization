@@ -32,7 +32,8 @@ export default function MathRenderer({ children, className = '', displayMode }: 
         strict: false,
       });
       setHtml(rendered);
-    } catch (e) {
+    } catch (err) {
+      console.warn('KaTeX render error:', err);
       setHtml(children);
     }
   }, [children, displayMode]);

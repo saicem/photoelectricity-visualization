@@ -1,4 +1,4 @@
-import { Radio, BarChart3 } from 'lucide-react';
+import { Radio, BarChart3, BookText } from 'lucide-react';
 import LearnLayout from '@/components/common/LearnLayout';
 import MathRenderer from '@/components/common/MathRenderer';
 
@@ -8,8 +8,10 @@ export default function LearnReceiver() {
       title="光接收器"
       subtitle="光信号的检测：光电二极管、相干接收与数字信号处理"
       currentIndex={7}
-      totalChapters={8}
+      totalChapters={9}
+      playgroundPath="/playground/receiver"
       prevChapter={{ path: '/learn/dual-polarization', title: '双偏振 IQ', icon: <BarChart3 className="w-4 h-4" /> }}
+      nextChapter={{ path: '/learn/glossary', title: '术语表', icon: <BookText className="w-4 h-4" /> }}
     >
       <section className="bg-lab-surface/30 border border-lab-border/50 rounded-2xl p-6">
         <h2 className="text-xl font-bold font-display text-lab-text mb-4 flex items-center gap-2">

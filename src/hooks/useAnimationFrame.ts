@@ -42,12 +42,14 @@ export function useAnimationFrame(
     isRunningRef.current = false;
   }, []);
 
+  const { autoStart } = options;
+
   useEffect(() => {
-    if (options.autoStart) {
+    if (autoStart) {
       start();
     }
     return () => stop();
-  }, []);
+  }, [autoStart, start, stop]);
 
   return { start, stop };
 }

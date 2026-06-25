@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
-import { Compass, Info, ToggleLeft, ToggleRight } from 'lucide-react';
+import { Compass, Info, ToggleLeft, ToggleRight, BookOpen } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { usePolarizationStore } from '@/stores/usePolarizationStore';
 import ControlPanel, { SliderControl, InfoItem } from '@/components/common/ControlPanel';
 import PolarizationCanvas from '@/components/polarization/PolarizationCanvas';
@@ -7,6 +8,7 @@ import { calculateDOP } from '@/utils/polarizationMath';
 import MathRenderer from '@/components/common/MathRenderer';
 
 export default function PolarizationPage() {
+  const navigate = useNavigate();
   const {
     ex,
     ey,
@@ -40,18 +42,27 @@ export default function PolarizationPage() {
       exit={{ opacity: 0 }}
       className="space-y-6"
     >
-      <div className="flex items-center gap-3 mb-2">
-        <div className="w-10 h-10 rounded-xl bg-laser-red/20 text-laser-red flex items-center justify-center">
-          <Compass className="w-5 h-5" />
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-laser-red/20 text-laser-red flex items-center justify-center">
+            <Compass className="w-5 h-5" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold font-display text-lab-text">XY 偏振复用</h1>
+            <p className="text-sm text-lab-muted">偏振态可视化与双通道复用技术</p>
+          </div>
         </div>
-        <div>
-          <h1 className="text-2xl font-bold font-display text-lab-text">XY 偏振复用</h1>
-          <p className="text-sm text-lab-muted">偏振态可视化与双通道复用技术</p>
-        </div>
+        <button
+          onClick={() => navigate('/learn/polarization')}
+          className="flex items-center gap-2 px-4 py-2 bg-lab-surface border border-lab-border rounded-xl text-sm text-lab-muted hover:text-laser-red hover:border-laser-red/30 transition-all"
+        >
+          <BookOpen className="w-4 h-4" />
+          学习原理
+        </button>
       </div>
 
       <div className="grid lg:grid-cols-[1fr_320px] gap-6">
-        <div className="bg-lab-surface/50 backdrop-blur-sm border border-lab-border rounded-2xl p-4 aspect-video min-h-[400px]">
+        <div className="bg-lab-surface/50 backdrop-blur-sm border border-lab-border rounded-2xl p-4 h-[480px]">
           <PolarizationCanvas />
         </div>
 

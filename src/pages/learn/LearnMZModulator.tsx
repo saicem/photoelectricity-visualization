@@ -8,7 +8,8 @@ export default function LearnMZModulator() {
       title="MZ 调制器"
       subtitle="马赫-曾德电光调制器的工作原理、结构与性能指标"
       currentIndex={3}
-      totalChapters={8}
+      totalChapters={9}
+      playgroundPath="/playground/mz-modulator"
       prevChapter={{ path: '/learn/interference', title: '干涉原理', icon: <Waves className="w-4 h-4" /> }}
       nextChapter={{ path: '/learn/iq-modulator', title: 'IQ 调制器', icon: <BarChart3 className="w-4 h-4" /> }}
     >

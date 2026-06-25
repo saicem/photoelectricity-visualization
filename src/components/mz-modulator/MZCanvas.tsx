@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useMZStore } from '@/stores/useMZStore';
-import { mzOutputPower, mzTransferFunction } from '@/utils/modulationMath';
+import { mzOutputPower } from '@/utils/modulationMath';
 import { useAnimationFrame } from '@/hooks/useAnimationFrame';
 
 export default function MZCanvas() {

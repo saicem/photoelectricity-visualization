@@ -1,11 +1,13 @@
 import { create } from 'zustand';
 import type { ModulationFormat } from '@/utils/modulationMath';
-import { getSymbols } from '@/utils/modulationMath';
+import { getSymbols, theoreticalBer } from '@/utils/modulationMath';
 
 export interface ReceivedPoint {
   i: number;
   q: number;
 }
+
+export type PresetName = 'back-to-back' | 'critical' | 'low-snr';
 
 interface ReceiverState {
   modulationFormat: ModulationFormat;
@@ -23,6 +25,7 @@ interface ReceiverState {
   addReceivedPoint: (point: ReceivedPoint, isError: boolean) => void;
   clearReceivedPoints: () => void;
   reset: () => void;
+  applyPreset: (preset: PresetName) => void;
 }
 
 function gaussianRandom(): number {
@@ -75,6 +78,37 @@ export const useReceiverStore = create<ReceiverState>((set, get) => ({
       totalSymbols: 0,
     });
   },
+  applyPreset: (preset) => {
+    switch (preset) {
+      case 'back-to-back':
+        set({
+          snr: 30,
+          noiseEnabled: true,
+          receivedPoints: [],
+          errorCount: 0,
+          totalSymbols: 0,
+        });
+        break;
+      case 'critical':
+        set({
+          snr: 10.5,
+          noiseEnabled: true,
+          receivedPoints: [],
+          errorCount: 0,
+          totalSymbols: 0,
+        });
+        break;
+      case 'low-snr':
+        set({
+          snr: 5,
+          noiseEnabled: true,
+          receivedPoints: [],
+          errorCount: 0,
+          totalSymbols: 0,
+        });
+        break;
+    }
+  },
 }));
 
 export function addAwgnNoise(i: number, q: number, snrDb: number, noiseEnabled: boolean): ReceivedPoint {
@@ -108,34 +142,5 @@ export function nearestSymbol(point: ReceivedPoint, format: ModulationFormat): {
 }
 
 export function estimateBer(modulationFormat: ModulationFormat, snrDb: number): number {
-  const snrLinear = Math.pow(10, snrDb / 10);
-  const bitsPerSymbol = { QPSK: 2, '16QAM': 4, '64QAM': 6 }[modulationFormat];
-  const M = Math.pow(2, bitsPerSymbol);
-
-  if (modulationFormat === 'QPSK') {
-    return 0.5 * erfc(Math.sqrt(snrLinear));
-  } else {
-    const k = Math.sqrt(M);
-    const avgEsN0 = snrLinear;
-    return (
-      (2 * (k - 1) / (k * Math.log2(k))) *
-      0.5 *
-      erfc(Math.sqrt((3 * avgEsN0 * Math.log2(k)) / (M - 1)))
-    );
-  }
-}
-
-function erfc(x: number): number {
-  if (x < 0) return 2 - erfc(-x);
-  const a1 = 0.254829592;
-  const a2 = -0.284496736;
-  const a3 = 1.421413741;
-  const a4 = -1.453152027;
-  const a5 = 1.061405429;
-  const p = 0.3275911;
-  const t = 1.0 / (1.0 + p * x);
-  const y =
-    1.0 -
-    ((((a5 * t + a4) * t + a3) * t + a2) * t + a1) * t * Math.exp(-x * x);
-  return y;
+  return theoreticalBer(modulationFormat, snrDb);
 }

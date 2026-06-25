@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
-import { BarChart3, Info, Zap, ThermometerSun, RefreshCw } from 'lucide-react';
+import { BarChart3, Info, Zap, ThermometerSun, RefreshCw, BookOpen } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { useDualPolarizationStore } from '@/stores/useDualPolarizationStore';
 import ControlPanel, { SliderControl, SelectControl, InfoItem } from '@/components/common/ControlPanel';
 import DualPolarizationCanvas from '@/components/dual-polarization/DualPolarizationCanvas';
@@ -8,6 +9,7 @@ import type { ModulationFormat } from '@/utils/dualPolarizationMath';
 import MathRenderer from '@/components/common/MathRenderer';
 
 export default function DualPolarizationPage() {
+  const navigate = useNavigate();
   const {
     modulationFormat,
     xSymbolIndex,
@@ -66,18 +68,27 @@ export default function DualPolarizationPage() {
       exit={{ opacity: 0 }}
       className="space-y-6"
     >
-      <div className="flex items-center gap-3 mb-2">
-        <div className="w-10 h-10 rounded-xl bg-laser-cyan/20 text-laser-cyan flex items-center justify-center">
-          <BarChart3 className="w-5 h-5" />
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-laser-cyan/20 text-laser-cyan flex items-center justify-center">
+            <BarChart3 className="w-5 h-5" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold font-display text-lab-text">双偏振 IQ 调制器</h1>
+            <p className="text-sm text-lab-muted">DP-IQM 交互实验：调节加热器电压，观察输出变化</p>
+          </div>
         </div>
-        <div>
-          <h1 className="text-2xl font-bold font-display text-lab-text">双偏振 IQ 调制器</h1>
-          <p className="text-sm text-lab-muted">DP-IQM 交互实验：调节加热器电压，观察输出变化</p>
-        </div>
+        <button
+          onClick={() => navigate('/learn/dual-polarization')}
+          className="flex items-center gap-2 px-4 py-2 bg-lab-surface border border-lab-border rounded-xl text-sm text-lab-muted hover:text-laser-cyan hover:border-laser-cyan/30 transition-all"
+        >
+          <BookOpen className="w-4 h-4" />
+          学习原理
+        </button>
       </div>
 
       <div className="grid lg:grid-cols-[1fr_340px] gap-4">
-        <div className="bg-lab-surface/50 backdrop-blur-sm border border-lab-border rounded-2xl p-3 h-[560px]">
+        <div className="bg-lab-surface/50 backdrop-blur-sm border border-lab-border rounded-2xl p-3 h-[480px]">
           <DualPolarizationCanvas />
         </div>
 

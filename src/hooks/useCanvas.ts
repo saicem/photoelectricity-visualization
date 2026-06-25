@@ -23,8 +23,8 @@ export function useCanvas(
     if (!ctx) return;
 
     const rect = canvas.getBoundingClientRect();
-    let width = rect.width;
-    let height = rect.height;
+    const width = rect.width;
+    const height = rect.height;
 
     if (options.dpr !== false) {
       const dpr = window.devicePixelRatio || 1;

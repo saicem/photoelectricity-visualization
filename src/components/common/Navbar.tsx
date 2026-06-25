@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Waves, CircuitBoard, BarChart3, Compass, BookOpen, FlaskConical, Lightbulb, Flame, Radio } from 'lucide-react';
+import { Waves, CircuitBoard, BarChart3, Compass, BookOpen, FlaskConical, Lightbulb, Flame, Radio, BookText } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const learnItems = [
@@ -12,6 +12,7 @@ const learnItems = [
   { path: '/learn/polarization', label: '偏振复用', icon: Compass },
   { path: '/learn/dual-polarization', label: '双偏振 IQ', icon: BarChart3 },
   { path: '/learn/receiver', label: '光接收器', icon: Radio },
+  { path: '/learn/glossary', label: '术语表', icon: BookText },
 ];
 
 const playgroundItems = [
@@ -33,7 +34,7 @@ export default function Navbar() {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-lab-bg/80 backdrop-blur-md border-b border-lab-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-auto md:h-16 py-2 md:py-0">
           <Link to="/" className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-laser-cyan to-laser-purple flex items-center justify-center">
               <Waves className="w-5 h-5 text-white" />
@@ -116,24 +117,26 @@ export default function Navbar() {
             <Link
               to="/learn/light-basics"
               className={cn(
-                'p-2 rounded-lg flex-shrink-0',
+                'px-2 py-1.5 rounded-lg flex-shrink-0 flex flex-col items-center gap-0.5',
                 isLearn ? 'text-laser-cyan bg-laser-cyan/10' : 'text-lab-muted'
               )}
             >
               <BookOpen className="w-5 h-5" />
+              <span className="text-[10px] font-medium">Learn</span>
             </Link>
             <Link
               to="/playground/interference"
               className={cn(
-                'p-2 rounded-lg flex-shrink-0',
+                'px-2 py-1.5 rounded-lg flex-shrink-0 flex flex-col items-center gap-0.5',
                 isPlayground ? 'text-laser-purple bg-laser-purple/10' : 'text-lab-muted'
               )}
             >
               <FlaskConical className="w-5 h-5" />
+              <span className="text-[10px] font-medium">Play</span>
             </Link>
             {(isLearn || isPlayground) && (
               <>
-                <div className="w-px h-6 bg-lab-border mx-1 flex-shrink-0" />
+                <div className="w-px h-10 bg-lab-border mx-1 flex-shrink-0" />
                 {activeItems.map((item) => {
                   const Icon = item.icon;
                   const isActive = location.pathname === item.path;
@@ -142,7 +145,7 @@ export default function Navbar() {
                       key={item.path}
                       to={item.path}
                       className={cn(
-                        'p-2 rounded-lg flex-shrink-0',
+                        'px-2 py-1.5 rounded-lg flex-shrink-0 flex flex-col items-center gap-0.5',
                         isActive
                           ? isLearn
                             ? 'text-laser-cyan bg-laser-cyan/10'
@@ -151,6 +154,7 @@ export default function Navbar() {
                       )}
                     >
                       <Icon className="w-5 h-5" />
+                      <span className="text-[10px] font-medium whitespace-nowrap">{item.label}</span>
                     </Link>
                   );
                 })}

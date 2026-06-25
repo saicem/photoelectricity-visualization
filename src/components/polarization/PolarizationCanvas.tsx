@@ -117,8 +117,6 @@ export default function PolarizationCanvas() {
     ctx.stroke();
     ctx.restore();
 
-    const pointColor = `rgb(${Math.round(255 * (poincare.x + 1) / 2)}, ${Math.round(255 * (poincare.z + 1) / 2)}, ${Math.round(255 * (poincare.y + 1) / 2)})`;
-
     ctx.save();
     ctx.fillStyle = '#ff3366';
     ctx.shadowColor = '#ff3366';
@@ -290,7 +288,7 @@ export default function PolarizationCanvas() {
     return () => {
       ctx.setTransform(1, 0, 0, 1, 0, 0);
     };
-  }, [ex, ey, delta, rotationAngle, xPower, yPower, multiplexing, time]);
+  }, [ex, ey, delta, rotationAngle, xPower, yPower, multiplexing, time, getStokes]);
 
   return (
     <canvas

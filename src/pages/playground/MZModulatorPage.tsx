@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
-import { CircuitBoard, Info } from 'lucide-react';
+import { CircuitBoard, Info, BookOpen } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { useMZStore } from '@/stores/useMZStore';
 import ControlPanel, { SliderControl, InfoItem } from '@/components/common/ControlPanel';
 import MZCanvas from '@/components/mz-modulator/MZCanvas';
@@ -7,6 +8,7 @@ import { mzOutputPower, mzTransferFunction } from '@/utils/modulationMath';
 import MathRenderer from '@/components/common/MathRenderer';
 
 export default function MZModulatorPage() {
+  const navigate = useNavigate();
   const {
     modulationDepth,
     phaseShift,
@@ -34,18 +36,27 @@ export default function MZModulatorPage() {
       exit={{ opacity: 0 }}
       className="space-y-6"
     >
-      <div className="flex items-center gap-3 mb-2">
-        <div className="w-10 h-10 rounded-xl bg-laser-green/20 text-laser-green flex items-center justify-center">
-          <CircuitBoard className="w-5 h-5" />
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-laser-green/20 text-laser-green flex items-center justify-center">
+            <CircuitBoard className="w-5 h-5" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold font-display text-lab-text">MZ 调制器</h1>
+            <p className="text-sm text-lab-muted">马赫-曾德电光调制器原理演示</p>
+          </div>
         </div>
-        <div>
-          <h1 className="text-2xl font-bold font-display text-lab-text">MZ 调制器</h1>
-          <p className="text-sm text-lab-muted">马赫-曾德电光调制器原理演示</p>
-        </div>
+        <button
+          onClick={() => navigate('/learn/mz-modulator')}
+          className="flex items-center gap-2 px-4 py-2 bg-lab-surface border border-lab-border rounded-xl text-sm text-lab-muted hover:text-laser-green hover:border-laser-green/30 transition-all"
+        >
+          <BookOpen className="w-4 h-4" />
+          学习原理
+        </button>
       </div>
 
       <div className="grid lg:grid-cols-[1fr_320px] gap-6">
-        <div className="bg-lab-surface/50 backdrop-blur-sm border border-lab-border rounded-2xl p-4 aspect-video min-h-[400px]">
+        <div className="bg-lab-surface/50 backdrop-blur-sm border border-lab-border rounded-2xl p-4 h-[480px]">
           <MZCanvas />
         </div>
 

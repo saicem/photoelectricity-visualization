@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useReceiverStore, addAwgnNoise, nearestSymbol } from '@/stores/useReceiverStore';
-import { getSymbols, iqAmplitude, iqPhase, iqModulation } from '@/utils/modulationMath';
+import { getSymbols, iqAmplitude, iqPhase, iqModulation, generateBerCurve, theoreticalBer } from '@/utils/modulationMath';
+import type { ModulationFormat } from '@/utils/modulationMath';
 import { useAnimationFrame } from '@/hooks/useAnimationFrame';
 
 export default function ReceiverCanvas() {
@@ -199,7 +200,11 @@ export default function ReceiverCanvas() {
     ctx.restore();
 
     const waveformX = W * 0.05;
-    const waveformW = W * 0.9;
+    const berChartW = 220;
+    const berChartH = 160;
+    const berChartX = W - berChartW - 15;
+    const berChartY = H * 0.62;
+    const waveformW = berChartX - waveformX - 15;
     const waveTop = H * 0.6;
     const waveH = 35;
     const waveGap = 10;
@@ -285,6 +290,149 @@ export default function ReceiverCanvas() {
 
     const symAmp = iqAmplitude(sym.i, sym.q);
     const symPhase = iqPhase(sym.i, sym.q);
+
+    function drawBerChart(x: number, y: number, w: number, h: number) {
+      ctx.save();
+
+      ctx.fillStyle = 'rgba(10, 14, 23, 0.8)';
+      ctx.fillRect(x, y, w, h);
+      ctx.strokeStyle = '#334155';
+      ctx.lineWidth = 1;
+      ctx.strokeRect(x, y, w, h);
+
+      const padding = { top: 20, right: 15, bottom: 25, left: 40 };
+      const chartW = w - padding.left - padding.right;
+      const chartH = h - padding.top - padding.bottom;
+      const chartX = x + padding.left;
+      const chartY = y + padding.top;
+
+      ctx.fillStyle = '#94a3b8';
+      ctx.font = 'bold 11px JetBrains Mono, monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText('BER vs SNR', x + w / 2, y + 14);
+      ctx.textAlign = 'left';
+
+      const snrMin = 0;
+      const snrMax = 30;
+      const berMin = 1e-6;
+      const berMax = 0.5;
+
+      ctx.strokeStyle = 'rgba(51, 65, 85, 0.5)';
+      ctx.lineWidth = 1;
+      for (let i = 0; i <= 5; i++) {
+        const px = chartX + (i / 5) * chartW;
+        ctx.beginPath();
+        ctx.moveTo(px, chartY);
+        ctx.lineTo(px, chartY + chartH);
+        ctx.stroke();
+
+        ctx.fillStyle = '#64748b';
+        ctx.font = '9px JetBrains Mono, monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText(`${snrMin + (i / 5) * (snrMax - snrMin)}`, px, chartY + chartH + 12);
+        ctx.textAlign = 'left';
+      }
+
+      const berTicks = [1e-6, 1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 0.5];
+      berTicks.forEach((ber) => {
+        const logRatio = (Math.log10(ber) - Math.log10(berMin)) / (Math.log10(berMax) - Math.log10(berMin));
+        const py = chartY + chartH - logRatio * chartH;
+        if (py >= chartY && py <= chartY + chartH) {
+          ctx.strokeStyle = 'rgba(51, 65, 85, 0.5)';
+          ctx.beginPath();
+          ctx.moveTo(chartX, py);
+          ctx.lineTo(chartX + chartW, py);
+          ctx.stroke();
+
+          ctx.fillStyle = '#64748b';
+          ctx.font = '9px JetBrains Mono, monospace';
+          ctx.textAlign = 'right';
+          if (ber >= 0.1) {
+            ctx.fillText(ber.toFixed(1), chartX - 5, py + 3);
+          } else {
+            const exp = Math.floor(Math.log10(ber));
+            ctx.fillText(`10^${exp}`, chartX - 5, py + 3);
+          }
+          ctx.textAlign = 'left';
+        }
+      });
+
+      const formats: { fmt: ModulationFormat; color: string }[] = [
+        { fmt: 'QPSK', color: '#00d4ff' },
+        { fmt: '16QAM', color: '#a855f7' },
+        { fmt: '64QAM', color: '#ff6b6b' },
+      ];
+
+      formats.forEach(({ fmt, color }) => {
+        const curve = generateBerCurve(fmt, snrMin, snrMax, 80);
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        let started = false;
+        curve.forEach((point, idx) => {
+          if (point.ber < berMin || point.ber > berMax) return;
+          const px = chartX + ((point.snr - snrMin) / (snrMax - snrMin)) * chartW;
+          const logRatio = (Math.log10(point.ber) - Math.log10(berMin)) / (Math.log10(berMax) - Math.log10(berMin));
+          const py = chartY + chartH - logRatio * chartH;
+          if (!started) {
+            ctx.moveTo(px, py);
+            started = true;
+          } else {
+            ctx.lineTo(px, py);
+          }
+          void idx;
+        });
+        ctx.stroke();
+      });
+
+      const currentBer = theoreticalBer(modulationFormat, snr);
+      if (currentBer >= berMin && currentBer <= berMax && snr >= snrMin && snr <= snrMax) {
+        const px = chartX + ((snr - snrMin) / (snrMax - snrMin)) * chartW;
+        const logRatio = (Math.log10(currentBer) - Math.log10(berMin)) / (Math.log10(berMax) - Math.log10(berMin));
+        const py = chartY + chartH - logRatio * chartH;
+
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+        ctx.lineWidth = 1;
+        ctx.setLineDash([3, 3]);
+        ctx.beginPath();
+        ctx.moveTo(px, chartY);
+        ctx.lineTo(px, chartY + chartH);
+        ctx.moveTo(chartX, py);
+        ctx.lineTo(chartX + chartW, py);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        const fmtColor = formats.find((f) => f.fmt === modulationFormat)?.color || '#ffffff';
+        ctx.fillStyle = fmtColor;
+        ctx.shadowColor = fmtColor;
+        ctx.shadowBlur = 8;
+        ctx.beginPath();
+        ctx.arc(px, py, 5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
+
+      ctx.font = '9px JetBrains Mono, monospace';
+      let legendX = chartX + 5;
+      const legendY = chartY + 5;
+      formats.forEach(({ fmt, color }) => {
+        ctx.fillStyle = color;
+        ctx.fillRect(legendX, legendY, 12, 2);
+        ctx.fillStyle = '#94a3b8';
+        ctx.fillText(fmt, legendX + 16, legendY + 4);
+        legendX += ctx.measureText(fmt).width + 30;
+      });
+
+      ctx.fillStyle = '#64748b';
+      ctx.font = '9px JetBrains Mono, monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText('SNR (dB)', x + w / 2, y + h - 5);
+      ctx.textAlign = 'left';
+
+      ctx.restore();
+    }
+
+    drawBerChart(berChartX, berChartY, berChartW, berChartH);
 
     ctx.fillStyle = '#94a3b8';
     ctx.font = '11px JetBrains Mono, monospace';

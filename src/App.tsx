@@ -2,10 +2,6 @@ import { HashRouter as Router, Routes, Route, useLocation } from "react-router-d
 import { AnimatePresence } from "framer-motion";
 import Layout from "@/components/common/Layout";
 import HomePage from "@/pages/HomePage";
-import InterferencePage from "@/pages/InterferencePage";
-import MZModulatorPage from "@/pages/MZModulatorPage";
-import IQModulatorPage from "@/pages/IQModulatorPage";
-import PolarizationPage from "@/pages/PolarizationPage";
 
 import LearnLightBasics from "@/pages/learn/LearnLightBasics";
 import LearnLaser from "@/pages/learn/LearnLaser";
@@ -15,7 +11,12 @@ import LearnIQModulator from "@/pages/learn/LearnIQModulator";
 import LearnPolarization from "@/pages/learn/LearnPolarization";
 import LearnDualPolarization from "@/pages/learn/LearnDualPolarization";
 import LearnReceiver from "@/pages/learn/LearnReceiver";
+import LearnGlossary from "@/pages/learn/LearnGlossary";
 
+import InterferencePage from "@/pages/playground/InterferencePage";
+import MZModulatorPage from "@/pages/playground/MZModulatorPage";
+import IQModulatorPage from "@/pages/playground/IQModulatorPage";
+import PolarizationPage from "@/pages/playground/PolarizationPage";
 import DualPolarizationPage from "@/pages/playground/DualPolarizationPage";
 import ReceiverPage from "@/pages/playground/ReceiverPage";
 
@@ -35,6 +36,7 @@ function AnimatedRoutes() {
           <Route path="/learn/polarization" element={<LearnPolarization />} />
           <Route path="/learn/dual-polarization" element={<LearnDualPolarization />} />
           <Route path="/learn/receiver" element={<LearnReceiver />} />
+          <Route path="/learn/glossary" element={<LearnGlossary />} />
 
           <Route path="/playground/interference" element={<InterferencePage />} />
           <Route path="/playground/mz-modulator" element={<MZModulatorPage />} />
@@ -42,11 +44,6 @@ function AnimatedRoutes() {
           <Route path="/playground/polarization" element={<PolarizationPage />} />
           <Route path="/playground/dual-polarization" element={<DualPolarizationPage />} />
           <Route path="/playground/receiver" element={<ReceiverPage />} />
-
-          <Route path="/interference" element={<InterferencePage />} />
-          <Route path="/mz-modulator" element={<MZModulatorPage />} />
-          <Route path="/iq-modulator" element={<IQModulatorPage />} />
-          <Route path="/polarization" element={<PolarizationPage />} />
         </Route>
       </Routes>
     </AnimatePresence>

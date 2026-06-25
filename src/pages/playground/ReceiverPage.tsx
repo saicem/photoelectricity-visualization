@@ -1,12 +1,15 @@
 import { motion } from 'framer-motion';
-import { Radio, Info, RefreshCw } from 'lucide-react';
+import { Radio, Info, RefreshCw, BookOpen, Zap, Gauge, Volume2 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { useReceiverStore, estimateBer } from '@/stores/useReceiverStore';
 import ControlPanel, { SliderControl, SelectControl, InfoItem } from '@/components/common/ControlPanel';
 import ReceiverCanvas from '@/components/receiver/ReceiverCanvas';
 import type { ModulationFormat } from '@/utils/modulationMath';
+import { calculateEVM } from '@/utils/modulationMath';
 import MathRenderer from '@/components/common/MathRenderer';
 
 export default function ReceiverPage() {
+  const navigate = useNavigate();
   const {
     modulationFormat,
     snr,
@@ -14,18 +17,22 @@ export default function ReceiverPage() {
     isPlaying,
     errorCount,
     totalSymbols,
+    receivedPoints,
     setModulationFormat,
     setSnr,
     setNoiseEnabled,
     setIsPlaying,
     clearReceivedPoints,
     reset,
+    applyPreset,
   } = useReceiverStore();
 
   const theoreticalBer = estimateBer(modulationFormat, snr);
   const measuredBer = totalSymbols > 0 ? errorCount / totalSymbols : 0;
   const bitsPerSymbol = { QPSK: 2, '16QAM': 4, '64QAM': 6 }[modulationFormat];
   const symbolCount = { QPSK: 4, '16QAM': 16, '64QAM': 64 }[modulationFormat];
+  const evm = calculateEVM(receivedPoints, modulationFormat);
+  const evmPercent = evm * 100;
 
   function formatBer(ber: number): string {
     if (ber === 0) return '0';
@@ -42,18 +49,27 @@ export default function ReceiverPage() {
       exit={{ opacity: 0 }}
       className="space-y-6"
     >
-      <div className="flex items-center gap-3 mb-2">
-        <div className="w-10 h-10 rounded-xl bg-laser-green/20 text-laser-green flex items-center justify-center">
-          <Radio className="w-5 h-5" />
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-laser-green/20 text-laser-green flex items-center justify-center">
+            <Radio className="w-5 h-5" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold font-display text-lab-text">光接收器</h1>
+            <p className="text-sm text-lab-muted">AWGN 信道、星座图与误码率分析</p>
+          </div>
         </div>
-        <div>
-          <h1 className="text-2xl font-bold font-display text-lab-text">光接收器</h1>
-          <p className="text-sm text-lab-muted">AWGN 信道、星座图与误码率分析</p>
-        </div>
+        <button
+          onClick={() => navigate('/learn/receiver')}
+          className="flex items-center gap-2 px-4 py-2 bg-lab-surface border border-lab-border rounded-xl text-sm text-lab-muted hover:text-laser-green hover:border-laser-green/30 transition-all"
+        >
+          <BookOpen className="w-4 h-4" />
+          学习原理
+        </button>
       </div>
 
       <div className="grid lg:grid-cols-[1fr_320px] gap-6">
-        <div className="bg-lab-surface/50 backdrop-blur-sm border border-lab-border rounded-2xl p-4 aspect-video min-h-[400px]">
+        <div className="bg-lab-surface/50 backdrop-blur-sm border border-lab-border rounded-2xl p-4 h-[480px]">
           <ReceiverCanvas />
         </div>
 
@@ -111,6 +127,42 @@ export default function ReceiverPage() {
               <RefreshCw className="w-4 h-4" />
               清除统计
             </button>
+
+            <div className="pt-4 border-t border-lab-border/50">
+              <p className="text-sm text-lab-muted mb-3">预设场景</p>
+              <div className="space-y-2">
+                <button
+                  onClick={() => applyPreset('back-to-back')}
+                  className="w-full flex items-center gap-3 py-2 px-3 bg-lab-bg/50 border border-lab-border rounded-lg text-sm text-lab-muted hover:text-laser-green hover:border-laser-green/30 transition-colors"
+                >
+                  <Zap className="w-4 h-4" />
+                  <div className="text-left flex-1">
+                    <div className="text-lab-text font-medium">背靠背</div>
+                    <div className="text-xs">高 SNR，几乎无误差</div>
+                  </div>
+                </button>
+                <button
+                  onClick={() => applyPreset('critical')}
+                  className="w-full flex items-center gap-3 py-2 px-3 bg-lab-bg/50 border border-lab-border rounded-lg text-sm text-lab-muted hover:text-laser-cyan hover:border-laser-cyan/30 transition-colors"
+                >
+                  <Gauge className="w-4 h-4" />
+                  <div className="text-left flex-1">
+                    <div className="text-lab-text font-medium">临界工作点</div>
+                    <div className="text-xs">BER ≈ 10⁻³</div>
+                  </div>
+                </button>
+                <button
+                  onClick={() => applyPreset('low-snr')}
+                  className="w-full flex items-center gap-3 py-2 px-3 bg-lab-bg/50 border border-lab-border rounded-lg text-sm text-lab-muted hover:text-laser-red hover:border-laser-red/30 transition-colors"
+                >
+                  <Volume2 className="w-4 h-4" />
+                  <div className="text-left flex-1">
+                    <div className="text-lab-text font-medium">低信噪比</div>
+                    <div className="text-xs">高误码率</div>
+                  </div>
+                </button>
+              </div>
+            </div>
           </ControlPanel>
 
           <div className="bg-lab-surface/80 backdrop-blur-sm border border-lab-border rounded-2xl p-5">
@@ -123,6 +175,11 @@ export default function ReceiverPage() {
               <InfoItem label="星座点数" value={symbolCount.toString()} />
               <InfoItem label="每符号比特" value={`${bitsPerSymbol} bit`} color="#ff3366" />
               <InfoItem label="SNR" value={`${snr.toFixed(1)} dB`} color="#ff6b6b" />
+              <InfoItem
+                label="EVM"
+                value={totalSymbols > 0 ? `${evmPercent.toFixed(2)} %` : '—'}
+                color="#a855f7"
+              />
               <div className="pt-2 mt-2 border-t border-lab-border/50">
                 <InfoItem
                   label="理论 BER"

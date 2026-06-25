@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
-import { Waves, Info } from 'lucide-react';
+import { Waves, Info, BookOpen } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { useInterferenceStore } from '@/stores/useInterferenceStore';
 import ControlPanel, { SliderControl, InfoItem } from '@/components/common/ControlPanel';
 import InterferenceCanvas from '@/components/interference/InterferenceCanvas';
@@ -7,6 +8,7 @@ import { wavelengthToColor, interferenceIntensity } from '@/utils/waveMath';
 import MathRenderer from '@/components/common/MathRenderer';
 
 export default function InterferencePage() {
+  const navigate = useNavigate();
   const {
     wavelength,
     amplitude1,
@@ -40,18 +42,27 @@ export default function InterferencePage() {
       exit={{ opacity: 0 }}
       className="space-y-6"
     >
-      <div className="flex items-center gap-3 mb-2">
-        <div className="w-10 h-10 rounded-xl bg-laser-cyan/20 text-laser-cyan flex items-center justify-center">
-          <Waves className="w-5 h-5" />
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-laser-cyan/20 text-laser-cyan flex items-center justify-center">
+            <Waves className="w-5 h-5" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold font-display text-lab-text">光波干涉</h1>
+            <p className="text-sm text-lab-muted">双光束干涉的实时可视化</p>
+          </div>
         </div>
-        <div>
-          <h1 className="text-2xl font-bold font-display text-lab-text">光波干涉</h1>
-          <p className="text-sm text-lab-muted">双光束干涉的实时可视化</p>
-        </div>
+        <button
+          onClick={() => navigate('/learn/interference')}
+          className="flex items-center gap-2 px-4 py-2 bg-lab-surface border border-lab-border rounded-xl text-sm text-lab-muted hover:text-laser-cyan hover:border-laser-cyan/30 transition-all"
+        >
+          <BookOpen className="w-4 h-4" />
+          学习原理
+        </button>
       </div>
 
       <div className="grid lg:grid-cols-[1fr_320px] gap-6">
-        <div className="bg-lab-surface/50 backdrop-blur-sm border border-lab-border rounded-2xl p-4 aspect-video min-h-[400px]">
+        <div className="bg-lab-surface/50 backdrop-blur-sm border border-lab-border rounded-2xl p-4 h-[480px]">
           <InterferenceCanvas />
         </div>
 

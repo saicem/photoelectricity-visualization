@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
-import { Link, useLocation } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, BookOpen, ChevronRight } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { ArrowLeft, ArrowRight, BookOpen, ChevronRight, FlaskConical } from 'lucide-react';
 
 export interface LearnChapter {
   path: string;
@@ -16,6 +16,7 @@ interface LearnLayoutProps {
   nextChapter?: LearnChapter;
   currentIndex: number;
   totalChapters: number;
+  playgroundPath?: string;
 }
 
 const chapters = [
@@ -27,6 +28,7 @@ const chapters = [
   { path: '/learn/polarization', title: '偏振复用' },
   { path: '/learn/dual-polarization', title: '双偏振 IQ' },
   { path: '/learn/receiver', title: '光接收器' },
+  { path: '/learn/glossary', title: '术语表' },
 ];
 
 export default function LearnLayout({
@@ -37,8 +39,10 @@ export default function LearnLayout({
   nextChapter,
   currentIndex,
   totalChapters,
+  playgroundPath,
 }: LearnLayoutProps) {
   const location = useLocation();
+  const navigate = useNavigate();
 
   return (
     <motion.div
@@ -90,22 +94,38 @@ export default function LearnLayout({
           })}
         </div>
 
-        <motion.h1
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4 }}
-          className="text-3xl md:text-4xl font-bold font-display text-lab-text mb-2"
-        >
-          {title}
-        </motion.h1>
-        <motion.p
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.1 }}
-          className="text-lg text-lab-muted"
-        >
-          {subtitle}
-        </motion.p>
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <motion.h1
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4 }}
+              className="text-3xl md:text-4xl font-bold font-display text-lab-text mb-2"
+            >
+              {title}
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.1 }}
+              className="text-lg text-lab-muted"
+            >
+              {subtitle}
+            </motion.p>
+          </div>
+          {playgroundPath && (
+            <motion.button
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.15 }}
+              onClick={() => navigate(playgroundPath)}
+              className="flex items-center gap-2 px-4 py-2 bg-lab-surface border border-lab-border rounded-xl text-sm text-lab-muted hover:text-laser-cyan hover:border-laser-cyan/30 transition-all flex-shrink-0"
+            >
+              <FlaskConical className="w-4 h-4" />
+              去实验
+            </motion.button>
+          )}
+        </div>
       </div>
 
       <motion.div

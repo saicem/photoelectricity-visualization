@@ -9,7 +9,8 @@ export default function LearnDualPolarization() {
       title="双偏振 IQ 调制器"
       subtitle="DP-IQM：现代高速相干光通信的核心引擎，集成偏振复用与 IQ 调制"
       currentIndex={6}
-      totalChapters={8}
+      totalChapters={9}
+      playgroundPath="/playground/dual-polarization"
       prevChapter={{ path: '/learn/polarization', title: '偏振复用', icon: <Compass className="w-4 h-4" /> }}
       nextChapter={{ path: '/learn/receiver', title: '光接收器', icon: <Radio className="w-4 h-4" /> }}
     >
