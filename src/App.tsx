@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import { HashRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import Layout from "@/components/common/Layout";
 import HomePage from "@/pages/HomePage";
@@ -54,9 +54,8 @@ function AnimatedRoutes() {
 }
 
 export default function App() {
-  const base = import.meta.env.BASE_URL || '/';
   return (
-    <Router basename={base}>
+    <Router>
       <AnimatedRoutes />
     </Router>
   );
