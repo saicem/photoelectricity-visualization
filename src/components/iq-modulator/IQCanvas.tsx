@@ -1,12 +1,27 @@
 import { useEffect, useRef } from 'react';
-import { useIQStore } from '@/stores/useIQStore';
+import { useIQStore, addAwgnNoise } from '@/stores/useIQStore';
 import { getSymbols, iqAmplitude, iqPhase, iqModulation } from '@/utils/modulationMath';
 import { useAnimationFrame } from '@/hooks/useAnimationFrame';
 
 export default function IQCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const { modulationFormat, iComponent, qComponent, isPlaying, autoCycle, symbolIndex, time, setTime, setSymbolIndex } = useIQStore();
+  const {
+    modulationFormat,
+    iComponent,
+    qComponent,
+    isPlaying,
+    autoCycle,
+    symbolIndex,
+    time,
+    snr,
+    noiseEnabled,
+    receivedPoints,
+    setTime,
+    setSymbolIndex,
+    addReceivedPoint,
+  } = useIQStore();
   const lastSwitchRef = useRef(0);
+  const lastNoiseRef = useRef(0);
 
   useAnimationFrame(
     (deltaTime) => {
@@ -20,6 +35,12 @@ export default function IQCanvas() {
             setSymbolIndex((symbolIndex + 1) % symbols.length);
             lastSwitchRef.current = newTime;
           }
+        }
+
+        if (noiseEnabled && newTime - lastNoiseRef.current > 0.03) {
+          const noisy = addAwgnNoise(iComponent, qComponent, snr, noiseEnabled);
+          addReceivedPoint(noisy);
+          lastNoiseRef.current = newTime;
         }
       }
     },
@@ -44,18 +65,6 @@ export default function IQCanvas() {
     ctx.fillStyle = '#0a0e17';
     ctx.fillRect(0, 0, W, H);
 
-    const constellationSize = Math.min(W * 0.5, H * 0.85);
-    const constellationCenterX = W * 0.3;
-    const constellationCenterY = H / 2;
-    const R = constellationSize / 2 - 20;
-
-    const waveformX = W * 0.55;
-    const waveformW = W * 0.42;
-    const iWaveY = H * 0.25;
-    const qWaveY = H * 0.55;
-    const outWaveY = H * 0.82;
-    const waveH = 50;
-
     ctx.save();
     ctx.strokeStyle = 'rgba(51, 65, 85, 0.3)';
     ctx.lineWidth = 1;
@@ -73,99 +82,123 @@ export default function IQCanvas() {
     }
     ctx.restore();
 
-    ctx.save();
-    ctx.strokeStyle = '#334155';
-    ctx.lineWidth = 1.5;
+    const constellationW = W * 0.25;
+    const constellationR = constellationW / 2 - 20;
+    const txConstX = constellationW / 2 + 10;
+    const rxConstX = W / 2 - 10;
+    const constellationY = H * 0.32;
 
-    ctx.beginPath();
-    ctx.arc(constellationCenterX, constellationCenterY, R, 0, Math.PI * 2);
-    ctx.stroke();
-
-    ctx.beginPath();
-    ctx.moveTo(constellationCenterX - R - 10, constellationCenterY);
-    ctx.lineTo(constellationCenterX + R + 10, constellationCenterY);
-    ctx.stroke();
-
-    ctx.beginPath();
-    ctx.moveTo(constellationCenterX, constellationCenterY - R - 10);
-    ctx.lineTo(constellationCenterX, constellationCenterY + R + 10);
-    ctx.stroke();
-
-    ctx.fillStyle = '#94a3b8';
-    ctx.font = '11px JetBrains Mono, monospace';
-    ctx.fillText('I', constellationCenterX + R + 2, constellationCenterY + 4);
-    ctx.fillText('Q', constellationCenterX + 4, constellationCenterY - R - 4);
-    ctx.restore();
-
-    const symbols = getSymbols(modulationFormat);
-
-    symbols.forEach((s, idx) => {
-      const px = constellationCenterX + s.i * R;
-      const py = constellationCenterY - s.q * R;
-
-      const isActive = idx === symbolIndex;
-
+    function drawConstellation(
+      cx: number,
+      cy: number,
+      r: number,
+      title: string,
+      titleColor: string,
+      showIdeal: boolean,
+      showReceived: boolean,
+      showActive: boolean
+    ) {
       ctx.save();
-      if (isActive) {
-        ctx.fillStyle = '#00ff88';
-        ctx.shadowColor = '#00ff88';
-        ctx.shadowBlur = 15;
-        ctx.beginPath();
-        ctx.arc(px, py, 6, 0, Math.PI * 2);
-        ctx.fill();
-      } else {
-        ctx.fillStyle = '#334155';
-        ctx.beginPath();
-        ctx.arc(px, py, 4, 0, Math.PI * 2);
-        ctx.fill();
-      }
-      ctx.restore();
-    });
-
-    const activeSymbol = symbols[symbolIndex];
-    if (activeSymbol) {
-      const px = constellationCenterX + activeSymbol.i * R;
-      const py = constellationCenterY - activeSymbol.q * R;
-
-      ctx.save();
-      ctx.strokeStyle = 'rgba(245, 158, 11, 0.6)';
+      ctx.strokeStyle = '#334155';
       ctx.lineWidth = 1.5;
-      ctx.setLineDash([4, 4]);
 
       ctx.beginPath();
-      ctx.moveTo(constellationCenterX, constellationCenterY);
-      ctx.lineTo(px, constellationCenterY);
+      ctx.arc(cx, cy, r, 0, Math.PI * 2);
       ctx.stroke();
 
       ctx.beginPath();
-      ctx.moveTo(px, constellationCenterY);
-      ctx.lineTo(px, py);
+      ctx.moveTo(cx - r - 10, cy);
+      ctx.lineTo(cx + r + 10, cy);
       ctx.stroke();
 
-      ctx.setLineDash([]);
-
-      ctx.strokeStyle = '#f59e0b';
-      ctx.lineWidth = 2;
-      ctx.shadowColor = '#f59e0b';
-      ctx.shadowBlur = 10;
       ctx.beginPath();
-      ctx.moveTo(constellationCenterX, constellationCenterY);
-      ctx.lineTo(px, py);
+      ctx.moveTo(cx, cy - r - 10);
+      ctx.lineTo(cx, cy + r + 10);
       ctx.stroke();
-      ctx.restore();
 
-      const amp = iqAmplitude(activeSymbol.i, activeSymbol.q);
-      const phase = iqPhase(activeSymbol.i, activeSymbol.q);
-
-      ctx.fillStyle = '#f59e0b';
+      ctx.fillStyle = '#94a3b8';
       ctx.font = '11px JetBrains Mono, monospace';
-      ctx.fillText(`A=${amp.toFixed(2)}`, constellationCenterX - R, constellationCenterY + R + 20);
-      ctx.fillText(`φ=${(phase * 180 / Math.PI).toFixed(0)}°`, constellationCenterX + 20, constellationCenterY + R + 20);
+      ctx.fillText('I', cx + r + 2, cy + 4);
+      ctx.fillText('Q', cx + 4, cy - r - 4);
+
+      const symbols = getSymbols(modulationFormat);
+
+      if (showIdeal) {
+        symbols.forEach((s, idx) => {
+          const px = cx + s.i * r;
+          const py = cy - s.q * r;
+          const isActive = idx === symbolIndex;
+
+          if (isActive && showActive) {
+            ctx.fillStyle = '#00ff88';
+            ctx.shadowColor = '#00ff88';
+            ctx.shadowBlur = 12;
+            ctx.beginPath();
+            ctx.arc(px, py, 5, 0, Math.PI * 2);
+            ctx.fill();
+          } else {
+            ctx.fillStyle = '#475569';
+            ctx.shadowBlur = 0;
+            ctx.beginPath();
+            ctx.arc(px, py, 3, 0, Math.PI * 2);
+            ctx.fill();
+          }
+        });
+        ctx.shadowBlur = 0;
+      }
+
+      if (showReceived && receivedPoints.length > 0) {
+        receivedPoints.forEach((p, idx) => {
+          const px = cx + p.i * r;
+          const py = cy - p.q * r;
+          const alpha = 0.2 + 0.6 * (idx / receivedPoints.length);
+          ctx.fillStyle = `rgba(255, 107, 107, ${alpha})`;
+          ctx.beginPath();
+          ctx.arc(px, py, 2, 0, Math.PI * 2);
+          ctx.fill();
+        });
+
+        const lastPoint = receivedPoints[receivedPoints.length - 1];
+        if (lastPoint) {
+          const px = cx + lastPoint.i * r;
+          const py = cy - lastPoint.q * r;
+          ctx.fillStyle = '#ff6b6b';
+          ctx.shadowColor = '#ff6b6b';
+          ctx.shadowBlur = 10;
+          ctx.beginPath();
+          ctx.arc(px, py, 4, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.shadowBlur = 0;
+        }
+      }
+
+      ctx.fillStyle = titleColor;
+      ctx.font = 'bold 11px JetBrains Mono, monospace';
+      ctx.fillText(title, cx - r, cy - r - 18);
+
+      if (showActive && showIdeal) {
+        const activeSymbol = symbols[symbolIndex];
+        if (activeSymbol) {
+          const amp = iqAmplitude(activeSymbol.i, activeSymbol.q);
+          const phase = iqPhase(activeSymbol.i, activeSymbol.q);
+          ctx.fillStyle = '#f59e0b';
+          ctx.font = '10px JetBrains Mono, monospace';
+          ctx.fillText(`A=${amp.toFixed(2)}`, cx - r, cy + r + 16);
+          ctx.fillText(`φ=${(phase * 180 / Math.PI).toFixed(0)}°`, cx + 10, cy + r + 16);
+        }
+      }
+
+      ctx.restore();
     }
 
-    ctx.fillStyle = '#94a3b8';
-    ctx.font = 'bold 12px JetBrains Mono, monospace';
-    ctx.fillText(`${modulationFormat} 星座图`, constellationCenterX - 40, constellationCenterY - R - 20);
+    drawConstellation(txConstX, constellationY, constellationR, '发送端', '#00d4ff', true, false, true);
+    drawConstellation(rxConstX, constellationY, constellationR, '接收端', '#ff6b6b', true, true, false);
+
+    const waveformX = 20;
+    const waveformW = W - 40;
+    const waveTop = H * 0.6;
+    const waveH = 28;
+    const waveGap = 10;
 
     function drawWave(
       x: number,
@@ -175,7 +208,8 @@ export default function IQCanvas() {
       color: string,
       label: string,
       getValue: (t: number) => number,
-      maxVal: number = 1
+      maxVal: number = 1,
+      showNoise: boolean = false
     ) {
       ctx.save();
 
@@ -190,6 +224,22 @@ export default function IQCanvas() {
       ctx.setLineDash([4, 4]);
       ctx.stroke();
       ctx.setLineDash([]);
+
+      if (showNoise && noiseEnabled) {
+        ctx.strokeStyle = 'rgba(255, 107, 107, 0.4)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        const cycles = 8;
+        for (let i = 0; i <= width; i++) {
+          const t = (i / width) * cycles * 2 * Math.PI + time * 4;
+          const clean = getValue(t);
+          const noisy = addAwgnNoise(clean / maxVal, 0, snr, true).i * maxVal;
+          const py = y - (noisy / maxVal) * height * 0.8;
+          if (i === 0) ctx.moveTo(x + i, py);
+          else ctx.lineTo(x + i, py);
+        }
+        ctx.stroke();
+      }
 
       ctx.strokeStyle = color;
       ctx.lineWidth = 2;
@@ -209,8 +259,8 @@ export default function IQCanvas() {
 
       ctx.shadowBlur = 0;
       ctx.fillStyle = '#94a3b8';
-      ctx.font = '11px JetBrains Mono, monospace';
-      ctx.fillText(label, x + 5, y - height - 5);
+      ctx.font = '10px JetBrains Mono, monospace';
+      ctx.fillText(label, x + 5, y - height - 3);
 
       ctx.restore();
     }
@@ -218,22 +268,28 @@ export default function IQCanvas() {
     const I = iComponent;
     const Q = qComponent;
 
-    drawWave(waveformX, iWaveY, waveformW, waveH, '#00d4ff', 'I 路 (同相)', (t) => I * Math.cos(t), 1);
-    drawWave(waveformX, qWaveY, waveformW, waveH, '#a855f7', 'Q 路 (正交)', (t) => Q * Math.sin(t), 1);
-    drawWave(waveformX, outWaveY, waveformW, waveH, '#00ff88', '输出信号', (t) => iqModulation(I, Q, t), Math.sqrt(2));
+    const waveY1 = waveTop;
+    const waveY2 = waveTop + (waveH * 2 + waveGap);
+    const waveY3 = waveTop + (waveH * 2 + waveGap) * 2;
+
+    drawWave(waveformX, waveY1, waveformW, waveH, '#00d4ff', 'I 路 (同相)', (t) => I * Math.cos(t), 1, true);
+    drawWave(waveformX, waveY2, waveformW, waveH, '#a855f7', 'Q 路 (正交)', (t) => Q * Math.sin(t), 1, true);
+    drawWave(waveformX, waveY3, waveformW, waveH, '#00ff88', '输出信号', (t) => iqModulation(I, Q, t), Math.sqrt(2), true);
 
     const totalAmp = iqAmplitude(I, Q);
     const totalPhase = iqPhase(I, Q);
 
     ctx.fillStyle = '#94a3b8';
-    ctx.font = '11px JetBrains Mono, monospace';
-    ctx.fillText(`幅度: ${totalAmp.toFixed(3)}`, waveformX, outWaveY + waveH + 20);
-    ctx.fillText(`相位: ${(totalPhase * 180 / Math.PI).toFixed(1)}°`, waveformX + 100, outWaveY + waveH + 20);
+    ctx.font = '10px JetBrains Mono, monospace';
+    ctx.fillText(`幅度: ${totalAmp.toFixed(3)}`, waveformX, waveY3 + waveH + 16);
+    ctx.fillText(`相位: ${(totalPhase * 180 / Math.PI).toFixed(1)}°`, waveformX + 100, waveY3 + waveH + 16);
+    ctx.fillText(`SNR: ${snr.toFixed(1)} dB`, waveformX + 220, waveY3 + waveH + 16);
+    ctx.fillText(`采样点: ${receivedPoints.length}`, waveformX + 340, waveY3 + waveH + 16);
 
     return () => {
       ctx.setTransform(1, 0, 0, 1, 0, 0);
     };
-  }, [modulationFormat, iComponent, qComponent, time, symbolIndex]);
+  }, [modulationFormat, iComponent, qComponent, time, symbolIndex, snr, noiseEnabled, receivedPoints]);
 
   return (
     <canvas
