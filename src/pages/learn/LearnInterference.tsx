@@ -1,6 +1,7 @@
 import { Waves, CircuitBoard, Flame } from 'lucide-react';
 import LearnLayout from '@/components/common/LearnLayout';
 import MathRenderer from '@/components/common/MathRenderer';
+import TermNote from '@/components/common/TermNote';
 
 export default function LearnInterference() {
   return (
@@ -41,7 +42,7 @@ export default function LearnInterference() {
         </h2>
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
-            当两束相干光（频率相同、振动方向相同、相位差恒定）相遇时，
+            当两束<TermNote term="相干光" />（频率相同、振动方向相同、相位差恒定）相遇时，
             叠加后的光强在空间中形成稳定的强弱分布，这就是
             <span className="text-laser-green font-semibold">干涉现象</span>。
           </p>
@@ -89,7 +90,7 @@ export default function LearnInterference() {
         </h2>
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
-            <span className="text-laser-purple font-semibold">马赫-曾德干涉仪 (MZI)</span>
+            <span className="text-laser-purple font-semibold"><TermNote term="马赫-曾德干涉仪" /> (MZI)</span>
             是一种典型的分振幅干涉装置，它通过分束器将一束光分成两束，
             让它们经过不同的路径后再重新汇合，产生干涉。
           </p>
@@ -124,8 +125,8 @@ export default function LearnInterference() {
             <MathRenderer>{'$$P_{out} = P_{in} \\cdot \\cos^2\\left(\\frac{\\Delta\\phi}{2}\\right)$$'}</MathRenderer>
           </div>
           <p>
-            当两臂相位差 Δφ = 0 时，输出光强最大（相长干涉）；
-            当 Δφ = π 时，输出光强为零（相消干涉）。
+            当两臂相位差 Δφ = 0 时，输出光强最大（<TermNote term="相长干涉" />）；
+            当 Δφ = π 时，输出光强为零（<TermNote term="相消干涉" />）。
           </p>
         </div>
       </section>

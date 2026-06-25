@@ -2,7 +2,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import {
   Waves, BookOpen, FlaskConical, Lightbulb, Flame, CircuitBoard,
-  BarChart3, Compass, Radio, BookText, ChevronDown, Menu, X, Home,
+  BarChart3, Compass, Radio, BookText, ChevronDown, Menu, X, Home, Zap,
 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -13,7 +13,7 @@ const learnItems = [
   { path: '/learn/mz-modulator', label: 'MZ 调制器', icon: CircuitBoard },
   { path: '/learn/iq-modulator', label: 'IQ 调制器', icon: BarChart3 },
   { path: '/learn/polarization', label: '偏振复用', icon: Compass },
-  { path: '/learn/dual-polarization', label: '双偏振 IQ', icon: BarChart3 },
+  { path: '/learn/dual-polarization', label: '高级调制', icon: Zap },
   { path: '/learn/receiver', label: '光接收器', icon: Radio },
   { path: '/learn/glossary', label: '术语表', icon: BookText },
 ];

@@ -1,6 +1,7 @@
-import { Compass, BarChart3 } from 'lucide-react';
+import { Compass, Zap, BarChart3 } from 'lucide-react';
 import LearnLayout from '@/components/common/LearnLayout';
 import MathRenderer from '@/components/common/MathRenderer';
+import TermNote from '@/components/common/TermNote';
 
 export default function LearnPolarization() {
   return (
@@ -11,7 +12,7 @@ export default function LearnPolarization() {
       totalChapters={9}
       playgroundPath="/playground/polarization"
       prevChapter={{ path: '/learn/iq-modulator', title: 'IQ 调制器', icon: <BarChart3 className="w-4 h-4" /> }}
-      nextChapter={{ path: '/learn/dual-polarization', title: '双偏振 IQ', icon: <BarChart3 className="w-4 h-4" /> }}
+      nextChapter={{ path: '/learn/dual-polarization', title: '高级调制', icon: <Zap className="w-4 h-4" /> }}
     >
       <section className="bg-lab-surface/30 border border-lab-border/50 rounded-2xl p-6">
         <h2 className="text-xl font-bold font-display text-lab-text mb-4 flex items-center gap-2">
@@ -162,14 +163,14 @@ export default function LearnPolarization() {
             </div>
           </div>
           <p>
-            在接收端，使用偏振分束器 (PBS) 将两个偏振态分开，分别进行检测和处理。
+            在接收端，使用 <TermNote term="偏振分束器" /> (PBS) 将两个偏振态分开，分别进行检测和处理。
           </p>
         </div>
       </section>
 
       <section className="bg-lab-surface/30 border border-lab-border/50 rounded-2xl p-6">
         <h2 className="text-xl font-bold font-display text-lab-text mb-4">
-          实际挑战：偏振模色散与偏振相关损耗
+          实际挑战：<TermNote term="偏振模色散 (PMD)" />与<TermNote term="偏振相关损耗" />
         </h2>
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
@@ -201,7 +202,7 @@ export default function LearnPolarization() {
 
       <section className="bg-lab-surface/30 border border-lab-border/50 rounded-2xl p-6">
         <h2 className="text-xl font-bold font-display text-lab-text mb-4">
-          总结：从单偏振到双偏振
+          总结：从偏振复用走向高级调制
         </h2>
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
@@ -246,7 +247,7 @@ export default function LearnPolarization() {
           </div>
           <p>
             下一章，我们将这些技术整合起来，认识现代高速光通信的核心器件——
-            <span className="text-laser-cyan font-semibold">双偏振 IQ 调制器 (DP-IQ Modulator)</span>。
+            <span className="text-laser-cyan font-semibold">高级调制</span>。
           </p>
         </div>
       </section>

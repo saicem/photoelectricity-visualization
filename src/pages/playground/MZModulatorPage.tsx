@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { CircuitBoard, Info, BookOpen } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useMZStore } from '@/stores/useMZStore';
-import ControlPanel, { SliderControl, InfoItem } from '@/components/common/ControlPanel';
+import ControlPanel, { SliderControl, SelectControl, InfoItem } from '@/components/common/ControlPanel';
 import MZCanvas from '@/components/mz-modulator/MZCanvas';
 import { mzOutputPower, mzTransferFunction } from '@/utils/modulationMath';
 import MathRenderer from '@/components/common/MathRenderer';
@@ -11,23 +11,51 @@ export default function MZModulatorPage() {
   const navigate = useNavigate();
   const {
     modulationDepth,
+    modulationDepth2,
     phaseShift,
     inputPower,
     frequency,
+    mode,
     isPlaying,
     setModulationDepth,
+    setModulationDepth2,
     setPhaseShift,
     setInputPower,
     setFrequency,
+    setMode,
     setIsPlaying,
     reset,
   } = useMZStore();
 
-  const currentPhase = mzTransferFunction(modulationDepth, 1) + phaseShift;
-  const outputPower = mzOutputPower(inputPower, currentPhase);
+  let upperPhase: number;
+  let lowerPhase: number;
+
+  switch (mode) {
+    case 'single-arm':
+      upperPhase = phaseShift;
+      lowerPhase = mzTransferFunction(modulationDepth, 1) + phaseShift;
+      break;
+    case 'dual-arm':
+      upperPhase = mzTransferFunction(modulationDepth2, 1) + phaseShift;
+      lowerPhase = mzTransferFunction(modulationDepth, 1) + phaseShift;
+      break;
+    case 'push-pull':
+      upperPhase = -mzTransferFunction(modulationDepth, 1) + phaseShift;
+      lowerPhase = mzTransferFunction(modulationDepth, 1) + phaseShift;
+      break;
+  }
+
+  const totalPhaseDiff = lowerPhase - upperPhase;
+  const outputPower = mzOutputPower(inputPower, totalPhaseDiff);
   const extinctionRatio = inputPower > 0 ? 10 * Math.log10(inputPower / Math.max(outputPower, 0.001)) : 0;
 
   const formatPiRad = (v: number) => (v / Math.PI).toFixed(2) + ' π rad';
+
+  const modeLabels: Record<string, string> = {
+    'single-arm': '单臂调制',
+    'dual-arm': '双臂调制',
+    'push-pull': '推挽调制',
+  };
 
   return (
     <motion.div
@@ -43,7 +71,11 @@ export default function MZModulatorPage() {
           </div>
           <div>
             <h1 className="text-2xl font-bold font-display text-lab-text">MZ 调制器</h1>
-            <p className="text-sm text-lab-muted">马赫-曾德电光调制器原理演示</p>
+            <p className="text-sm text-lab-muted">
+              {mode === 'single-arm' && '仅调制下臂，上臂为参考臂'}
+              {mode === 'dual-arm' && '两臂独立调制，分别施加不同驱动信号'}
+              {mode === 'push-pull' && '两臂施加反相信号 (V, -V)，相位差加倍'}
+            </p>
           </div>
         </div>
         <button
@@ -67,6 +99,16 @@ export default function MZModulatorPage() {
             onPlayPause={() => setIsPlaying(!isPlaying)}
             onReset={reset}
           >
+            <SelectControl
+              label="调制模式"
+              value={mode}
+              options={[
+                { value: 'single-arm', label: '单臂' },
+                { value: 'dual-arm', label: '双臂' },
+                { value: 'push-pull', label: '推挽' },
+              ]}
+              onChange={setMode}
+            />
             <SliderControl
               label="调制深度"
               value={modulationDepth}
@@ -77,6 +119,18 @@ export default function MZModulatorPage() {
               color="#f59e0b"
               valueFormatter={formatPiRad}
             />
+            {mode === 'dual-arm' && (
+              <SliderControl
+                label="上臂调制深度"
+                value={modulationDepth2}
+                min={0}
+                max={Math.PI}
+                step={0.01}
+                onChange={setModulationDepth2}
+                color="#a855f7"
+                valueFormatter={formatPiRad}
+              />
+            )}
             <SliderControl
               label="直流偏置"
               value={phaseShift}
@@ -115,10 +169,11 @@ export default function MZModulatorPage() {
               <h3 className="font-display font-semibold text-lab-text">输出参数</h3>
             </div>
             <div className="space-y-1">
+              <InfoItem label="调制模式" value={modeLabels[mode]} color="#00d4ff" />
               <InfoItem label="输出光功率" value={outputPower.toFixed(3) + ' mW'} color="#00ff88" />
-              <InfoItem label="相对相移" value={formatPiRad(currentPhase)} color="#f59e0b" />
+              <InfoItem label="两臂相位差" value={formatPiRad(totalPhaseDiff)} color="#f59e0b" />
+              <InfoItem label="有效 V_π" value={mode === 'single-arm' ? 'V_π' : mode === 'push-pull' ? 'V_π/2' : 'V_π (单臂)'} color="#a855f7" />
               <InfoItem label="消光比" value={extinctionRatio.toFixed(1) + ' dB'} color="#ff3366" />
-              <InfoItem label="调制效率" value={((outputPower / Math.max(inputPower, 0.001)) * 100).toFixed(1) + '%'} color="#00d4ff" />
             </div>
           </div>
         </div>
@@ -141,79 +196,86 @@ export default function MZModulatorPage() {
             <p className="mb-2">
               <span className="text-laser-cyan font-semibold">强度调制：</span>
               输出光强随相位差呈余弦平方关系，这就是 MZ 调制器的转移函数。
-              通过施加电压控制相位，实现对光强的调制。
+              模式切换改变了两臂的驱动方式，但基本原理不变。
             </p>
             <div className="bg-lab-bg/50 px-4 py-3 rounded-lg">
-              <MathRenderer>{'$$P_{out} = P_{in} \\cdot \\cos^2\\left(\\frac{\\pi V}{2V_\\pi}\\right)$$'}</MathRenderer>
+              <MathRenderer>{'$$P_{out} = P_{in} \\cdot \\cos^2\\left(\\frac{\\Delta\\phi}{2}\\right)$$'}</MathRenderer>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="bg-lab-surface/30 border border-lab-border/50 rounded-2xl p-6">
-        <h3 className="font-display font-semibold text-lab-text mb-3">常见适应波段</h3>
-        <div className="grid md:grid-cols-2 gap-6 text-sm text-lab-muted leading-relaxed">
-          <div>
-            <p className="mb-2">
-              <span className="text-laser-green font-semibold">光通信波段分布：</span>
-              MZM 的工作波段取决于电光材料（如 LiNbO₃、硅、InP 等）的透明窗口。
-              常见光纤通信波段如下：
-            </p>
-            <div className="bg-lab-bg/50 px-4 py-3 rounded-lg space-y-1">
-              <p><span className="text-laser-cyan font-semibold">O 波段</span> (1260-1360 nm) ─ 低色散，适用于数据中心短距离传输</p>
-              <p><span className="text-laser-green font-semibold">C 波段</span> (1530-1565 nm) ─ 最低衰减，长距离骨干网和 DWDM 系统</p>
-              <p><span className="text-laser-red font-semibold">L 波段</span> (1565-1625 nm) ─ 扩展波段，与 C 波段配合实现超大容量传输</p>
-              <p><span className="text-laser-purple font-semibold">U 波段</span> (1625-1675 nm) ─ 特殊应用波段</p>
-            </div>
+      {mode === 'single-arm' && (
+        <div className="bg-lab-surface/30 border border-laser-green/30 rounded-2xl p-6">
+          <h3 className="font-display font-semibold text-lab-text mb-2">单臂调制</h3>
+          <p className="text-sm text-lab-muted leading-relaxed">
+            仅在其中一臂施加调制电压，另一臂作为纯光程参考臂。
+            相位差 Δφ = φ₁ - φ₂ 完全由调制臂决定。等效半波电压等于 V_π。
+            结构最简单，但调制效率最低，且会产生啁啾。
+          </p>
+          <div className="bg-lab-bg/50 px-4 py-2 rounded-lg mt-2">
+            <MathRenderer>{'$$\\Delta\\phi = \\frac{\\pi V}{V_\\pi}$$'}</MathRenderer>
           </div>
-          <div>
-            <p className="mb-2">
-              <span className="text-laser-cyan font-semibold">材料适配性：</span>
-              不同材料体系的 MZM 适用的典型波段不同：
+        </div>
+      )}
+      {mode === 'dual-arm' && (
+        <div className="bg-lab-surface/30 border border-laser-purple/30 rounded-2xl p-6">
+          <h3 className="font-display font-semibold text-lab-text mb-2">双臂调制</h3>
+          <p className="text-sm text-lab-muted leading-relaxed">
+            两臂分别独立施加调制电压 V₁ 和 V₂。相位差 Δφ = φ₁ - φ₂ 由两臂信号共同决定。
+            双臂调制提供了最大的灵活性——可以独立控制每臂的相位，为 IQ 调制奠定基础。
+          </p>
+          <div className="bg-lab-bg/50 px-4 py-2 rounded-lg mt-2">
+            <MathRenderer>{'$$\\Delta\\phi = \\frac{\\pi \\cdot (V_1 - V_2)}{V_\\pi}$$'}</MathRenderer>
+          </div>
+        </div>
+      )}
+      {mode === 'push-pull' && (
+        <div className="bg-lab-surface/30 border border-laser-orange/30 rounded-2xl p-6">
+          <h3 className="font-display font-semibold text-lab-text mb-2">推挽调制</h3>
+          <p className="text-sm text-lab-muted leading-relaxed">
+            双臂调制的特例：V₂ = -V₁（即反相驱动）。此时 Δφ = 2·π·V/V_π，
+            等效半波电压降至 V_π/2，调制效率翻倍。推挽结构还能有效抑制啁啾，
+            是高速光通信系统中最常用的 MZM 驱动方案。
+          </p>
+          <div className="bg-lab-bg/50 px-4 py-2 rounded-lg mt-2">
+            <MathRenderer>{'$$\\Delta\\phi = \\frac{2\\pi V}{V_\\pi}$$'}</MathRenderer>
+          </div>
+        </div>
+      )}
+
+      <div className="bg-lab-surface/30 border border-lab-border/50 rounded-2xl p-6">
+        <h3 className="font-display font-semibold text-lab-text mb-3">推挽结构与偏置控制</h3>
+        <div className="space-y-3 text-sm text-lab-muted leading-relaxed">
+          <p>
+            <span className="text-laser-green font-semibold">推挽结构 (Push-Pull)：</span>
+            传统单臂调制仅在其中一臂施加电压，而推挽结构在两臂上施加极性相反的电压 (V 和 -V)。
+            两臂相位变化量分别为 +Δφ/2 和 -Δφ/2，总相位差 Δφ 加倍，从而使所需驱动电压减半。
+          </p>
+          <div className="bg-lab-bg/50 px-4 py-3 rounded-lg">
+            <MathRenderer>{'$$\\Delta\\phi = \\frac{2\\pi}{\\lambda} \\cdot [n(V) \\cdot L - n(-V) \\cdot L] = 2 \\cdot \\frac{2\\pi}{\\lambda} \\cdot \\Delta n \\cdot L$$'}</MathRenderer>
+          </div>
+          <p>
+            推挽结构的关键优势：<span className="text-laser-cyan">降低 V<sub>π</sub></span>（半波电压减半）、
+            <span className="text-laser-cyan">消除残余啁啾</span>（两臂相位变化对称）、
+            <span className="text-laser-cyan">提高调制带宽</span>（差分驱动降低 RC 常数）。
+          </p>
+
+          <div className="pt-2 border-t border-lab-border/30">
+            <p className="mb-1">
+              <span className="text-laser-purple font-semibold">偏置控制方法：</span>
             </p>
-            <div className="bg-lab-bg/50 px-4 py-3 rounded-lg space-y-1">
-              <p><span className="text-laser-cyan font-semibold">LiNbO₃ (铌酸锂)</span> ─ 主要工作在 C+L 波段 (1530-1625 nm)</p>
-              <p><span className="text-laser-green font-semibold">Silicon (硅基)</span> ─ O 波段 (1310 nm) 和 C 波段 (1550 nm)</p>
-              <p><span className="text-laser-purple font-semibold">InP (磷化铟)</span> ─ 可覆盖 O 到 L 波段，通常集成激光器</p>
-              <p><span className="text-laser-red font-semibold">SiN (氮化硅)</span> ─ 可见光到近红外波段，多用于传感领域</p>
-            </div>
-            <p className="mt-2 text-xs">选择 MZM 时需要确保其工作波段与系统光源和光纤传输窗口匹配。</p>
+            <ul className="space-y-1 list-disc list-inside">
+              <li><span className="text-lab-text">热光调相 (Thermo-Optic)：</span> 通过微型加热器改变波导温度，从而改变折射率。功耗约数 mW，响应时间约 μs 级</li>
+              <li><span className="text-lab-text">电光调相 (Electro-Optic)：</span> 利用 Pockels 效应或载流子色散效应实现快速相位调制，响应时间可达 ns 甚至 ps 级</li>
+              <li><span className="text-lab-text">闭环反馈控制：</span> 通过监测输出光功率或导频信号，利用 PID 算法动态调整偏置点，补偿温度和老化漂移</li>
+              <li><span className="text-lab-text">差分驱动 (Differential Drive)：</span> 使用高速 DAC 产生互补的差分信号，提高信号质量并抑制共模噪声</li>
+            </ul>
           </div>
         </div>
       </div>
 
       <div className="grid md:grid-cols-2 gap-6">
-        <div className="bg-lab-surface/30 border border-lab-border/50 rounded-2xl p-6">
-          <h3 className="font-display font-semibold text-lab-text mb-3">推挽结构与偏置控制</h3>
-          <div className="space-y-3 text-sm text-lab-muted leading-relaxed">
-            <p>
-              <span className="text-laser-green font-semibold">推挽结构 (Push-Pull)：</span>
-              传统单臂调制仅在其中一臂施加电压，而推挽结构在两臂上施加极性相反的电压 (V 和 -V)。
-              两臂相位变化量分别为 +Δφ/2 和 -Δφ/2，总相位差 Δφ 加倍，从而使所需驱动电压减半。
-            </p>
-            <div className="bg-lab-bg/50 px-4 py-3 rounded-lg">
-              <MathRenderer>{'$$\\Delta\\phi = \\frac{2\\pi}{\\lambda} \\cdot [n(V) \\cdot L - n(-V) \\cdot L] = 2 \\cdot \\frac{2\\pi}{\\lambda} \\cdot \\Delta n \\cdot L$$'}</MathRenderer>
-            </div>
-            <p>
-              推挽结构的关键优势：<span className="text-laser-cyan">降低 V<sub>π</sub></span>（半波电压减半）、
-              <span className="text-laser-cyan">消除残余啁啾</span>（两臂相位变化对称）、
-              <span className="text-laser-cyan">提高调制带宽</span>（差分驱动降低 RC 常数）。
-            </p>
-
-            <div className="pt-2 border-t border-lab-border/30">
-              <p className="mb-1">
-                <span className="text-laser-purple font-semibold">偏置控制方法：</span>
-              </p>
-              <ul className="space-y-1 list-disc list-inside">
-                <li><span className="text-lab-text">热光调相 (Thermo-Optic)：</span> 通过微型加热器改变波导温度，从而改变折射率。功耗约数 mW，响应时间约 μs 级</li>
-                <li><span className="text-lab-text">电光调相 (Electro-Optic)：</span> 利用 Pockels 效应或载流子色散效应实现快速相位调制，响应时间可达 ns 甚至 ps 级</li>
-                <li><span className="text-lab-text">闭环反馈控制：</span> 通过监测输出光功率或导频信号，利用 PID 算法动态调整偏置点，补偿温度和老化漂移</li>
-                <li><span className="text-lab-text">差分驱动 (Differential Drive)：</span> 使用高速 DAC 产生互补的差分信号，提高信号质量并抑制共模噪声</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
         <div className="bg-lab-surface/30 border border-lab-border/50 rounded-2xl p-6">
           <h3 className="font-display font-semibold text-lab-text mb-3">常见问题与优化方法</h3>
           <div className="space-y-3 text-sm text-lab-muted leading-relaxed">
@@ -235,15 +297,54 @@ export default function MZModulatorPage() {
               设计中需在损耗和带宽之间权衡：长波导可降低 V<sub>π</sub> 但增加损耗和寄生电容。
               行波电极 (Travelling-Wave Electrode) 设计可突破 RC 限制，实现 40 GHz 以上调制带宽。
             </p>
-            <p>
-              <span className="text-laser-purple font-semibold">其他保证准确性的方法：</span>
-            </p>
-            <ul className="space-y-1 list-disc list-inside">
-              <li><span className="text-lab-text">预失真补偿 (Pre-distortion)：</span> 利用 DSP 对驱动信号进行非线性预补偿，抵消 MZM 转移函数的非线性</li>
-              <li><span className="text-lab-text">温度控制：</span> 使用 TEC (热电冷却器) 保持芯片温度恒定，减少热致漂移</li>
-              <li><span className="text-lab-text">导频监控：</span> 在驱动信号中叠加低频导频信号，实时提取偏置状态信息</li>
-              <li><span className="text-lab-text">背向光监测 (BPD)：</span> 在 MZM 输出端耦合少量光至光电探测器，形成反馈环路</li>
-            </ul>
+          </div>
+        </div>
+
+        <div className="bg-lab-surface/30 border border-lab-border/50 rounded-2xl p-6">
+          <h3 className="font-display font-semibold text-lab-text mb-3">三种调制模式对比</h3>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="border-b border-lab-border">
+                  <th className="text-left py-2 px-2 text-lab-text font-semibold">特性</th>
+                  <th className="text-left py-2 px-2 text-lab-text font-semibold">单臂</th>
+                  <th className="text-left py-2 px-2 text-lab-text font-semibold">双臂</th>
+                  <th className="text-left py-2 px-2 text-lab-text font-semibold">推挽</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="border-b border-lab-border/50">
+                  <td className="py-2 px-2 text-lab-muted">等效 V_π</td>
+                  <td className="py-2 px-2 text-laser-cyan">V_π</td>
+                  <td className="py-2 px-2 text-laser-purple">V_π</td>
+                  <td className="py-2 px-2 text-laser-green">V_π/2</td>
+                </tr>
+                <tr className="border-b border-lab-border/50">
+                  <td className="py-2 px-2 text-lab-muted">啁啾</td>
+                  <td className="py-2 px-2 text-laser-red">有</td>
+                  <td className="py-2 px-2 text-laser-orange">可控</td>
+                  <td className="py-2 px-2 text-laser-green">无</td>
+                </tr>
+                <tr className="border-b border-lab-border/50">
+                  <td className="py-2 px-2 text-lab-muted">驱动复杂度</td>
+                  <td className="py-2 px-2 text-laser-green">低</td>
+                  <td className="py-2 px-2 text-laser-red">中</td>
+                  <td className="py-2 px-2 text-laser-orange">中</td>
+                </tr>
+                <tr className="border-b border-lab-border/50">
+                  <td className="py-2 px-2 text-lab-muted">灵活性</td>
+                  <td className="py-2 px-2 text-laser-red">低</td>
+                  <td className="py-2 px-2 text-laser-green">高</td>
+                  <td className="py-2 px-2 text-laser-orange">中</td>
+                </tr>
+                <tr>
+                  <td className="py-2 px-2 text-lab-muted">典型应用</td>
+                  <td className="py-2 px-2">低速 / 传感</td>
+                  <td className="py-2 px-2">IQ 调制器</td>
+                  <td className="py-2 px-2 text-laser-green">高速通信</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>

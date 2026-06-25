@@ -1,6 +1,7 @@
-import { Radio, BarChart3, BookText } from 'lucide-react';
+import { Radio, Zap, BookText } from 'lucide-react';
 import LearnLayout from '@/components/common/LearnLayout';
 import MathRenderer from '@/components/common/MathRenderer';
+import TermNote from '@/components/common/TermNote';
 
 export default function LearnReceiver() {
   return (
@@ -10,7 +11,7 @@ export default function LearnReceiver() {
       currentIndex={7}
       totalChapters={9}
       playgroundPath="/playground/receiver"
-      prevChapter={{ path: '/learn/dual-polarization', title: '双偏振 IQ', icon: <BarChart3 className="w-4 h-4" /> }}
+      prevChapter={{ path: '/learn/dual-polarization', title: '高级调制', icon: <Zap className="w-4 h-4" /> }}
       nextChapter={{ path: '/learn/glossary', title: '术语表', icon: <BookText className="w-4 h-4" /> }}
     >
       <section className="bg-lab-surface/30 border border-lab-border/50 rounded-2xl p-6">
@@ -21,7 +22,7 @@ export default function LearnReceiver() {
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             光接收器的核心功能是将光信号转换为电信号，这个过程基于
-            <span className="text-laser-green font-semibold">光电效应</span>。
+            <span className="text-laser-green font-semibold"><TermNote term="光电效应" /></span>。
             当光子入射到半导体材料上时，如果光子能量大于材料的禁带宽度，
             就会激发产生电子-空穴对，在外加电场的作用下形成光电流。
           </p>
@@ -33,20 +34,20 @@ export default function LearnReceiver() {
           </div>
           <div className="grid md:grid-cols-2 gap-6 mt-4">
             <div>
-              <h3 className="font-semibold text-lab-text mb-2">PIN 光电二极管：</h3>
+              <h3 className="font-semibold text-lab-text mb-2"><TermNote term="PIN 光电二极管" />：</h3>
               <p className="text-sm">
                 PIN 管由 P 型层、本征层 (I) 和 N 型层组成。本征层较厚，
                 大部分光在其中被吸收，产生的载流子在电场作用下漂移到两端电极，形成光电流。
               </p>
               <p className="text-sm mt-2">
-                响应度 R 是衡量 PD 转换效率的指标：
+                <TermNote term="响应度" /> R 是衡量 PD 转换效率的指标：
               </p>
               <div className="bg-lab-bg/50 px-3 py-2 rounded-lg text-xs">
                 <MathRenderer>{'$$R = \\frac{I_{out}}{P_{in}} \\quad (\\text{单位：A/W})$$'}</MathRenderer>
               </div>
             </div>
             <div>
-              <h3 className="font-semibold text-lab-text mb-2">APD 雪崩光电二极管：</h3>
+              <h3 className="font-semibold text-lab-text mb-2"><TermNote term="APD 雪崩光电二极管" />：</h3>
               <p className="text-sm">
                 APD 利用雪崩倍增效应，使光生载流子在强电场下获得足够高的能量，
                 通过碰撞电离产生更多的载流子，从而实现内部增益。
@@ -61,7 +62,7 @@ export default function LearnReceiver() {
 
       <section className="bg-lab-surface/30 border border-lab-border/50 rounded-2xl p-6">
         <h2 className="text-xl font-bold font-display text-lab-text mb-4">
-          直接检测 vs 相干检测
+          <TermNote term="直接检测" /> vs <TermNote term="相干接收" />
         </h2>
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <div className="grid md:grid-cols-2 gap-4">
@@ -78,7 +79,7 @@ export default function LearnReceiver() {
             <div className="border border-laser-purple/30 bg-laser-purple/5 p-4 rounded-xl">
               <h4 className="font-semibold text-laser-purple mb-2">相干检测 (Coherent)</h4>
               <p className="text-sm">
-                相干检测使用本振光与信号光混频，可以同时检测光的幅度、相位和偏振态。
+                相干检测使用 <TermNote term="本振光" />与信号光混频，可以同时检测光的幅度、相位和偏振态。
                 灵敏度高、频谱效率高，是长距离高速光通信的主流方案。
               </p>
               <div className="mt-3 text-xs text-lab-muted">
@@ -87,7 +88,7 @@ export default function LearnReceiver() {
             </div>
           </div>
           <p className="mt-4">
-            对于双偏振 IQ 调制的信号，必须使用相干检测才能完整恢复 X 和 Y 两个偏振态的 I 和 Q 分量。
+            对于采用偏振复用 (PDM) 的调制信号，必须使用相干检测才能完整恢复 X 和 Y 两个偏振态的 I 和 Q 分量。
           </p>
         </div>
       </section>
@@ -172,7 +173,7 @@ export default function LearnReceiver() {
                 <span className="font-bold">3</span>
               </div>
               <div>
-                <h4 className="font-semibold text-lab-text">平衡探测器</h4>
+                <h4 className="font-semibold text-lab-text"><TermNote term="平衡探测器" /></h4>
                 <p className="text-sm">
                   由两个特性相同的 PD 组成，输出为两路光电流的差值。
                   可以抑制本振光的强度噪声，提高信噪比。
@@ -197,7 +198,7 @@ export default function LearnReceiver() {
 
       <section className="bg-lab-surface/30 border border-lab-border/50 rounded-2xl p-6">
         <h2 className="text-xl font-bold font-display text-lab-text mb-4">
-          数字信号处理 (DSP)
+          <TermNote term="数字信号处理 (DSP)" />
         </h2>
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
@@ -244,7 +245,7 @@ export default function LearnReceiver() {
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <div className="grid md:grid-cols-3 gap-4">
             <div className="bg-lab-bg/50 p-4 rounded-xl">
-              <h4 className="font-semibold text-laser-cyan mb-2">接收灵敏度</h4>
+              <h4 className="font-semibold text-laser-cyan mb-2"><TermNote term="接收灵敏度" /></h4>
               <p className="text-sm">
                 在满足一定误码率（如 BER = 10⁻¹²）的前提下，
                 接收机所需的最小输入光功率。灵敏度越高（数值越小），系统传输距离越远。
@@ -326,7 +327,7 @@ export default function LearnReceiver() {
           <p>
             从激光器产生光载波，到调制器加载数据信号，经过光纤传输，
             最后由接收机检测并恢复数据——这就是一个完整的光通信链路。
-            其中，<strong>双偏振 IQ 调制器 + 相干接收</strong> 的组合，
+            其中，<strong>DP-IQ 调制器 + 相干接收</strong> 的组合，
             是当前高速光通信系统中频谱效率最高、应用最广泛的方案。
           </p>
           <p className="text-center mt-6">

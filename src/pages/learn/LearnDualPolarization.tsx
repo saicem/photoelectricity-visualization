@@ -1,311 +1,276 @@
-import { BarChart3, Compass, FlaskConical, Radio } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Zap, CircuitBoard, Compass, Radio } from 'lucide-react';
 import LearnLayout from '@/components/common/LearnLayout';
 import MathRenderer from '@/components/common/MathRenderer';
+import TermNote from '@/components/common/TermNote';
 
 export default function LearnDualPolarization() {
   return (
     <LearnLayout
-      title="双偏振 IQ 调制器"
-      subtitle="DP-IQM：现代高速相干光通信的核心引擎，集成偏振复用与 IQ 调制"
+      title="高级调制"
+      subtitle="从 DP-IQ 到 Nyquist 整形、OFDM 与概率星座整形，逼近香农极限的调制技术"
       currentIndex={6}
       totalChapters={9}
-      playgroundPath="/playground/dual-polarization"
       prevChapter={{ path: '/learn/polarization', title: '偏振复用', icon: <Compass className="w-4 h-4" /> }}
       nextChapter={{ path: '/learn/receiver', title: '光接收器', icon: <Radio className="w-4 h-4" /> }}
     >
       <section className="bg-lab-surface/30 border border-lab-border/50 rounded-2xl p-6">
         <h2 className="text-xl font-bold font-display text-lab-text mb-4 flex items-center gap-2">
-          <BarChart3 className="w-5 h-5 text-laser-cyan" />
-          什么是双偏振 IQ 调制器？
+          <Zap className="w-5 h-5 text-laser-cyan" />
+          从基础到高级：调制技术的演进
         </h2>
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
-            <span className="text-laser-cyan font-semibold">双偏振 IQ 调制器 (Dual-Polarization IQ Modulator, DP-IQM)</span>
-            是将两个独立的 IQ 调制器集成在一起，并结合偏振合束器，
-            实现对 X 和 Y 两个正交偏振态独立调制的器件。
-            它是现代 100G+ 相干光通信系统的核心器件。
+            前面几章我们学习了光波基础、MZ 调制器、IQ 正交调制和偏振复用。
+            <span className="text-laser-cyan font-semibold">DP-IQ 调制器 (Dual-Polarization IQ Modulator)</span>
+            将这些技术集成在一起，实现了单波长 200G/400G 的传输速率。
           </p>
           <p>
-            DP-IQM 结合了我们前面学到的所有技术：
+            然而，随着数据流量爆炸式增长，光通信系统需要不断逼近
+            <TermNote term="香农极限" />。
+            本章将介绍几种关键的<strong>高级调制技术</strong>：
           </p>
-          <ul className="space-y-2 ml-4">
-            <li className="flex items-start gap-2">
-              <span className="text-laser-green">✓</span>
-              <span>MZ 调制器 —— 电光相位/强度调制的基础</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="text-laser-purple">✓</span>
-              <span>IQ 正交调制 —— 同时控制幅度和相位</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="text-laser-red">✓</span>
-              <span>偏振复用 —— 两个偏振态独立传输，容量翻倍</span>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <section className="bg-lab-surface/30 border border-lab-border/50 rounded-2xl p-6">
-        <h2 className="text-xl font-bold font-display text-lab-text mb-4">
-          DP-IQM 的结构
-        </h2>
-        <div className="space-y-4 text-lab-muted leading-relaxed">
-          <p>
-            一个典型的 DP-IQM 由以下主要部分组成：
-          </p>
-          <div className="space-y-3">
-            <div className="flex items-start gap-3">
-              <div className="w-8 h-8 rounded-lg bg-laser-cyan/20 text-laser-cyan flex items-center justify-center flex-shrink-0">
-                <span className="font-bold">1</span>
-              </div>
-              <div>
-                <h4 className="font-semibold text-lab-text">输入偏振分束器 (PBS)</h4>
-                <p className="text-sm">
-                  将输入的连续波 (CW) 激光分成 X 和 Y 两个正交偏振态，
-                  分别送入两路 IQ 调制器。
-                </p>
-              </div>
+          <div className="grid md:grid-cols-2 gap-4 mt-2">
+            <div className="bg-lab-bg/40 p-4 rounded-xl border border-laser-cyan/20">
+              <h4 className="font-semibold text-laser-cyan mb-1">Nyquist 脉冲整形</h4>
+              <p className="text-sm">压缩信号带宽，提高频谱效率</p>
             </div>
-            <div className="flex items-start gap-3">
-              <div className="w-8 h-8 rounded-lg bg-laser-green/20 text-laser-green flex items-center justify-center flex-shrink-0">
-                <span className="font-bold">2</span>
-              </div>
-              <div>
-                <h4 className="font-semibold text-lab-text">X 偏振 IQ 调制器</h4>
-                <p className="text-sm">
-                  由两个子 MZM 和一个光 90° 混合组成，调制 X 偏振态的光信号。
-                  包含 I_x 和 Q_x 两个驱动输入。
-                </p>
-              </div>
+            <div className="bg-lab-bg/40 p-4 rounded-xl border border-laser-purple/20">
+              <h4 className="font-semibold text-laser-purple mb-1">光 OFDM</h4>
+              <p className="text-sm">多载波调制，抗色散能力强</p>
             </div>
-            <div className="flex items-start gap-3">
-              <div className="w-8 h-8 rounded-lg bg-laser-purple/20 text-laser-purple flex items-center justify-center flex-shrink-0">
-                <span className="font-bold">3</span>
-              </div>
-              <div>
-                <h4 className="font-semibold text-lab-text">Y 偏振 IQ 调制器</h4>
-                <p className="text-sm">
-                  与 X 路结构相同，独立调制 Y 偏振态的光信号。
-                  包含 I_y 和 Q_y 两个驱动输入。
-                </p>
-              </div>
+            <div className="bg-lab-bg/40 p-4 rounded-xl border border-laser-green/20">
+              <h4 className="font-semibold text-laser-green mb-1">概率星座整形</h4>
+              <p className="text-sm">不等概率星座点，逼近<TermNote term="香农极限" /></p>
             </div>
-            <div className="flex items-start gap-3">
-              <div className="w-8 h-8 rounded-lg bg-laser-red/20 text-laser-red flex items-center justify-center flex-shrink-0">
-                <span className="font-bold">4</span>
-              </div>
-              <div>
-                <h4 className="font-semibold text-lab-text">偏振旋转器 (PS)</h4>
-                <p className="text-sm">
-                  将其中一路（通常是 Y 路）的偏振态旋转 90°，
-                  使得两路光的偏振态正交。
-                </p>
-              </div>
-            </div>
-            <div className="flex items-start gap-3">
-              <div className="w-8 h-8 rounded-lg bg-laser-cyan/20 text-laser-cyan flex items-center justify-center flex-shrink-0">
-                <span className="font-bold">5</span>
-              </div>
-              <div>
-                <h4 className="font-semibold text-lab-text">偏振合束器 (PBC)</h4>
-                <p className="text-sm">
-                  将 X 和 Y 两个正交偏振态的光合路输出，形成偏振复用信号。
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-lab-bg/50 p-5 rounded-xl mt-4">
-            <div className="text-center mb-4 font-semibold text-lab-text">DP-IQM 结构框图</div>
-            <div className="text-xs space-y-2">
-              <div className="flex items-center justify-center">
-                <span className="text-lab-muted">输入光 (CW Laser)</span>
-              </div>
-              <div className="flex items-center justify-center">
-                <span className="text-laser-cyan">↓</span>
-              </div>
-              <div className="flex items-center justify-center">
-                <span className="px-3 py-1.5 border border-laser-cyan/50 rounded bg-laser-cyan/10">偏振分束器 (PBS)</span>
-              </div>
-              <div className="grid grid-cols-2 gap-4 max-w-md mx-auto mt-2">
-                <div className="text-center">
-                  <div className="text-laser-green text-xs mb-1">X 偏振</div>
-                  <div className="px-2 py-1 border border-laser-green/50 rounded bg-laser-green/10 text-xs">IQ Modulator X</div>
-                  <div className="text-xs text-lab-muted mt-1">I_x / Q_x 驱动</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-laser-purple text-xs mb-1">Y 偏振</div>
-                  <div className="px-2 py-1 border border-laser-purple/50 rounded bg-laser-purple/10 text-xs">IQ Modulator Y</div>
-                  <div className="text-xs text-lab-muted mt-1">I_y / Q_y 驱动</div>
-                </div>
-              </div>
-              <div className="flex items-center justify-center gap-4 mt-2">
-                <span className="text-laser-green">↓</span>
-                <span className="text-laser-purple">↓</span>
-              </div>
-              <div className="flex items-center justify-center gap-4">
-                <span className="text-xs">直通</span>
-                <span className="px-2 py-1 border border-laser-purple/50 rounded bg-laser-purple/10 text-xs">偏振旋转 90°</span>
-              </div>
-              <div className="flex items-center justify-center mt-2">
-                <span className="text-laser-cyan">↓</span>
-              </div>
-              <div className="flex items-center justify-center">
-                <span className="px-3 py-1.5 border border-laser-cyan/50 rounded bg-laser-cyan/10">偏振合束器 (PBC)</span>
-              </div>
-              <div className="flex items-center justify-center mt-1">
-                <span className="text-lab-muted">↓ DP-QPSK / DP-16QAM 输出</span>
-              </div>
+            <div className="bg-lab-bg/40 p-4 rounded-xl border border-laser-red/20">
+              <h4 className="font-semibold text-laser-red mb-1">DP-IQ 回顾</h4>
+              <p className="text-sm">上述技术的硬件基础与平台</p>
             </div>
           </div>
         </div>
       </section>
 
       <section className="bg-lab-surface/30 border border-lab-border/50 rounded-2xl p-6">
-        <h2 className="text-xl font-bold font-display text-lab-text mb-4">
-          加热器与偏置控制
+        <h2 className="text-xl font-bold font-display text-lab-text mb-4 flex items-center gap-2">
+          <CircuitBoard className="w-5 h-5 text-laser-cyan" />
+          DP-IQ 调制器回顾
         </h2>
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
-            在硅基光电子 (Silicon Photonics) 等集成光电子平台中，
-            <span className="text-laser-green font-semibold">热光效应 (Thermo-optic Effect)</span>
-            被广泛用于调节相位。加热器通过改变波导的温度来改变其折射率，
-            从而实现对光相位的精确控制。
+            <span className="text-laser-cyan font-semibold">DP-IQ 调制器</span>
+            是一切高级调制技术的硬件基础。它将输入激光分为 X 和 Y 两个正交偏振态，
+            分别通过独立的 IQ 调制器进行调制，最后经
+            <TermNote term="偏振合束器 (PBC)" />输出。
           </p>
-          <div className="bg-lab-bg/50 px-4 py-3 rounded-lg">
-            <MathRenderer>{'$$\\Delta n = \\frac{dn}{dT} \\cdot \\Delta T$$'}</MathRenderer>
-          </div>
-          <p>
-            对于硅材料，热光系数 dn/dT 约为 1.8×10⁻⁴ /°C。
-            通过调整加热器的电压和电流，可以精确控制温度，进而控制相位。
-          </p>
-          <div className="grid md:grid-cols-2 gap-6 mt-4">
-            <div>
-              <h3 className="font-semibold text-lab-text mb-2">DP-IQM 中的加热器：</h3>
-              <ul className="space-y-2 text-sm">
+          <div className="grid md:grid-cols-2 gap-4 mt-2">
+            <div className="bg-lab-bg/40 p-4 rounded-xl">
+              <h4 className="font-semibold text-lab-text mb-2">结构组成</h4>
+              <ul className="space-y-1 text-sm">
                 <li className="flex items-start gap-2">
                   <span className="text-laser-cyan">•</span>
-                  <span><span className="text-laser-cyan font-medium">X-I MZM 偏置加热器：</span>控制 X 路 I 臂 MZM 的偏置点</span>
+                  <span>偏振分束器 (PBS)</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-laser-green">•</span>
-                  <span><span className="text-laser-green font-medium">X-Q MZM 偏置加热器：</span>控制 X 路 Q 臂 MZM 的偏置点</span>
+                  <span>X 偏振 IQ 调制器 (I_x, Q_x)</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-laser-purple">•</span>
-                  <span><span className="text-laser-purple font-medium">X 正交相位加热器：</span>控制 X 路 I/Q 之间的 90° 相位差</span>
+                  <span>Y 偏振 IQ 调制器 (I_y, Q_y)</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-laser-red">•</span>
-                  <span><span className="text-laser-red font-medium">Y-I MZM 偏置加热器：</span>控制 Y 路 I 臂 MZM 的偏置点</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-laser-cyan">•</span>
-                  <span><span className="text-laser-cyan font-medium">Y-Q MZM 偏置加热器：</span>控制 Y 路 Q 臂 MZM 的偏置点</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-laser-green">•</span>
-                  <span><span className="text-laser-green font-medium">Y 正交相位加热器：</span>控制 Y 路 I/Q 之间的 90° 相位差</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-laser-purple">•</span>
-                  <span><span className="text-laser-purple font-medium">偏振旋转加热器：</span>微调偏振态，确保正交</span>
+                  <span>偏振旋转器 + 偏振合束器 (PBC)</span>
                 </li>
               </ul>
             </div>
-            <div>
-              <h3 className="font-semibold text-lab-text mb-2">加热器功率：</h3>
-              <p className="text-sm mb-2">
-                加热器的功耗与电压和电流的关系：
-              </p>
-              <div className="bg-lab-bg/50 px-4 py-2 rounded-lg">
-                <MathRenderer>{'$$P = V \\cdot I = \\frac{V^2}{R} = I^2 R$$'}</MathRenderer>
-              </div>
-              <p className="text-sm mt-2">
-                其中 R 是加热器的电阻。通过调整电压或电流，
-                可以精确控制加热器的功率，进而控制相位偏移量。
-              </p>
+            <div className="bg-lab-bg/40 p-4 rounded-xl">
+              <h4 className="font-semibold text-lab-text mb-2">典型传输容量</h4>
+              <ul className="space-y-1 text-sm">
+                <li className="flex items-start gap-2">
+                  <span className="text-laser-cyan">•</span>
+                  <span>DP-QPSK：100G (单波长)</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-laser-green">•</span>
+                  <span>DP-16QAM：200G - 400G</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-laser-purple">•</span>
+                  <span>DP-64QAM：600G - 800G</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-laser-red">•</span>
+                  <span>DP-256QAM：1T+</span>
+                </li>
+              </ul>
             </div>
           </div>
+          <p>四路驱动信号 (I_x, Q_x, I_y, Q_y) 独立加载不同的数据，每个符号同时在幅度、相位和偏振三个维度上携带信息。</p>
         </div>
       </section>
 
       <section className="bg-lab-surface/30 border border-lab-border/50 rounded-2xl p-6">
-        <h2 className="text-xl font-bold font-display text-lab-text mb-4">
-          典型应用场景
-        </h2>
+        <h2 className="text-xl font-bold font-display text-lab-text mb-4">Nyquist 脉冲整形</h2>
         <div className="space-y-4 text-lab-muted leading-relaxed">
+          <p>
+            在传统的<TermNote term="NRZ 调制" />调制中，矩形脉冲的频谱包含大量的
+            <TermNote term="旁瓣" />，占用额外的带宽。
+            <span className="text-laser-green font-semibold">Nyquist 脉冲整形</span>
+            通过<strong>升余弦滤波器 (Raised-Cosine Filter)</strong> 在发送端对脉冲进行整形，
+            将信号带宽严格限制在<TermNote term="奈奎斯特频率" />以内。
+          </p>
+          <div className="bg-lab-bg/40 p-4 rounded-lg">
+            <MathRenderer>{'$$H(f) = \\begin{cases} T, & |f| \\leq \\frac{1-\\alpha}{2T} \\\\ \\frac{T}{2} \\left[ 1 + \\cos\\left( \\frac{\\pi T}{\\alpha} \\left( |f| - \\frac{1-\\alpha}{2T} \\right) \\right) \\right], & \\frac{1-\\alpha}{2T} < |f| \\leq \\frac{1+\\alpha}{2T} \\\\ 0, & \\text{otherwise} \\end{cases}$$'}</MathRenderer>
+          </div>
           <div className="grid md:grid-cols-2 gap-4">
-            <div className="bg-lab-bg/50 p-4 rounded-xl">
-              <h4 className="font-semibold text-laser-cyan mb-2">100G/400G 相干光通信</h4>
+            <div className="bg-lab-bg/40 p-4 rounded-xl">
+              <h4 className="font-semibold text-lab-text mb-2"><TermNote term="滚降因子 α" /></h4>
+              <ul className="space-y-1 text-sm">
+                <li className="flex items-start gap-2"><span className="text-laser-cyan">•</span><span><strong>α = 0</strong>：理想 Nyquist，带宽 = 1/(2T)，不可实现</span></li>
+                <li className="flex items-start gap-2"><span className="text-laser-green">•</span><span><strong>α = 0.1 ~ 0.2</strong>：高速光通信常用，频谱效率高</span></li>
+                <li className="flex items-start gap-2"><span className="text-laser-purple">•</span><span><strong>α = 0.5 ~ 1</strong>：带宽宽，但抗定时误差强</span></li>
+              </ul>
+            </div>
+            <div className="bg-lab-bg/40 p-4 rounded-xl">
+              <h4 className="font-semibold text-lab-text mb-2"><TermNote term="Nyquist-WDM" /></h4>
               <p className="text-sm">
-                DP-QPSK 和 DP-16QAM 是 100G 和 400G 光传输系统的标准调制格式，
-                广泛应用于城域网和骨干网。
+                对每个波长的信号进行 Nyquist 整形后，可以将波长间隔压缩到接近信号
+                <TermNote term="波特率" />，实现超高频谱效率的波分复用系统。
               </p>
             </div>
-            <div className="bg-lab-bg/50 p-4 rounded-xl">
-              <h4 className="font-semibold text-laser-green mb-2">800G/1.6T 超高速传输</h4>
-              <p className="text-sm">
-                采用 DP-64QAM 甚至 DP-256QAM 等高阶调制格式，
-                结合更大的波特率，实现单波长 800G 甚至 1.6T 的传输容量。
-              </p>
+          </div>
+          <p className="text-sm text-lab-muted italic">
+            Nyquist 脉冲整形的核心优势：消除<TermNote term="码间干扰 (ISI)" />的同时，
+            将<TermNote term="频谱效率" />推向理论极限 2 baud/Hz。
+          </p>
+        </div>
+      </section>
+
+      <section className="bg-lab-surface/30 border border-lab-border/50 rounded-2xl p-6">
+        <h2 className="text-xl font-bold font-display text-lab-text mb-4">光 OFDM</h2>
+        <div className="space-y-4 text-lab-muted leading-relaxed">
+          <p>
+            <span className="text-laser-purple font-semibold"><TermNote term="OFDM" /></span>
+            是一种多载波调制技术，它将高速数据流分配到多个<strong>正交子载波</strong>上并行传输。
+            每个子载波上的符号速率较低，因此对<TermNote term="色散" />和<TermNote term="偏振模色散 (PMD)" />有天然的容忍度。
+          </p>
+          <div className="grid md:grid-cols-2 gap-4 mt-4">
+            <div className="bg-lab-bg/40 p-4 rounded-xl">
+              <h4 className="font-semibold text-lab-text mb-2"><TermNote term="CO-OFDM" /></h4>
+              <ul className="space-y-1 text-sm">
+                <li className="flex items-start gap-2"><span className="text-laser-cyan">•</span><span>使用相干接收，恢复完整的电场信息</span></li>
+                <li className="flex items-start gap-2"><span className="text-laser-green">•</span><span>频谱效率接近 Nyquist 单载波</span></li>
+                <li className="flex items-start gap-2"><span className="text-laser-purple">•</span><span>可通过<TermNote term="FFT/IFFT" />高效实现</span></li>
+                <li className="flex items-start gap-2"><span className="text-laser-red">•</span><span>无需复杂的<TermNote term="均衡器" /></span></li>
+              </ul>
             </div>
-            <div className="bg-lab-bg/50 p-4 rounded-xl">
-              <h4 className="font-semibold text-laser-purple mb-2">数据中心互联 (DCI)</h4>
-              <p className="text-sm">
-                用于数据中心之间的高速互联，满足云计算和大数据业务对带宽的巨大需求。
-              </p>
+            <div className="bg-lab-bg/40 p-4 rounded-xl">
+              <h4 className="font-semibold text-lab-text mb-2">优劣势</h4>
+              <ul className="space-y-1 text-sm">
+                <li className="flex items-start gap-2"><span className="text-laser-green">✓</span><span>对色散容忍度高</span></li>
+                <li className="flex items-start gap-2"><span className="text-laser-green">✓</span><span>频谱利用率高</span></li>
+                <li className="flex items-start gap-2"><span className="text-laser-red">✗</span><span><TermNote term="峰均功率比 (PAPR)" />高</span></li>
+                <li className="flex items-start gap-2"><span className="text-laser-red">✗</span><span>对光纤非线性敏感</span></li>
+              </ul>
             </div>
-            <div className="bg-lab-bg/50 p-4 rounded-xl">
-              <h4 className="font-semibold text-laser-red mb-2">相干光接入网</h4>
-              <p className="text-sm">
-                下一代无源光网络 (PON) 可能采用相干技术，
-                大幅提升接入网的速率和功率预算。
-              </p>
-            </div>
+          </div>
+          <div className="bg-lab-bg/40 p-4 rounded-lg mt-4">
+            <p className="text-sm">
+              <strong>OFDM vs. Nyquist 单载波：</strong>
+              两者在频谱效率上接近，但 OFDM 通过 FFT 实现调制解调，接收端均衡更简单。
+              Nyquist 单载波实现更成熟，PAPR 更低，是目前商用高速相干光系统的主流方案。
+            </p>
           </div>
         </div>
       </section>
 
       <section className="bg-lab-surface/30 border border-lab-border/50 rounded-2xl p-6">
-        <h2 className="text-xl font-bold font-display text-lab-text mb-4">
-          动手实验
-        </h2>
+        <h2 className="text-xl font-bold font-display text-lab-text mb-4">概率星座整形</h2>
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
-            恭喜你完成了全部理论学习！现在，你已经掌握了从光波基础到双偏振 IQ 调制器的完整知识体系。
+            <span className="text-laser-red font-semibold"><TermNote term="概率星座整形 (PCS)" /></span>
+            是近年来光通信领域最重要的突破之一。传统的<TermNote term="QAM 调制" />调制中，所有
+            <TermNote term="星座点" />等概率出现。
+            PCS 的核心思想是：<strong>内部星座点出现概率更高，外部星座点出现概率更低</strong>。
           </p>
-          <p>
-            是时候去 <span className="text-laser-purple font-semibold">Playground</span> 亲自体验了！
-            在双偏振 IQ 调制器的互动实验中，你可以：
-          </p>
-          <ul className="space-y-2 ml-4">
-            <li className="flex items-start gap-2">
-              <span className="text-laser-cyan">🎛️</span>
-              <span>调节各个加热器的电压和电流</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="text-laser-green">📊</span>
-              <span>观察 X 和 Y 偏振态的输出星座图</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="text-laser-purple">🔧</span>
-              <span>调整偏置点，体验偏置控制的重要性</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="text-laser-red">⚡</span>
-              <span>理解加热器功耗与相位控制的关系</span>
-            </li>
-          </ul>
-          <div className="mt-6 text-center">
-            <Link
-              to="/playground/dual-polarization"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-laser-purple text-white font-semibold rounded-xl hover:bg-laser-purple/90 transition-all hover:shadow-glow-purple"
-            >
-              <FlaskConical className="w-5 h-5" />
-              进入双偏振 IQ 调制器实验
-            </Link>
+          <div className="bg-lab-bg/40 p-4 rounded-lg">
+            <MathRenderer>{'$$P(x_i) = \\frac{e^{-\\lambda |x_i|^2}}{\\sum_j e^{-\\lambda |x_j|^2}} \\quad \\text{(Maxwell-Boltzmann 分布)}$$'}</MathRenderer>
+          </div>
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="bg-lab-bg/40 p-4 rounded-xl">
+              <h4 className="font-semibold text-lab-text mb-2"><TermNote term="成形增益" />的来源</h4>
+              <ul className="space-y-1 text-sm">
+                <li className="flex items-start gap-2"><span className="text-laser-cyan">•</span><span><strong>1.53 dB</strong>：二维理想成形增益上限</span></li>
+                <li className="flex items-start gap-2"><span className="text-laser-green">•</span><span><strong>~1 dB</strong>：PCS-16QAM 实际成形增益</span></li>
+                <li className="flex items-start gap-2"><span className="text-laser-purple">•</span><span><strong>~1.5 dB</strong>：PCS-64QAM 实际成形增益</span></li>
+              </ul>
+            </div>
+            <div className="bg-lab-bg/40 p-4 rounded-xl">
+              <h4 className="font-semibold text-lab-text mb-2">工程实现</h4>
+              <ul className="space-y-1 text-sm">
+                <li className="flex items-start gap-2"><span className="text-laser-cyan">•</span><span><TermNote term="恒参分布匹配器 (CCDM)" /></span></li>
+                <li className="flex items-start gap-2"><span className="text-laser-green">•</span><span><TermNote term="LDPC 纠错码" />联合优化</span></li>
+                <li className="flex items-start gap-2"><span className="text-laser-purple">•</span><span>已被 ITU-T G.698.2 采纳</span></li>
+              </ul>
+            </div>
+          </div>
+          <div className="bg-lab-bg/40 px-4 py-3 rounded-lg border border-laser-red/30 mt-2">
+            <p className="text-sm">
+              <strong>实际效果</strong>：以 400G 传输为例，PCS-64QAM 相比传统 64QAM
+              可以在相同<TermNote term="信噪比 (SNR)" />下传输更远距离，或在相同距离下提升约 15-20% 的传输容量。
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-lab-surface/30 border border-lab-border/50 rounded-2xl p-6">
+        <h2 className="text-xl font-bold font-display text-lab-text mb-4">综合对比</h2>
+        <div className="space-y-4 text-lab-muted leading-relaxed">
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="border-b border-lab-border">
+                  <th className="text-left py-2 px-3 text-lab-text font-semibold">技术</th>
+                  <th className="text-left py-2 px-3 text-lab-text font-semibold">核心优势</th>
+                  <th className="text-left py-2 px-3 text-lab-text font-semibold">主要挑战</th>
+                  <th className="text-left py-2 px-3 text-lab-text font-semibold">商用状态</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="border-b border-lab-border/50">
+                  <td className="py-2 px-3 text-laser-cyan">DP-IQ 调制器</td>
+                  <td className="py-2 px-3">硬件基础，偏振复用</td>
+                  <td className="py-2 px-3">功耗、集成度</td>
+                  <td className="py-2 px-3 text-laser-green">成熟商用</td>
+                </tr>
+                <tr className="border-b border-lab-border/50">
+                  <td className="py-2 px-3 text-laser-green">Nyquist 整形</td>
+                  <td className="py-2 px-3"><TermNote term="频谱效率" />高，无 ISI</td>
+                  <td className="py-2 px-3"><TermNote term="DAC/ADC" />带宽要求高</td>
+                  <td className="py-2 px-3 text-laser-green">广泛部署</td>
+                </tr>
+                <tr className="border-b border-lab-border/50">
+                  <td className="py-2 px-3 text-laser-purple">光 OFDM</td>
+                  <td className="py-2 px-3">抗色散，均衡简单</td>
+                  <td className="py-2 px-3">PAPR 高，非线性敏感</td>
+                  <td className="py-2 px-3 text-laser-cyan">研究/部分商用</td>
+                </tr>
+                <tr>
+                  <td className="py-2 px-3 text-laser-red">概率星座整形</td>
+                  <td className="py-2 px-3">逼近<TermNote term="香农极限" /></td>
+                  <td className="py-2 px-3"><TermNote term="数字信号处理 (DSP)" />复杂度增加</td>
+                  <td className="py-2 px-3 text-laser-green">400G/800G 部署</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div className="bg-lab-bg/40 px-4 py-3 rounded-lg mt-4">
+            <p className="text-sm">
+              在实际的商用系统中，这些技术常常<strong>叠加使用</strong>：基于 DP-IQ 调制器硬件，
+              发送端使用 Nyquist 脉冲整形和 PCS 编码，结合先进的 LDPC 纠错码和
+              <TermNote term="数字信号处理 (DSP)" />算法，实现接近香农极限的传输性能。
+            </p>
           </div>
         </div>
       </section>

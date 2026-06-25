@@ -1,6 +1,7 @@
 import { BarChart3, Compass, CircuitBoard } from 'lucide-react';
 import LearnLayout from '@/components/common/LearnLayout';
 import MathRenderer from '@/components/common/MathRenderer';
+import TermNote from '@/components/common/TermNote';
 
 export default function LearnIQModulator() {
   return (
@@ -20,7 +21,7 @@ export default function LearnIQModulator() {
         </h2>
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
-            <span className="text-laser-purple font-semibold">IQ 调制（同相正交调制）</span>
+            <span className="text-laser-purple font-semibold">IQ 调制（<TermNote term="QAM 调制" />正交调制）</span>
             是一种将两个独立的基带信号（I 路和 Q 路）分别调制到相位相差 90°
             的两个光载波上，然后合成一个信号的调制方式。
             IQ 调制可以同时控制光信号的幅度和相位，从而大大提高频谱效率。
@@ -50,7 +51,7 @@ export default function LearnIQModulator() {
         </h2>
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
-            一个典型的光 IQ 调制器由以下部分组成：
+            一个典型的光 <TermNote term="IQ 调制器" />由以下部分组成：
           </p>
           <div className="space-y-3">
             <div className="flex items-start gap-3">
@@ -310,7 +311,7 @@ export default function LearnIQModulator() {
           <p>
             下一章我们将学习偏振的基本概念和偏振复用技术，
             然后将所有知识整合起来，认识现代高速光通信的核心——
-            <span className="text-laser-cyan font-semibold">双偏振 IQ 调制器 (DP-IQM)</span>。
+            <span className="text-laser-cyan font-semibold">高级调制 (Advanced Modulation)</span>。
           </p>
         </div>
       </section>

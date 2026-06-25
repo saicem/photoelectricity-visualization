@@ -5,7 +5,10 @@ import { useAnimationFrame } from '@/hooks/useAnimationFrame';
 
 export default function MZCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const { modulationDepth, phaseShift, inputPower, frequency, isPlaying, time, setTime } = useMZStore();
+  const {
+    modulationDepth, modulationDepth2, phaseShift, inputPower,
+    frequency, mode, isPlaying, time, setTime,
+  } = useMZStore();
 
   useAnimationFrame(
     (deltaTime) => {
@@ -58,6 +61,29 @@ export default function MZCanvas() {
     const upperY = centerY - armOffset;
     const lowerY = centerY + armOffset;
 
+    const baseSignal = Math.sin(2 * Math.PI * frequency * time);
+
+    let upperPhase: number;
+    let lowerPhase: number;
+
+    switch (mode) {
+      case 'single-arm':
+        upperPhase = phaseShift;
+        lowerPhase = modulationDepth * baseSignal + phaseShift;
+        break;
+      case 'dual-arm':
+        upperPhase = modulationDepth2 * Math.sin(2 * Math.PI * frequency * time + 0.5) + phaseShift;
+        lowerPhase = modulationDepth * baseSignal + phaseShift;
+        break;
+      case 'push-pull':
+        upperPhase = -modulationDepth * baseSignal + phaseShift;
+        lowerPhase = modulationDepth * baseSignal + phaseShift;
+        break;
+    }
+
+    const totalPhaseDiff = lowerPhase - upperPhase;
+    const outputP = mzOutputPower(inputPower, totalPhaseDiff);
+
     function drawWaveguide(x1: number, y1: number, x2: number, y2: number, active: boolean, color: string = '#00d4ff') {
       ctx.save();
       ctx.strokeStyle = active ? color : '#334155';
@@ -74,52 +100,70 @@ export default function MZCanvas() {
       ctx.restore();
     }
 
-    const modPhase = modulationDepth * Math.sin(2 * Math.PI * frequency * time) + phaseShift;
-
-    const outputP = mzOutputPower(inputPower, modPhase);
+    const upperColor = mode === 'dual-arm' ? '#a855f7' : '#00d4ff';
+    const lowerColor = mode === 'push-pull' ? '#ff8800' : '#ff3366';
 
     drawWaveguide(inputX, centerY, splitterX, centerY, true, '#00d4ff');
-    drawWaveguide(splitterX, centerY, splitterX, upperY, true, '#00d4ff');
-    drawWaveguide(splitterX, upperY, combinerX, upperY, true, '#00d4ff');
-    drawWaveguide(splitterX, centerY, splitterX, lowerY, true, '#ff3366');
-    drawWaveguide(splitterX, lowerY, combinerX, lowerY, true, '#ff3366');
+    drawWaveguide(splitterX, centerY, splitterX, upperY, true, upperColor);
+    drawWaveguide(splitterX, upperY, combinerX, upperY, true, upperColor);
+    drawWaveguide(splitterX, centerY, splitterX, lowerY, true, lowerColor);
+    drawWaveguide(splitterX, lowerY, combinerX, lowerY, true, lowerColor);
     drawWaveguide(combinerX, upperY, combinerX, centerY, true, '#00ff88');
     drawWaveguide(combinerX, lowerY, combinerX, centerY, true, '#00ff88');
     drawWaveguide(combinerX, centerY, outputX, centerY, outputP > 0.01, '#00ff88');
 
-    const electrodeY = lowerY;
+    function drawElectrode(x1: number, y1: number, x2: number, signal: number, label: string, color: string) {
+      const electrodeY = y1;
+      const electrodeX1 = x1;
+      const electrodeX2 = x2;
+
+      ctx.save();
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 3;
+      ctx.setLineDash([6, 4]);
+      ctx.beginPath();
+      ctx.moveTo(electrodeX1, electrodeY - 20);
+      ctx.lineTo(electrodeX2, electrodeY - 20);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.restore();
+
+      const elecSignalY = electrodeY - 45;
+      ctx.save();
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      for (let x = electrodeX1; x <= electrodeX2; x++) {
+        const tNorm = (x - electrodeX1) / (electrodeX2 - electrodeX1);
+        const phase = tNorm * Math.PI * 4 + time * 3;
+        const y = elecSignalY + Math.sin(phase) * 8 * Math.abs(signal);
+        if (x === electrodeX1) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+      ctx.restore();
+
+      ctx.fillStyle = color;
+      ctx.font = '10px JetBrains Mono, monospace';
+      ctx.fillText(label, electrodeX1, elecSignalY - 10);
+    }
+
     const electrodeX1 = splitterX + 30;
     const electrodeX2 = combinerX - 30;
 
-    ctx.save();
-    ctx.strokeStyle = '#f59e0b';
-    ctx.lineWidth = 3;
-    ctx.setLineDash([6, 4]);
-    ctx.beginPath();
-    ctx.moveTo(electrodeX1, electrodeY - 20);
-    ctx.lineTo(electrodeX2, electrodeY - 20);
-    ctx.stroke();
-    ctx.setLineDash([]);
-    ctx.restore();
-
-    const elecSignalY = electrodeY - 45;
-    ctx.save();
-    ctx.strokeStyle = '#f59e0b';
-    ctx.lineWidth = 1.5;
-    ctx.beginPath();
-    for (let x = electrodeX1; x <= electrodeX2; x++) {
-      const tNorm = (x - electrodeX1) / (electrodeX2 - electrodeX1);
-      const phase = tNorm * Math.PI * 4 + time * 3;
-      const y = elecSignalY + Math.sin(phase) * 8 * modulationDepth;
-      if (x === electrodeX1) ctx.moveTo(x, y);
-      else ctx.lineTo(x, y);
+    switch (mode) {
+      case 'single-arm':
+        drawElectrode(electrodeX1, lowerY, electrodeX2, modulationDepth, 'V(t)', '#f59e0b');
+        break;
+      case 'dual-arm':
+        drawElectrode(electrodeX1, upperY, electrodeX2, modulationDepth2, 'V₁(t)', '#a855f7');
+        drawElectrode(electrodeX1, lowerY, electrodeX2, modulationDepth, 'V₂(t)', '#f59e0b');
+        break;
+      case 'push-pull':
+        drawElectrode(electrodeX1, upperY, electrodeX2, modulationDepth, '-V(t)', '#ff8800');
+        drawElectrode(electrodeX1, lowerY, electrodeX2, modulationDepth, '+V(t)', '#f59e0b');
+        break;
     }
-    ctx.stroke();
-    ctx.restore();
-
-    ctx.fillStyle = '#f59e0b';
-    ctx.font = '10px JetBrains Mono, monospace';
-    ctx.fillText('V(t)', electrodeX1, elecSignalY - 10);
 
     function drawSplitterCombiner(x: number, y: number, label: string) {
       ctx.save();
@@ -162,9 +206,9 @@ export default function MZCanvas() {
     }
 
     drawMiniWave(waveX1, centerY, inputPower, time * 4, '#00d4ff');
-    drawMiniWave(splitterX + 20, upperY - 5, inputPower / 2, time * 4, '#00d4ff');
-    drawMiniWave(splitterX + 20, lowerY + 5, inputPower / 2, time * 4 + modPhase, '#ff3366');
-    drawMiniWave(waveX2, centerY, Math.sqrt(outputP), time * 4 + modPhase / 2, '#00ff88');
+    drawMiniWave(splitterX + 20, upperY - 5, inputPower / 2, time * 4 + upperPhase, upperColor);
+    drawMiniWave(splitterX + 20, lowerY + 5, inputPower / 2, time * 4 + lowerPhase, lowerColor);
+    drawMiniWave(waveX2, centerY, Math.sqrt(outputP), time * 4 + totalPhaseDiff / 2, '#00ff88');
 
     const transferW = 140;
     const transferH = 80;
@@ -207,9 +251,9 @@ export default function MZCanvas() {
     }
     ctx.stroke();
 
-    const markerV = modPhase % (2 * Math.PI);
+    const markerV = totalPhaseDiff % (2 * Math.PI);
     const markerP = Math.cos(markerV / 2) ** 2;
-    const markerX = plotX + (markerV / (2 * Math.PI)) * plotW;
+    const markerX = plotX + ((markerV < 0 ? markerV + 2 * Math.PI : markerV) / (2 * Math.PI)) * plotW;
     const markerY = plotY + plotH - markerP * plotH;
 
     ctx.fillStyle = '#f59e0b';
@@ -220,7 +264,7 @@ export default function MZCanvas() {
     return () => {
       ctx.setTransform(1, 0, 0, 1, 0, 0);
     };
-  }, [modulationDepth, phaseShift, inputPower, frequency, time]);
+  }, [modulationDepth, modulationDepth2, phaseShift, inputPower, frequency, mode, time]);
 
   return (
     <canvas

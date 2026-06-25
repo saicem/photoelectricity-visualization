@@ -46,9 +46,9 @@ const learnModules = [
     path: '/learn/polarization',
   },
   {
-    title: '双偏振 IQ',
-    description: 'DP-IQM：集成偏振复用与 IQ 调制的现代高速光通信核心。',
-    icon: <BarChart3 className="w-7 h-7" />,
+    title: '高级调制',
+    description: 'Nyquist 脉冲整形、OFDM、概率星座整形等现代高速光通信关键技术。',
+    icon: <Zap className="w-7 h-7" />,
     color: '#06b6d4',
     path: '/learn/dual-polarization',
   },
@@ -89,13 +89,6 @@ const playgroundModules = [
     icon: <Compass className="w-7 h-7" />,
     color: '#ff3366',
     path: '/playground/polarization',
-  },
-  {
-    title: '双偏振 IQ',
-    description: 'DP-IQM 交互实验：调节加热器电压，观察输出变化。',
-    icon: <BarChart3 className="w-7 h-7" />,
-    color: '#06b6d4',
-    path: '/playground/dual-polarization',
   },
   {
     title: '光接收器',
@@ -157,7 +150,7 @@ export default function HomePage() {
           className="text-lg text-lab-muted max-w-2xl mx-auto mb-8"
         >
           从理论学习到动手实验，一站式掌握光通信调制技术。
-          系统学习从光波基础到双偏振 IQ 调制的完整知识体系。
+          系统学习从光波基础到高级调制的完整知识体系。
         </motion.p>
 
         <motion.div
@@ -202,7 +195,7 @@ export default function HomePage() {
           </div>
           <p className="text-lab-muted mb-6 text-sm">
             从光波基础开始，逐步深入到干涉原理、MZ 调制器、IQ 调制、偏振复用，
-            最终掌握双偏振 IQ 调制器的完整知识体系。每一章都为下一章打下基础。
+            最终掌握高级调制技术的完整知识体系。每一章都为下一章打下基础。
           </p>
           <div className="space-y-3">
             {learnModules.map((mod, index) => (

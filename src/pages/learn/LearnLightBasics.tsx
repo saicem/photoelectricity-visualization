@@ -1,6 +1,7 @@
 import { Lightbulb, Flame } from 'lucide-react';
 import LearnLayout from '@/components/common/LearnLayout';
 import MathRenderer from '@/components/common/MathRenderer';
+import TermNote from '@/components/common/TermNote';
 
 export default function LearnLightBasics() {
   return (
@@ -102,9 +103,9 @@ export default function LearnLightBasics() {
             <MathRenderer>{'$$\\Delta\\phi = \\phi_1 - \\phi_2 = \\frac{2\\pi}{\\lambda} \\cdot \\Delta L$$'}</MathRenderer>
           </div>
           <p>
-            其中 <span className="text-laser-cyan">ΔL</span> 是两束光的光程差。
-            当光程差为波长的整数倍时，相位差为 2π 的整数倍，两束光同相，干涉相长；
-            当光程差为半波长的奇数倍时，相位差为 π 的奇数倍，两束光反相，干涉相消。
+            其中 <span className="text-laser-cyan">ΔL</span> 是两束光的<TermNote term="光程差" />。
+            当光程差为波长的整数倍时，相位差为 2π 的整数倍，两束光同相，<TermNote term="相长干涉" />；
+            当光程差为半波长的奇数倍时，相位差为 π 的奇数倍，两束光反相，<TermNote term="相消干涉" />。
           </p>
           <div className="grid md:grid-cols-2 gap-4 mt-4">
             <div className="border border-laser-green/30 bg-laser-green/5 p-4 rounded-xl">
@@ -134,7 +135,7 @@ export default function LearnLightBasics() {
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             在光通信系统中，我们需要将电信号加载到光载波上进行传输，
-            这个过程就叫做<span className="text-laser-purple font-semibold">光调制</span>。
+            这个过程就叫做<span className="text-laser-purple font-semibold"><TermNote term="光调制器" /></span>。
             光调制器是实现这一功能的核心器件。
           </p>
           <div className="space-y-3">
@@ -143,7 +144,7 @@ export default function LearnLightBasics() {
                 <span className="font-bold">1</span>
               </div>
               <div>
-                <h4 className="font-semibold text-lab-text">直接调制 vs 外部调制</h4>
+                <h4 className="font-semibold text-lab-text"><TermNote term="直接调制" /> vs <TermNote term="外部调制" /></h4>
                 <p className="text-sm">
                   直接调制通过改变激光器的注入电流来调制光强，简单但速率受限。
                   外部调制器则对连续输出的激光进行调制，可实现更高的调制速率和更好的性能。

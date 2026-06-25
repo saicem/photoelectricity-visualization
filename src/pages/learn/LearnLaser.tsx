@@ -1,6 +1,7 @@
 import { Flame, Waves } from 'lucide-react';
 import LearnLayout from '@/components/common/LearnLayout';
 import MathRenderer from '@/components/common/MathRenderer';
+import TermNote from '@/components/common/TermNote';
 
 export default function LearnLaser() {
   return (
@@ -24,21 +25,21 @@ export default function LearnLaser() {
           </p>
           <div className="grid md:grid-cols-3 gap-4">
             <div className="bg-lab-bg/50 p-4 rounded-xl">
-              <h4 className="font-semibold text-laser-cyan mb-2">自发辐射</h4>
+              <h4 className="font-semibold text-laser-cyan mb-2"><TermNote term="自发辐射" /></h4>
               <p className="text-sm">
                 处于高能级的粒子自发地从高能级跃迁到低能级，同时发射一个光子。
                 普通光源（如白炽灯、LED）的发光就属于自发辐射，发出的光是不相干的。
               </p>
             </div>
             <div className="bg-lab-bg/50 p-4 rounded-xl">
-              <h4 className="font-semibold text-laser-green mb-2">受激吸收</h4>
+              <h4 className="font-semibold text-laser-green mb-2"><TermNote term="受激吸收" /></h4>
               <p className="text-sm">
                 处于低能级的粒子吸收一个光子，跃迁到高能级。
                 这就是光被物质吸收的过程。
               </p>
             </div>
             <div className="bg-lab-bg/50 p-4 rounded-xl">
-              <h4 className="font-semibold text-laser-red mb-2">受激辐射</h4>
+              <h4 className="font-semibold text-laser-red mb-2"><TermNote term="受激辐射" /></h4>
               <p className="text-sm">
                 处于高能级的粒子在入射光子的"刺激"下，跃迁到低能级，
                 同时发射一个与入射光子<strong>完全相同</strong>的光子（同频率、同相位、同方向、同偏振）。
@@ -64,7 +65,7 @@ export default function LearnLaser() {
             在热平衡状态下，低能级的粒子数总是多于高能级的粒子数（玻尔兹曼分布），
             因此光通过物质时总体上是被吸收的。要实现光放大，必须使
             <span className="text-laser-red font-semibold"> 高能级的粒子数多于低能级</span>，
-            这就是<span className="text-laser-red font-semibold">粒子数反转</span>。
+            这就是<span className="text-laser-red font-semibold"><TermNote term="粒子数反转" /></span>。
           </p>
           <div className="bg-lab-bg/50 p-5 rounded-xl">
             <div className="text-center mb-3 font-semibold text-lab-text">粒子数反转示意</div>
@@ -96,7 +97,7 @@ export default function LearnLaser() {
             </div>
           </div>
           <p>
-            实现粒子数反转需要外部能量源（称为"泵浦"）将粒子从低能级"抽运"到高能级。
+            实现粒子数反转需要外部能量源（称为<TermNote term="泵浦" />）将粒子从低能级"抽运"到高能级。
             泵浦方式包括光泵浦、电泵浦、化学泵浦等。
           </p>
         </div>
@@ -135,7 +136,7 @@ export default function LearnLaser() {
               <div>
                 <h4 className="font-semibold text-lab-text">阈值条件</h4>
                 <p className="text-sm">
-                  只有当增益大于损耗时，激光才能产生。这个最低的增益称为激光阈值。
+                  只有当增益大于损耗时，激光才能产生。这个最低的增益称为<TermNote term="激光阈值" />。
                   阈值以下只有自发辐射（荧光），达到阈值后受激辐射占主导，产生激光。
                 </p>
               </div>
@@ -147,8 +148,8 @@ export default function LearnLaser() {
               <div>
                 <h4 className="font-semibold text-lab-text">纵模与横模</h4>
                 <p className="text-sm">
-                  谐振腔只允许满足驻波条件（腔长为半波长整数倍）的频率存在，称为纵模。
-                  横模描述的是光场在垂直于传播方向截面上的分布（如 TEM₀₀ 基模）。
+                  谐振腔只允许满足驻波条件（腔长为半波长整数倍）的频率存在，称为<TermNote term="纵模" />。
+                  <TermNote term="横模" />描述的是光场在垂直于传播方向截面上的分布（如 TEM₀₀ 基模）。
                 </p>
                 <div className="bg-lab-bg/50 px-4 py-2 rounded-lg mt-2 text-xs">
                   <MathRenderer>{'$$L = q \\cdot \\frac{\\lambda}{2} \\quad (q \\text{ 为整数})$$'}</MathRenderer>
@@ -237,11 +238,11 @@ export default function LearnLaser() {
               <ul className="space-y-2 text-sm">
                 <li className="flex items-start gap-2">
                   <span className="text-laser-cyan">→</span>
-                  <span>DFB 激光器：分布反馈，单纵模，高速调制</span>
+                  <span><TermNote term="DFB 激光器" />：分布反馈，单纵模，高速调制</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-laser-green">→</span>
-                  <span>外腔激光器：线宽窄，相干通信首选</span>
+                  <span><TermNote term="外腔激光器" />：线宽窄，相干通信首选</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-laser-purple">→</span>
