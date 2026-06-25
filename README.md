@@ -4,8 +4,6 @@
 
 分为 **Learn（学习）** 和 **Playground（实验）** 两大部分，从基础概念到高阶调制技术，循序渐进。
 
-![React](https://img.shields.io/badge/React-18-blue) ![TypeScript](https://img.shields.io/badge/TypeScript-5-blue) ![Vite](https://img.shields.io/badge/Vite-5-purple)
-
 ## 在线访问
 
 **GitHub Pages**: https://saicem.github.io/photoelectricity-visualization/
