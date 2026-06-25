@@ -1,4 +1,4 @@
-import { Lightbulb, Waves } from 'lucide-react';
+import { Lightbulb, Flame } from 'lucide-react';
 import LearnLayout from '@/components/common/LearnLayout';
 import MathRenderer from '@/components/common/MathRenderer';
 
@@ -8,8 +8,8 @@ export default function LearnLightBasics() {
       title="光波基础"
       subtitle="从光的本质出发，理解电磁波、波长、频率与相位"
       currentIndex={0}
-      totalChapters={6}
-      nextChapter={{ path: '/learn/interference', title: '干涉原理', icon: <Waves className="w-4 h-4" /> }}
+      totalChapters={8}
+      nextChapter={{ path: '/learn/laser', title: '激光器', icon: <Flame className="w-4 h-4" /> }}
     >
       <section className="bg-lab-surface/30 border border-lab-border/50 rounded-2xl p-6">
         <h2 className="text-xl font-bold font-display text-lab-text mb-4 flex items-center gap-2">

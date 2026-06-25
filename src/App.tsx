@@ -8,11 +8,13 @@ import IQModulatorPage from "@/pages/IQModulatorPage";
 import PolarizationPage from "@/pages/PolarizationPage";
 
 import LearnLightBasics from "@/pages/learn/LearnLightBasics";
+import LearnLaser from "@/pages/learn/LearnLaser";
 import LearnInterference from "@/pages/learn/LearnInterference";
 import LearnMZModulator from "@/pages/learn/LearnMZModulator";
 import LearnIQModulator from "@/pages/learn/LearnIQModulator";
 import LearnPolarization from "@/pages/learn/LearnPolarization";
 import LearnDualPolarization from "@/pages/learn/LearnDualPolarization";
+import LearnReceiver from "@/pages/learn/LearnReceiver";
 
 import DualPolarizationPage from "@/pages/playground/DualPolarizationPage";
 
@@ -25,11 +27,13 @@ function AnimatedRoutes() {
           <Route path="/" element={<HomePage />} />
 
           <Route path="/learn/light-basics" element={<LearnLightBasics />} />
+          <Route path="/learn/laser" element={<LearnLaser />} />
           <Route path="/learn/interference" element={<LearnInterference />} />
           <Route path="/learn/mz-modulator" element={<LearnMZModulator />} />
           <Route path="/learn/iq-modulator" element={<LearnIQModulator />} />
           <Route path="/learn/polarization" element={<LearnPolarization />} />
           <Route path="/learn/dual-polarization" element={<LearnDualPolarization />} />
+          <Route path="/learn/receiver" element={<LearnReceiver />} />
 
           <Route path="/playground/interference" element={<InterferencePage />} />
           <Route path="/playground/mz-modulator" element={<MZModulatorPage />} />

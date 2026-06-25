@@ -1,15 +1,17 @@
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Waves, CircuitBoard, BarChart3, Compass, BookOpen, FlaskConical, Lightbulb } from 'lucide-react';
+import { Waves, CircuitBoard, BarChart3, Compass, BookOpen, FlaskConical, Lightbulb, Flame, Radio } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const learnItems = [
   { path: '/learn/light-basics', label: '光波基础', icon: Lightbulb },
+  { path: '/learn/laser', label: '激光器', icon: Flame },
   { path: '/learn/interference', label: '干涉原理', icon: Waves },
   { path: '/learn/mz-modulator', label: 'MZ 调制器', icon: CircuitBoard },
   { path: '/learn/iq-modulator', label: 'IQ 调制器', icon: BarChart3 },
   { path: '/learn/polarization', label: '偏振复用', icon: Compass },
   { path: '/learn/dual-polarization', label: '双偏振 IQ', icon: BarChart3 },
+  { path: '/learn/receiver', label: '光接收器', icon: Radio },
 ];
 
 const playgroundItems = [

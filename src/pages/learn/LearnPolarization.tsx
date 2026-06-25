@@ -7,8 +7,8 @@ export default function LearnPolarization() {
     <LearnLayout
       title="偏振复用"
       subtitle="光的偏振态、斯托克斯矢量与偏振复用技术，让容量再翻一倍"
-      currentIndex={4}
-      totalChapters={6}
+      currentIndex={5}
+      totalChapters={8}
       prevChapter={{ path: '/learn/iq-modulator', title: 'IQ 调制器', icon: <BarChart3 className="w-4 h-4" /> }}
       nextChapter={{ path: '/learn/dual-polarization', title: '双偏振 IQ', icon: <BarChart3 className="w-4 h-4" /> }}
     >

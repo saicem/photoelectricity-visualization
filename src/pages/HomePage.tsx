@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { BookOpen, FlaskConical, Waves, CircuitBoard, BarChart3, Compass, Lightbulb, Sparkles, Zap, Target, ArrowRight } from 'lucide-react';
+import { BookOpen, FlaskConical, Waves, CircuitBoard, BarChart3, Compass, Lightbulb, Sparkles, Zap, Target, ArrowRight, Flame, Radio } from 'lucide-react';
 
 const learnModules = [
   {
@@ -9,6 +9,13 @@ const learnModules = [
     icon: <Lightbulb className="w-7 h-7" />,
     color: '#00d4ff',
     path: '/learn/light-basics',
+  },
+  {
+    title: '激光器',
+    description: '受激辐射、激光谐振腔与常见激光器类型，光通信的光源基础。',
+    icon: <Flame className="w-7 h-7" />,
+    color: '#ff4444',
+    path: '/learn/laser',
   },
   {
     title: '干涉原理',
@@ -44,6 +51,13 @@ const learnModules = [
     icon: <BarChart3 className="w-7 h-7" />,
     color: '#06b6d4',
     path: '/learn/dual-polarization',
+  },
+  {
+    title: '光接收器',
+    description: '光电二极管、相干接收与数字信号处理，光信号的检测与恢复。',
+    icon: <Radio className="w-7 h-7" />,
+    color: '#22c55e',
+    path: '/learn/receiver',
   },
 ];
 

@@ -1,4 +1,4 @@
-import { BarChart3, Compass, FlaskConical } from 'lucide-react';
+import { BarChart3, Compass, FlaskConical, Radio } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import LearnLayout from '@/components/common/LearnLayout';
 import MathRenderer from '@/components/common/MathRenderer';
@@ -8,9 +8,10 @@ export default function LearnDualPolarization() {
     <LearnLayout
       title="双偏振 IQ 调制器"
       subtitle="DP-IQM：现代高速相干光通信的核心引擎，集成偏振复用与 IQ 调制"
-      currentIndex={5}
-      totalChapters={6}
+      currentIndex={6}
+      totalChapters={8}
       prevChapter={{ path: '/learn/polarization', title: '偏振复用', icon: <Compass className="w-4 h-4" /> }}
+      nextChapter={{ path: '/learn/receiver', title: '光接收器', icon: <Radio className="w-4 h-4" /> }}
     >
       <section className="bg-lab-surface/30 border border-lab-border/50 rounded-2xl p-6">
         <h2 className="text-xl font-bold font-display text-lab-text mb-4 flex items-center gap-2">

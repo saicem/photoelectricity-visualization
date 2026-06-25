@@ -7,8 +7,8 @@ export default function LearnIQModulator() {
     <LearnLayout
       title="IQ 调制器"
       subtitle="正交幅度调制、星座图与高阶调制格式，现代光通信的核心技术"
-      currentIndex={3}
-      totalChapters={6}
+      currentIndex={4}
+      totalChapters={8}
       prevChapter={{ path: '/learn/mz-modulator', title: 'MZ 调制器', icon: <CircuitBoard className="w-4 h-4" /> }}
       nextChapter={{ path: '/learn/polarization', title: '偏振复用', icon: <Compass className="w-4 h-4" /> }}
     >
