@@ -109,14 +109,15 @@ export function calcDPIQ(
   const yIQAngle = Math.PI / 2 + yQuadraturePhase;
   const yPower = yIOut + yQOut + 2 * Math.sqrt(yIOut * yQOut) * Math.cos(yIQAngle) * Math.sign(ySymbol.i * ySymbol.q);
 
+  // 偏振旋转：使用旋转矩阵混合 X 和 Y 分量
   const cosRot = Math.cos(polRotation);
   const sinRot = Math.sin(polRotation);
-
   const xIAfterRot = xSymbol.i * cosRot - ySymbol.i * sinRot;
   const xQAfterRot = xSymbol.q * cosRot - ySymbol.q * sinRot;
   const yIAfterRot = xSymbol.i * sinRot + ySymbol.i * cosRot;
   const yQAfterRot = xSymbol.q * sinRot + ySymbol.q * cosRot;
 
+  // 考虑偏振旋转后的功率
   const xPowerAfterRot = xPower * cosRot * cosRot + yPower * sinRot * sinRot;
   const yPowerAfterRot = xPower * sinRot * sinRot + yPower * cosRot * cosRot;
 
