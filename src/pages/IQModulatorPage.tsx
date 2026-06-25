@@ -141,11 +141,11 @@ export default function IQModulatorPage() {
       </div>
 
       <div className="bg-lab-surface/30 border border-lab-border/50 rounded-2xl p-6">
-        <h3 className="font-display font-semibold text-lab-text mb-3">IQ 调制原理</h3>
+        <h3 className="font-display font-semibold text-lab-text mb-4">IQ 调制与解调原理</h3>
         <div className="grid md:grid-cols-2 gap-6 text-sm text-lab-muted leading-relaxed">
           <div>
             <p className="mb-2">
-              <span className="text-laser-purple font-semibold">正交调制：</span>
+              <span className="text-laser-purple font-semibold">调制（发送端）：</span>
               IQ 调制将两个独立的基带信号（I 路和 Q 路）分别调制到相位相差 90° 的两个载波上，
               然后合成为一个信号传输，频谱效率翻倍。
             </p>
@@ -155,13 +155,42 @@ export default function IQModulatorPage() {
           </div>
           <div>
             <p className="mb-2">
-              <span className="text-laser-cyan font-semibold">星座图：</span>
+              <span className="text-laser-cyan font-semibold">解调（接收端）：</span>
+              相干接收时，将接收信号分别与同相和正交的本振光相乘，
+              再经过低通滤波滤除二倍频分量，即可恢复出原始的 I 和 Q 信号。
+            </p>
+            <div className="bg-lab-bg/50 px-4 py-3 rounded-lg">
+              <MathRenderer>{'$$s(t) \\cdot 2\\cos(\\omega t) \\xrightarrow{\\text{低通}} I$$'}</MathRenderer>
+              <MathRenderer>{'$$s(t) \\cdot 2\\sin(\\omega t) \\xrightarrow{\\text{低通}} Q$$'}</MathRenderer>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="bg-lab-surface/30 border border-lab-border/50 rounded-2xl p-6">
+        <h3 className="font-display font-semibold text-lab-text mb-3">星座图与解调</h3>
+        <div className="grid md:grid-cols-2 gap-6 text-sm text-lab-muted leading-relaxed">
+          <div>
+            <p className="mb-2">
+              <span className="text-laser-green font-semibold">星座图：</span>
               以 I 为横轴、Q 为纵轴的复平面表示。每个符号对应星座图上的一个点，
               其位置决定了信号的幅度和相位。
             </p>
             <div className="bg-lab-bg/50 px-4 py-3 rounded-lg">
               <MathRenderer>{'$$A = \\sqrt{I^2 + Q^2}, \\quad \\phi = \\arctan\\left(\\frac{Q}{I}\\right)$$'}</MathRenderer>
             </div>
+          </div>
+          <div>
+            <p className="mb-2">
+              <span className="text-laser-red font-semibold">硬判决：</span>
+              接收端将收到的 I、Q 值与理想星座点比较，选择最近的星座点作为判决结果，
+              完成信号的恢复。噪声越大，误判的概率越高。
+            </p>
+            <p className="text-xs mt-2 text-lab-muted">
+              想了解噪声、SNR、BER 等接收器性能指标？去
+              <span className="text-laser-purple font-semibold"> 接收器 Playground </span>
+              深入学习！
+            </p>
           </div>
         </div>
       </div>

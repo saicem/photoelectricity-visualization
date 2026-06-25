@@ -20,6 +20,7 @@ const playgroundItems = [
   { path: '/playground/iq-modulator', label: 'IQ 调制器', icon: BarChart3 },
   { path: '/playground/polarization', label: '偏振复用', icon: Compass },
   { path: '/playground/dual-polarization', label: '双偏振 IQ', icon: BarChart3 },
+  { path: '/playground/receiver', label: '光接收器', icon: Radio },
 ];
 
 export default function Navbar() {

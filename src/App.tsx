@@ -17,6 +17,7 @@ import LearnDualPolarization from "@/pages/learn/LearnDualPolarization";
 import LearnReceiver from "@/pages/learn/LearnReceiver";
 
 import DualPolarizationPage from "@/pages/playground/DualPolarizationPage";
+import ReceiverPage from "@/pages/playground/ReceiverPage";
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -40,6 +41,7 @@ function AnimatedRoutes() {
           <Route path="/playground/iq-modulator" element={<IQModulatorPage />} />
           <Route path="/playground/polarization" element={<PolarizationPage />} />
           <Route path="/playground/dual-polarization" element={<DualPolarizationPage />} />
+          <Route path="/playground/receiver" element={<ReceiverPage />} />
 
           <Route path="/interference" element={<InterferencePage />} />
           <Route path="/mz-modulator" element={<MZModulatorPage />} />

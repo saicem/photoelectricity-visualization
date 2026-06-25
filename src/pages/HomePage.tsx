@@ -78,7 +78,7 @@ const playgroundModules = [
   },
   {
     title: 'IQ 调制器',
-    description: 'IQ 星座图与矢量分析，支持 QPSK/16QAM/64QAM。',
+    description: 'IQ 正交调制与解调原理，星座图与矢量分析。',
     icon: <BarChart3 className="w-7 h-7" />,
     color: '#a855f7',
     path: '/playground/iq-modulator',
@@ -96,6 +96,13 @@ const playgroundModules = [
     icon: <BarChart3 className="w-7 h-7" />,
     color: '#06b6d4',
     path: '/playground/dual-polarization',
+  },
+  {
+    title: '光接收器',
+    description: 'AWGN 信道噪声、接收星座图、BER 误码率分析。',
+    icon: <Radio className="w-7 h-7" />,
+    color: '#22c55e',
+    path: '/playground/receiver',
   },
 ];
 
