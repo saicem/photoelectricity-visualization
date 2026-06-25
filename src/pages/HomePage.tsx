@@ -137,7 +137,7 @@ export default function HomePage() {
         >
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-laser-cyan/10 border border-laser-cyan/20 text-laser-cyan text-sm font-medium mb-6">
             <Sparkles className="w-4 h-4" />
-            交互式光电可视化平台
+            光通信调制实验室
           </div>
         </motion.div>
 
@@ -156,7 +156,7 @@ export default function HomePage() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="text-lg text-lab-muted max-w-2xl mx-auto mb-8"
         >
-          从理论学习到动手实践，一站式掌握光调制技术。
+          从理论学习到动手实验，一站式掌握光通信调制技术。
           系统学习从光波基础到双偏振 IQ 调制的完整知识体系。
         </motion.p>
 

@@ -39,7 +39,7 @@ export default function Navbar() {
               <Waves className="w-5 h-5 text-white" />
             </div>
             <span className="font-display font-bold text-lg text-lab-text">
-              光电可视化
+              光通信调制实验室
             </span>
           </Link>
 
