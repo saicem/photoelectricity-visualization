@@ -6,6 +6,15 @@ import TermNote from '@/components/common/TermNote';
 import { ROUTES } from '@/constants/routes';
 import { CHAPTERS, TOTAL_CHAPTERS } from '@/constants/chapters';
 
+const pageSections = [
+  { id: 's-0', title: '从基础到高级：调制技术的演进' },
+  { id: 's-1', title: 'DP-IQ 调制器回顾' },
+  { id: 's-2', title: 'Nyquist 脉冲整形' },
+  { id: 's-3', title: '光 OFDM' },
+  { id: 's-4', title: '概率星座整形' },
+  { id: 's-5', title: '综合对比' },
+];
+
 export default function LearnDualPolarization() {
   const currentIndex = CHAPTERS.findIndex(c => c.path === ROUTES.LEARN.DUAL_POLARIZATION)
   const prevChapter = currentIndex > 0 ? { path: CHAPTERS[currentIndex - 1].path, title: CHAPTERS[currentIndex - 1].title, icon: <Zap className="w-4 h-4" /> } : undefined
@@ -19,8 +28,9 @@ export default function LearnDualPolarization() {
       partTitle="Part 3 · 调制器篇"
       prevChapter={prevChapter}
       nextChapter={nextChapter}
+      sections={pageSections}
     >
-      <LearnSection icon={<Zap className="w-5 h-5 text-laser-cyan" />} title="从基础到高级：调制技术的演进">
+      <LearnSection id="s-0" icon={<Zap className="w-5 h-5 text-laser-cyan" />} title="从基础到高级：调制技术的演进">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             前面几章我们学习了光波基础、MZ 调制器、IQ 正交调制和偏振复用。
@@ -53,7 +63,7 @@ export default function LearnDualPolarization() {
         </div>
       </LearnSection>
 
-      <LearnSection icon={<CircuitBoard className="w-5 h-5 text-laser-cyan" />} title="DP-IQ 调制器回顾">
+      <LearnSection id="s-1" icon={<CircuitBoard className="w-5 h-5 text-laser-cyan" />} title="DP-IQ 调制器回顾">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             <span className="text-laser-cyan font-semibold">DP-IQ 调制器</span>
@@ -109,7 +119,7 @@ export default function LearnDualPolarization() {
         </div>
       </LearnSection>
 
-      <LearnSection title="Nyquist 脉冲整形">
+      <LearnSection id="s-2" title="Nyquist 脉冲整形">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             在传统的<TermNote term="NRZ 调制" />调制中，矩形脉冲的频谱包含大量的
@@ -389,7 +399,7 @@ export default function LearnDualPolarization() {
         </div>
       </LearnSection>
 
-      <LearnSection title="综合对比">
+      <LearnSection id="s-5" title="综合对比">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <div className="overflow-x-auto">
             <table className="w-full text-sm border-collapse">

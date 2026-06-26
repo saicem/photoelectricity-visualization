@@ -6,6 +6,15 @@ import TermNote from '@/components/common/TermNote';
 import { ROUTES } from '@/constants/routes';
 import { CHAPTERS, TOTAL_CHAPTERS } from '@/constants/chapters';
 
+const pageSections = [
+  { id: 's-0', title: '光的偏振态' },
+  { id: 's-1', title: '斯托克斯矢量与庞加莱球' },
+  { id: 's-2', title: '偏振控制器件' },
+  { id: 's-3', title: '偏振复用 (PDM) 技术' },
+  { id: 's-4', title: '实际挑战：偏振模色散 (PMD) 与偏振相关损耗' },
+  { id: 's-5', title: '总结：从偏振复用走向高级调制' },
+];
+
 export default function LearnPolarization() {
   const currentIndex = CHAPTERS.findIndex(c => c.path === ROUTES.LEARN.POLARIZATION)
   const prevChapter = currentIndex > 0 ? { path: CHAPTERS[currentIndex - 1].path, title: CHAPTERS[currentIndex - 1].title, icon: <Compass className="w-4 h-4" /> } : undefined
@@ -20,8 +29,9 @@ export default function LearnPolarization() {
       playgroundPath={ROUTES.PLAYGROUND.POLARIZATION}
       prevChapter={prevChapter}
       nextChapter={nextChapter}
+      sections={pageSections}
     >
-      <LearnSection icon={<Compass className="w-5 h-5 text-laser-red" />} title="光的偏振态">
+      <LearnSection id="s-0" icon={<Compass className="w-5 h-5 text-laser-red" />} title="光的偏振态">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             光是横电磁波，电场矢量的振动方向与传播方向垂直。
@@ -67,7 +77,7 @@ export default function LearnPolarization() {
         </div>
       </LearnSection>
 
-      <LearnSection title="斯托克斯矢量与庞加莱球">
+      <LearnSection id="s-1" title="斯托克斯矢量与庞加莱球">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             <span className="text-laser-green font-semibold">斯托克斯矢量 (Stokes Vector)</span>
@@ -167,7 +177,7 @@ export default function LearnPolarization() {
         </div>
       </LearnSection>
 
-      <LearnSection title="偏振控制器件">
+      <LearnSection id="s-2" title="偏振控制器件">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             在光通信系统中，经常需要对光的偏振态进行控制和转换。
@@ -242,7 +252,7 @@ export default function LearnPolarization() {
         </div>
       </LearnSection>
 
-      <LearnSection title="偏振复用 (PDM) 技术">
+      <LearnSection id="s-3" title="偏振复用 (PDM) 技术">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             <span className="text-laser-purple font-semibold">偏振复用 (Polarization Division Multiplexing, PDM)</span>
@@ -281,7 +291,7 @@ export default function LearnPolarization() {
         </div>
       </LearnSection>
 
-      <LearnSection title="实际挑战：偏振模色散 (PMD)与偏振相关损耗">
+      <LearnSection id="s-4" title="实际挑战：偏振模色散 (PMD)与偏振相关损耗">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             在实际的光纤传输中，偏振态并不是一成不变的。光纤的不完善性
@@ -310,7 +320,7 @@ export default function LearnPolarization() {
         </div>
       </LearnSection>
 
-      <LearnSection title="总结：从偏振复用走向高级调制">
+      <LearnSection id="s-5" title="总结：从偏振复用走向高级调制">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             让我们回顾一下光调制技术的演进路径：

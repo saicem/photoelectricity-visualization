@@ -6,6 +6,14 @@ import TermNote from '@/components/common/TermNote';
 import { ROUTES } from '@/constants/routes';
 import { CHAPTERS, TOTAL_CHAPTERS } from '@/constants/chapters';
 
+const pageSections = [
+  { id: 's-0', title: '光波基本关系' },
+  { id: 's-1', title: '电场与磁场' },
+  { id: 's-2', title: '功率与能量' },
+  { id: 's-3', title: '电流、电压与电阻' },
+  { id: 's-4', title: '单位换算与常用常数表' },
+];
+
 export default function LearnPhysicsBasics() {
   const currentIndex = CHAPTERS.findIndex(c => c.path === ROUTES.LEARN.PHYSICS_BASICS)
   const nextChapter = currentIndex < TOTAL_CHAPTERS - 1 ? { path: CHAPTERS[currentIndex + 1].path, title: CHAPTERS[currentIndex + 1].title, icon: <BookOpen className="w-4 h-4" /> } : undefined
@@ -17,8 +25,9 @@ export default function LearnPhysicsBasics() {
       totalChapters={TOTAL_CHAPTERS}
       partTitle="Part 1 · 基础篇"
       nextChapter={nextChapter}
+      sections={pageSections}
     >
-      <LearnSection icon={<Lightbulb className="w-5 h-5 text-laser-cyan" />} title="光波基本关系">
+      <LearnSection id="s-0" icon={<Lightbulb className="w-5 h-5 text-laser-cyan" />} title="光波基本关系">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             光是一种电磁波，在真空中的传播速度为恒定值 <span className="text-laser-cyan font-mono">c ≈ 3×10⁸ m/s</span>。
@@ -42,7 +51,7 @@ export default function LearnPhysicsBasics() {
         </div>
       </LearnSection>
 
-      <LearnSection icon={<Zap className="w-5 h-5 text-laser-green" />} title="电场与磁场">
+      <LearnSection id="s-1" icon={<Zap className="w-5 h-5 text-laser-green" />} title="电场与磁场">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             电场强度 <span className="text-laser-cyan font-mono">E</span> 描述了空间中某点
@@ -71,7 +80,7 @@ export default function LearnPhysicsBasics() {
         </div>
       </LearnSection>
 
-      <LearnSection icon={<Gauge className="w-5 h-5 text-laser-purple" />} title="功率与能量">
+      <LearnSection id="s-2" icon={<Gauge className="w-5 h-5 text-laser-purple" />} title="功率与能量">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <h3 className="font-semibold text-lab-text">电功率</h3>
           <p>
@@ -134,7 +143,7 @@ export default function LearnPhysicsBasics() {
         </div>
       </LearnSection>
 
-      <LearnSection icon={<BatteryFull className="w-5 h-5 text-laser-red" />} title="电流、电压与电阻">
+      <LearnSection id="s-3" icon={<BatteryFull className="w-5 h-5 text-laser-red" />} title="电流、电压与电阻">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             这三个基本电学量通过<span className="text-laser-cyan font-semibold">欧姆定律</span>紧密联系在一起：
@@ -173,7 +182,7 @@ export default function LearnPhysicsBasics() {
         </div>
       </LearnSection>
 
-      <LearnSection icon={<Ban className="w-5 h-5 text-laser-orange" />} title="单位换算与常用常数表">
+      <LearnSection id="s-4" icon={<Ban className="w-5 h-5 text-laser-orange" />} title="单位换算与常用常数表">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>

@@ -7,6 +7,10 @@ import { glossaryData } from '@/data/glossaryData';
 import { ROUTES } from '@/constants/routes';
 import { CHAPTERS, TOTAL_CHAPTERS } from '@/constants/chapters';
 
+const pageSections = [
+  { id: 's-0', title: '光通信术语表' },
+];
+
 const iconMap: Record<string, React.ReactNode> = {
   Lightbulb: <Lightbulb className="w-5 h-5 text-laser-cyan" />,
   CircuitBoard: <CircuitBoard className="w-5 h-5 text-laser-purple" />,
@@ -63,8 +67,9 @@ export default function LearnGlossary() {
       totalChapters={TOTAL_CHAPTERS}
       partTitle="附录"
       prevChapter={prevChapter}
+      sections={pageSections}
     >
-      <LearnSection icon={<BookText className="w-5 h-5 text-laser-cyan" />} title="光通信术语表">
+      <LearnSection id="s-0" icon={<BookText className="w-5 h-5 text-laser-cyan" />} title="光通信术语表">
         <div className="relative mb-6">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-lab-muted" />
           <input

@@ -6,6 +6,15 @@ import TermNote from '@/components/common/TermNote';
 import { ROUTES } from '@/constants/routes';
 import { CHAPTERS, TOTAL_CHAPTERS } from '@/constants/chapters';
 
+const pageSections = [
+  { id: 's-0', title: '从自发辐射到受激辐射' },
+  { id: 's-1', title: '粒子数反转与光放大' },
+  { id: 's-2', title: '激光谐振腔' },
+  { id: 's-3', title: '激光器的类型' },
+  { id: 's-4', title: '激光的特性与应用' },
+  { id: 's-5', title: '下一步：干涉原理' },
+];
+
 export default function LearnLaser() {
   const currentIndex = CHAPTERS.findIndex(c => c.path === ROUTES.LEARN.LASER)
   const prevChapter = currentIndex > 0 ? { path: CHAPTERS[currentIndex - 1].path, title: CHAPTERS[currentIndex - 1].title, icon: <Flame className="w-4 h-4" /> } : undefined
@@ -19,8 +28,9 @@ export default function LearnLaser() {
       partTitle="Part 2 · 光源篇"
       prevChapter={prevChapter}
       nextChapter={nextChapter}
+      sections={pageSections}
     >
-      <LearnSection icon={<Flame className="w-5 h-5 text-laser-red" />} title="从自发辐射到受激辐射">
+      <LearnSection id="s-0" icon={<Flame className="w-5 h-5 text-laser-red" />} title="从自发辐射到受激辐射">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             激光器（Laser）是"受激辐射光放大"（Light Amplification by Stimulated Emission of Radiation）的缩写。
@@ -59,7 +69,7 @@ export default function LearnLaser() {
         </div>
       </LearnSection>
 
-      <LearnSection title="粒子数反转与光放大">
+      <LearnSection id="s-1" title="粒子数反转与光放大">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             在热平衡状态下，低能级的粒子数总是多于高能级的粒子数（玻尔兹曼分布），
@@ -171,7 +181,7 @@ export default function LearnLaser() {
         </div>
       </LearnSection>
 
-      <LearnSection title="激光谐振腔">
+      <LearnSection id="s-2" title="激光谐振腔">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             仅有粒子数反转还不能产生激光，因为自发辐射产生的光子是随机的。
@@ -225,7 +235,7 @@ export default function LearnLaser() {
         </div>
       </LearnSection>
 
-      <LearnSection title="激光器的类型">
+      <LearnSection id="s-3" title="激光器的类型">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             按增益介质分类，常见的激光器有：
@@ -313,7 +323,7 @@ export default function LearnLaser() {
         </div>
       </LearnSection>
 
-      <LearnSection title="下一步：干涉原理">
+      <LearnSection id="s-5" title="下一步：干涉原理">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             有了激光这个相干光源，我们就可以观察到清晰的干涉现象。

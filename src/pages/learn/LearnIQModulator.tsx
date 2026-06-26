@@ -6,6 +6,16 @@ import TermNote from '@/components/common/TermNote';
 import { ROUTES } from '@/constants/routes';
 import { CHAPTERS, TOTAL_CHAPTERS } from '@/constants/chapters';
 
+const pageSections = [
+  { id: 's-0', title: '什么是 IQ 调制？' },
+  { id: 's-1', title: 'IQ 调制器的结构' },
+  { id: 's-2', title: '星座图：直观理解 IQ 调制' },
+  { id: 's-3', title: '调制格式与频谱效率' },
+  { id: 's-4', title: 'IQ 调制器的偏置控制' },
+  { id: 's-5', title: 'IQ 不平衡及其影响' },
+  { id: 's-6', title: '下一步：偏振复用' },
+];
+
 export default function LearnIQModulator() {
   const currentIndex = CHAPTERS.findIndex(c => c.path === ROUTES.LEARN.IQ_MODULATOR)
   const prevChapter = currentIndex > 0 ? { path: CHAPTERS[currentIndex - 1].path, title: CHAPTERS[currentIndex - 1].title, icon: <BarChart3 className="w-4 h-4" /> } : undefined
@@ -48,7 +58,7 @@ export default function LearnIQModulator() {
         </div>
       </LearnSection>
 
-      <LearnSection title="IQ 调制器的结构">
+      <LearnSection id="s-1" title="IQ 调制器的结构">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             一个典型的光 <TermNote term="IQ 调制器" />由以下部分组成：
@@ -129,7 +139,7 @@ export default function LearnIQModulator() {
         </div>
       </LearnSection>
 
-      <LearnSection title="星座图：直观理解 IQ 调制">
+      <LearnSection id="s-2" title="星座图：直观理解 IQ 调制">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             <span className="text-laser-cyan font-semibold">星座图 (Constellation Diagram)</span>
@@ -240,7 +250,7 @@ export default function LearnIQModulator() {
         </div>
       </LearnSection>
 
-      <LearnSection title="调制格式与频谱效率">
+      <LearnSection id="s-3" title="调制格式与频谱效率">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             频谱效率 (Spectral Efficiency, SE) 是衡量调制技术优劣的重要指标，
@@ -439,7 +449,7 @@ export default function LearnIQModulator() {
         </div>
       </LearnSection>
 
-      <LearnSection title="下一步：偏振复用">
+      <LearnSection id="s-6" title="下一步：偏振复用">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             IQ 调制利用了光的幅度和相位维度，将频谱效率提升了数倍。

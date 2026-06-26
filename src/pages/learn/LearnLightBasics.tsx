@@ -6,6 +6,13 @@ import TermNote from '@/components/common/TermNote';
 import { ROUTES } from '@/constants/routes';
 import { CHAPTERS, TOTAL_CHAPTERS } from '@/constants/chapters';
 
+const pageSections = [
+  { id: 's-0', title: '光的本质：电磁波' },
+  { id: 's-1', title: '简谐光波的数学描述' },
+  { id: 's-2', title: '相位与相位差' },
+  { id: 's-3', title: '为什么需要光调制器？' },
+];
+
 export default function LearnLightBasics() {
   const currentIndex = CHAPTERS.findIndex(c => c.path === ROUTES.LEARN.LIGHT_BASICS)
   const prevChapter = currentIndex > 0 ? { path: CHAPTERS[currentIndex - 1].path, title: CHAPTERS[currentIndex - 1].title, icon: <BookOpen className="w-4 h-4" /> } : undefined
@@ -19,8 +26,9 @@ export default function LearnLightBasics() {
       partTitle="Part 1 · 基础篇"
       prevChapter={prevChapter}
       nextChapter={nextChapter}
+      sections={pageSections}
     >
-      <LearnSection icon={<Lightbulb className="w-5 h-5 text-laser-cyan" />} title="光的本质：电磁波">
+      <LearnSection id="s-0" icon={<Lightbulb className="w-5 h-5 text-laser-cyan" />} title="光的本质：电磁波">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             光是一种电磁波，由相互垂直的电场和磁场在空间中传播而形成。
@@ -51,7 +59,7 @@ export default function LearnLightBasics() {
         </div>
       </LearnSection>
 
-      <LearnSection title="简谐光波的数学描述">
+      <LearnSection id="s-1" title="简谐光波的数学描述">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             单色平面波可以用简谐函数来描述。在空间某一固定点，电场随时间的变化为：
@@ -90,7 +98,7 @@ export default function LearnLightBasics() {
         </div>
       </LearnSection>
 
-      <LearnSection title="相位与相位差">
+      <LearnSection id="s-2" title="相位与相位差">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             相位是波动的一个核心概念，它描述了振动在某一时刻所处的状态（波峰、波谷或中间状态）。
@@ -126,7 +134,7 @@ export default function LearnLightBasics() {
         </div>
       </LearnSection>
 
-      <LearnSection title="为什么需要光调制器？">
+      <LearnSection id="s-3" title="为什么需要光调制器？">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             在光通信系统中，我们需要将电信号加载到光载波上进行传输，

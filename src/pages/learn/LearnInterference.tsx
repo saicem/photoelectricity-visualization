@@ -6,6 +6,14 @@ import TermNote from '@/components/common/TermNote';
 import { ROUTES } from '@/constants/routes';
 import { CHAPTERS, TOTAL_CHAPTERS } from '@/constants/chapters';
 
+const pageSections = [
+  { id: 's-0', title: '波的叠加原理' },
+  { id: 's-1', title: '相干条件与相干长度' },
+  { id: 's-2', title: '双光束干涉' },
+  { id: 's-3', title: '分振幅干涉：马赫-曾德干涉仪' },
+  { id: 's-4', title: '从干涉到调制：关键洞察' },
+];
+
 export default function LearnInterference() {
   const currentIndex = CHAPTERS.findIndex(c => c.path === ROUTES.LEARN.INTERFERENCE)
   const prevChapter = currentIndex > 0 ? { path: CHAPTERS[currentIndex - 1].path, title: CHAPTERS[currentIndex - 1].title, icon: <Waves className="w-4 h-4" /> } : undefined
@@ -20,8 +28,9 @@ export default function LearnInterference() {
       playgroundPath={ROUTES.PLAYGROUND.INTERFERENCE}
       prevChapter={prevChapter}
       nextChapter={nextChapter}
+      sections={pageSections}
     >
-      <LearnSection icon={<Waves className="w-5 h-5 text-laser-cyan" />} title="波的叠加原理">
+      <LearnSection id="s-0" icon={<Waves className="w-5 h-5 text-laser-cyan" />} title="波的叠加原理">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             当两列或多列波在空间相遇时，在相遇区域内每一点的振动是各列波单独作用于该点所产生的振动的合成。
@@ -39,7 +48,7 @@ export default function LearnInterference() {
         </div>
       </LearnSection>
 
-      <LearnSection title="相干条件与相干长度">
+      <LearnSection id="s-1" title="相干条件与相干长度">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             要观察到稳定的干涉现象，两束光必须满足三个<span className="text-laser-cyan font-semibold">相干条件</span>：
@@ -128,7 +137,7 @@ export default function LearnInterference() {
         </div>
       </LearnSection>
 
-      <LearnSection title="双光束干涉">
+      <LearnSection id="s-2" title="双光束干涉">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             当两束<TermNote term="相干光" />（频率相同、振动方向相同、相位差恒定）相遇时，
@@ -173,7 +182,7 @@ export default function LearnInterference() {
         </div>
       </LearnSection>
 
-      <LearnSection title="分振幅干涉：马赫-曾德干涉仪">
+      <LearnSection id="s-3" title="分振幅干涉：马赫-曾德干涉仪">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             <span className="text-laser-purple font-semibold"><TermNote term="马赫-曾德干涉仪" /> (MZI)</span>
@@ -217,7 +226,7 @@ export default function LearnInterference() {
         </div>
       </LearnSection>
 
-      <LearnSection title="从干涉到调制：关键洞察">
+      <LearnSection id="s-4" title="从干涉到调制：关键洞察">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             干涉现象为我们提供了一个强大的工具：通过控制相位差来精确控制光强。

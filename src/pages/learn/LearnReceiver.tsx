@@ -6,6 +6,16 @@ import TermNote from '@/components/common/TermNote';
 import { ROUTES } from '@/constants/routes';
 import { CHAPTERS, TOTAL_CHAPTERS } from '@/constants/chapters';
 
+const pageSections = [
+  { id: 's-0', title: '光电效应与光电二极管' },
+  { id: 's-1', title: '直接检测 vs 相干接收' },
+  { id: 's-2', title: '相干接收的结构' },
+  { id: 's-3', title: '接收机噪声分析' },
+  { id: 's-4', title: '数字信号处理 (DSP)' },
+  { id: 's-5', title: '接收机性能指标' },
+  { id: 's-6', title: '总结：完整的光通信系统' },
+];
+
 export default function LearnReceiver() {
   const currentIndex = CHAPTERS.findIndex(c => c.path === ROUTES.LEARN.RECEIVER)
   const prevChapter = currentIndex > 0 ? { path: CHAPTERS[currentIndex - 1].path, title: CHAPTERS[currentIndex - 1].title, icon: <Radio className="w-4 h-4" /> } : undefined
@@ -20,8 +30,9 @@ export default function LearnReceiver() {
       playgroundPath={ROUTES.PLAYGROUND.RECEIVER}
       prevChapter={prevChapter}
       nextChapter={nextChapter}
+      sections={pageSections}
     >
-      <LearnSection icon={<Radio className="w-5 h-5 text-laser-green" />} title="光电效应与光电二极管">
+      <LearnSection id="s-0" icon={<Radio className="w-5 h-5 text-laser-green" />} title="光电效应与光电二极管">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             光接收器的核心功能是将光信号转换为电信号，这个过程基于
@@ -63,7 +74,7 @@ export default function LearnReceiver() {
         </div>
       </LearnSection>
 
-      <LearnSection title="直接检测 vs 相干接收">
+      <LearnSection id="s-1" title="直接检测 vs 相干接收">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <div className="grid md:grid-cols-2 gap-4">
             <div className="border border-laser-cyan/30 bg-laser-cyan/5 p-4 rounded-xl">
@@ -93,7 +104,7 @@ export default function LearnReceiver() {
         </div>
       </LearnSection>
 
-      <LearnSection title="相干接收的结构">
+      <LearnSection id="s-2" title="相干接收的结构">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             一个典型的偏振分集相干接收机包含以下部分：
@@ -193,7 +204,7 @@ export default function LearnReceiver() {
         </div>
       </LearnSection>
 
-      <LearnSection title="接收机噪声分析">
+      <LearnSection id="s-3" title="接收机噪声分析">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             光接收机的性能极限主要受噪声影响。了解噪声来源对于理解灵敏度限制至关重要。
@@ -262,7 +273,7 @@ export default function LearnReceiver() {
         </div>
       </LearnSection>
 
-      <LearnSection title="数字信号处理 (DSP)">
+      <LearnSection id="s-4" title="数字信号处理 (DSP)">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             现代相干光通信系统中，大部分信号处理工作都在数字域完成。
@@ -348,7 +359,7 @@ export default function LearnReceiver() {
         </div>
       </LearnSection>
 
-      <LearnSection title="接收机性能指标">
+      <LearnSection id="s-5" title="接收机性能指标">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <div className="grid md:grid-cols-3 gap-4">
             <div className="bg-lab-bg/50 p-4 rounded-xl">
@@ -388,7 +399,7 @@ export default function LearnReceiver() {
         </div>
       </LearnSection>
 
-      <LearnSection title="总结：完整的光通信系统">
+      <LearnSection id="s-6" title="总结：完整的光通信系统">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             至此，我们已经学习了一个完整光通信系统的各个组成部分：

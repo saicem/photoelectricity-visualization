@@ -6,6 +6,18 @@ import TermNote from '@/components/common/TermNote';
 import { ROUTES } from '@/constants/routes';
 import { CHAPTERS, TOTAL_CHAPTERS } from '@/constants/chapters';
 
+const pageSections = [
+  { id: 's-0', title: '电光效应：调制器的物理基础' },
+  { id: 's-1', title: 'MZ 调制器的的基本结构' },
+  { id: 's-2', title: '工作原理与转移函数' },
+  { id: 's-3', title: '三种调制模式' },
+  { id: 's-4', title: '工作点与偏置' },
+  { id: 's-5', title: '性能指标' },
+  { id: 's-6', title: '三种模式综合对比' },
+  { id: 's-7', title: '偏置控制与啁啾' },
+  { id: 's-8', title: '从 MZM 到 IQ 调制器' },
+];
+
 export default function LearnMZModulator() {
   const currentIndex = CHAPTERS.findIndex(c => c.path === ROUTES.LEARN.MZ_MODULATOR)
   const prevChapter = currentIndex > 0 ? { path: CHAPTERS[currentIndex - 1].path, title: CHAPTERS[currentIndex - 1].title, icon: <CircuitBoard className="w-4 h-4" /> } : undefined
@@ -20,8 +32,9 @@ export default function LearnMZModulator() {
       playgroundPath={ROUTES.PLAYGROUND.MZ_MODULATOR}
       prevChapter={prevChapter}
       nextChapter={nextChapter}
+      sections={pageSections}
     >
-      <LearnSection icon={<Zap className="w-5 h-5 text-laser-cyan" />} title="电光效应：调制器的物理基础">
+      <LearnSection id="s-0" icon={<Zap className="w-5 h-5 text-laser-cyan" />} title="电光效应：调制器的物理基础">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             MZ 调制器的核心物理机制是<span className="text-laser-cyan font-semibold">电光效应 (Electro-Optic Effect)</span>。
@@ -111,7 +124,7 @@ export default function LearnMZModulator() {
         </div>
       </LearnSection>
 
-      <LearnSection icon={<CircuitBoard className="w-5 h-5 text-laser-green" />} title="MZ 调制器的的基本结构">
+      <LearnSection id="s-1" icon={<CircuitBoard className="w-5 h-5 text-laser-green" />} title="MZ 调制器的的基本结构">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             <span className="text-laser-green font-semibold">马赫-曾德调制器 (MZM)</span>
@@ -210,7 +223,7 @@ export default function LearnMZModulator() {
         </div>
       </LearnSection>
 
-      <LearnSection title="工作原理与转移函数">
+      <LearnSection id="s-2" title="工作原理与转移函数">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             MZM 的核心原理是：通过施加电压改变相位调制臂的折射率，
@@ -336,7 +349,7 @@ export default function LearnMZModulator() {
         </div>
       </LearnSection>
 
-      <LearnSection title="工作点与偏置">
+      <LearnSection id="s-4" title="工作点与偏置">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             MZM 的转移函数是周期性的余弦平方曲线。直流偏置电压决定了调制器的静态工作点，
@@ -381,7 +394,7 @@ export default function LearnMZModulator() {
         </div>
       </LearnSection>
 
-      <LearnSection title="性能指标">
+      <LearnSection id="s-5" title="性能指标">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <div className="grid md:grid-cols-2 gap-4">
             <div className="bg-lab-bg/50 p-4 rounded-xl">
@@ -420,7 +433,7 @@ export default function LearnMZModulator() {
         </div>
       </LearnSection>
 
-      <LearnSection title="三种模式综合对比">
+      <LearnSection id="s-6" title="三种模式综合对比">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <div className="overflow-x-auto">
             <table className="w-full text-sm border-collapse">
@@ -475,7 +488,7 @@ export default function LearnMZModulator() {
         </div>
       </LearnSection>
 
-      <LearnSection title="偏置控制与啁啾">
+      <LearnSection id="s-7" title="偏置控制与啁啾">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <div className="grid md:grid-cols-2 gap-4">
             <div className="bg-lab-bg/50 p-4 rounded-xl">
@@ -507,7 +520,7 @@ export default function LearnMZModulator() {
         </div>
       </LearnSection>
 
-      <LearnSection title="从 MZM 到 IQ 调制器">
+      <LearnSection id="s-8" title="从 MZM 到 IQ 调制器">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             MZM 只能调制光的强度（幅度），但光作为电磁波，还有相位、偏振等维度可以利用。
