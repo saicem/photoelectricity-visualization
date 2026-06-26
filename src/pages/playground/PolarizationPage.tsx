@@ -1,14 +1,13 @@
-import { motion } from 'framer-motion';
-import { Compass, Info, ToggleLeft, ToggleRight, BookOpen } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Compass, Info, ToggleLeft, ToggleRight } from 'lucide-react';
 import { usePolarizationStore } from '@/stores/usePolarizationStore';
 import ControlPanel, { SliderControl, InfoItem } from '@/components/common/ControlPanel';
 import PolarizationCanvas from '@/components/polarization/PolarizationCanvas';
 import { calculateDOP } from '@/utils/polarizationMath';
 import MathRenderer from '@/components/common/MathRenderer';
+import PlaygroundLayout from '@/components/common/PlaygroundLayout';
+import { ROUTES } from '@/constants/routes';
 
 export default function PolarizationPage() {
-  const navigate = useNavigate();
   const {
     ex,
     ey,
@@ -36,37 +35,15 @@ export default function PolarizationPage() {
   const formatPiRad = (v: number) => (v / Math.PI).toFixed(2) + ' π rad';
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="space-y-6"
-    >
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-laser-red/20 text-laser-red flex items-center justify-center">
-            <Compass className="w-5 h-5" />
-          </div>
-          <div>
-            <h1 className="text-2xl font-bold font-display text-lab-text">XY 偏振复用</h1>
-            <p className="text-sm text-lab-muted">偏振态可视化与双通道复用技术</p>
-          </div>
-        </div>
-        <button
-          onClick={() => navigate('/learn/polarization')}
-          className="flex items-center gap-2 px-4 py-2 bg-lab-surface border border-lab-border rounded-xl text-sm text-lab-muted hover:text-laser-red hover:border-laser-red/30 transition-all"
-        >
-          <BookOpen className="w-4 h-4" />
-          学习原理
-        </button>
-      </div>
-
-      <div className="grid lg:grid-cols-[1fr_320px] gap-6">
-        <div className="bg-lab-surface/50 backdrop-blur-sm border border-lab-border rounded-2xl p-4 min-h-[400px]">
-          <PolarizationCanvas />
-        </div>
-
-        <div className="space-y-6">
+    <PlaygroundLayout
+      icon={<Compass className="w-5 h-5" />}
+      iconColor="#ff3366"
+      title="XY 偏振复用"
+      subtitle="偏振态可视化与双通道复用技术"
+      learnPath={ROUTES.LEARN.POLARIZATION}
+      canvas={<PolarizationCanvas />}
+      controlPanel={
+        <>
           <ControlPanel
             title="参数调节"
             isPlaying={isPlaying}
@@ -167,9 +144,9 @@ export default function PolarizationPage() {
               )}
             </div>
           </div>
-        </div>
-      </div>
-
+        </>
+      }
+    >
       <div className="bg-lab-surface/30 border border-lab-border/50 rounded-2xl p-6">
         <h3 className="font-display font-semibold text-lab-text mb-3">偏振复用原理</h3>
         <div className="grid md:grid-cols-2 gap-6 text-sm text-lab-muted leading-relaxed">
@@ -195,6 +172,6 @@ export default function PolarizationPage() {
           </div>
         </div>
       </div>
-    </motion.div>
+    </PlaygroundLayout>
   );
 }

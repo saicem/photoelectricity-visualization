@@ -1,24 +1,26 @@
-import { Zap, CircuitBoard, Compass, Radio } from 'lucide-react';
+import { Zap, CircuitBoard } from 'lucide-react';
 import LearnLayout from '@/components/common/LearnLayout';
+import LearnSection from '@/components/common/LearnSection';
 import MathRenderer from '@/components/common/MathRenderer';
 import TermNote from '@/components/common/TermNote';
+import { ROUTES } from '@/constants/routes';
+import { CHAPTERS, TOTAL_CHAPTERS } from '@/constants/chapters';
 
 export default function LearnDualPolarization() {
+  const currentIndex = CHAPTERS.findIndex(c => c.path === ROUTES.LEARN.DUAL_POLARIZATION)
+  const prevChapter = currentIndex > 0 ? { path: CHAPTERS[currentIndex - 1].path, title: CHAPTERS[currentIndex - 1].title, icon: <Zap className="w-4 h-4" /> } : undefined
+  const nextChapter = currentIndex < TOTAL_CHAPTERS - 1 ? { path: CHAPTERS[currentIndex + 1].path, title: CHAPTERS[currentIndex + 1].title, icon: <Zap className="w-4 h-4" /> } : undefined
   return (
     <LearnLayout
       title="高级调制"
       subtitle="从 DP-IQ 到 Nyquist 整形、OFDM 与概率星座整形，逼近香农极限的调制技术"
-      currentIndex={7}
-      totalChapters={10}
+      currentIndex={currentIndex}
+      totalChapters={TOTAL_CHAPTERS}
       partTitle="Part 3 · 调制器篇"
-      prevChapter={{ path: '/learn/polarization', title: '偏振复用', icon: <Compass className="w-4 h-4" /> }}
-      nextChapter={{ path: '/learn/receiver', title: '光接收器', icon: <Radio className="w-4 h-4" /> }}
+      prevChapter={prevChapter}
+      nextChapter={nextChapter}
     >
-      <section className="bg-lab-surface/30 border border-lab-border/50 rounded-2xl p-6">
-        <h2 className="text-xl font-bold font-display text-lab-text mb-4 flex items-center gap-2">
-          <Zap className="w-5 h-5 text-laser-cyan" />
-          从基础到高级：调制技术的演进
-        </h2>
+      <LearnSection icon={<Zap className="w-5 h-5 text-laser-cyan" />} title="从基础到高级：调制技术的演进">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             前面几章我们学习了光波基础、MZ 调制器、IQ 正交调制和偏振复用。
@@ -49,13 +51,9 @@ export default function LearnDualPolarization() {
             </div>
           </div>
         </div>
-      </section>
+      </LearnSection>
 
-      <section className="bg-lab-surface/30 border border-lab-border/50 rounded-2xl p-6">
-        <h2 className="text-xl font-bold font-display text-lab-text mb-4 flex items-center gap-2">
-          <CircuitBoard className="w-5 h-5 text-laser-cyan" />
-          DP-IQ 调制器回顾
-        </h2>
+      <LearnSection icon={<CircuitBoard className="w-5 h-5 text-laser-cyan" />} title="DP-IQ 调制器回顾">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             <span className="text-laser-cyan font-semibold">DP-IQ 调制器</span>
@@ -109,10 +107,9 @@ export default function LearnDualPolarization() {
           </div>
           <p>四路驱动信号 (I_x, Q_x, I_y, Q_y) 独立加载不同的数据，每个符号同时在幅度、相位和偏振三个维度上携带信息。</p>
         </div>
-      </section>
+      </LearnSection>
 
-      <section className="bg-lab-surface/30 border border-lab-border/50 rounded-2xl p-6">
-        <h2 className="text-xl font-bold font-display text-lab-text mb-4">Nyquist 脉冲整形</h2>
+      <LearnSection title="Nyquist 脉冲整形">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             在传统的<TermNote term="NRZ 调制" />调制中，矩形脉冲的频谱包含大量的
@@ -198,10 +195,9 @@ export default function LearnDualPolarization() {
             将<TermNote term="频谱效率" />推向理论极限 2 baud/Hz。
           </p>
         </div>
-      </section>
+      </LearnSection>
 
-      <section className="bg-lab-surface/30 border border-lab-border/50 rounded-2xl p-6">
-        <h2 className="text-xl font-bold font-display text-lab-text mb-4">光 OFDM</h2>
+      <LearnSection title="光 OFDM">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             <span className="text-laser-purple font-semibold"><TermNote term="OFDM" /></span>
@@ -275,10 +271,9 @@ export default function LearnDualPolarization() {
             </p>
           </div>
         </div>
-      </section>
+      </LearnSection>
 
-      <section className="bg-lab-surface/30 border border-lab-border/50 rounded-2xl p-6">
-        <h2 className="text-xl font-bold font-display text-lab-text mb-4">概率星座整形</h2>
+      <LearnSection title="概率星座整形">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             <span className="text-laser-red font-semibold"><TermNote term="概率星座整形 (PCS)" /></span>
@@ -392,10 +387,9 @@ export default function LearnDualPolarization() {
             </p>
           </div>
         </div>
-      </section>
+      </LearnSection>
 
-      <section className="bg-lab-surface/30 border border-lab-border/50 rounded-2xl p-6">
-        <h2 className="text-xl font-bold font-display text-lab-text mb-4">综合对比</h2>
+      <LearnSection title="综合对比">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <div className="overflow-x-auto">
             <table className="w-full text-sm border-collapse">
@@ -443,7 +437,7 @@ export default function LearnDualPolarization() {
             </p>
           </div>
         </div>
-      </section>
+      </LearnSection>
     </LearnLayout>
   );
 }

@@ -1,7 +1,4 @@
-export interface IQPoint {
-  i: number;
-  q: number;
-}
+import type { IQPoint, ModulationFormat } from '@/types';
 
 export function mzOutputPower(inputPower: number, phaseShift: number): number {
   return inputPower * Math.cos(phaseShift / 2) ** 2;
@@ -43,8 +40,6 @@ for (let i = -7; i <= 7; i += 2) {
     qam64Symbols.push({ i: i / 7, q: q / 7 });
   }
 }
-
-export type ModulationFormat = 'QPSK' | '16QAM' | '64QAM';
 
 export function getSymbols(format: ModulationFormat): IQPoint[] {
   switch (format) {

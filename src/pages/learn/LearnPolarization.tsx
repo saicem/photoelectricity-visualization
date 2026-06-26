@@ -1,25 +1,27 @@
-import { Compass, Zap, BarChart3 } from 'lucide-react';
+import { Compass } from 'lucide-react';
 import LearnLayout from '@/components/common/LearnLayout';
+import LearnSection from '@/components/common/LearnSection';
 import MathRenderer from '@/components/common/MathRenderer';
 import TermNote from '@/components/common/TermNote';
+import { ROUTES } from '@/constants/routes';
+import { CHAPTERS, TOTAL_CHAPTERS } from '@/constants/chapters';
 
 export default function LearnPolarization() {
+  const currentIndex = CHAPTERS.findIndex(c => c.path === ROUTES.LEARN.POLARIZATION)
+  const prevChapter = currentIndex > 0 ? { path: CHAPTERS[currentIndex - 1].path, title: CHAPTERS[currentIndex - 1].title, icon: <Compass className="w-4 h-4" /> } : undefined
+  const nextChapter = currentIndex < TOTAL_CHAPTERS - 1 ? { path: CHAPTERS[currentIndex + 1].path, title: CHAPTERS[currentIndex + 1].title, icon: <Compass className="w-4 h-4" /> } : undefined
   return (
     <LearnLayout
       title="偏振复用"
       subtitle="光的偏振态、斯托克斯矢量与偏振复用技术，让容量再翻一倍"
-      currentIndex={6}
-      totalChapters={10}
+      currentIndex={currentIndex}
+      totalChapters={TOTAL_CHAPTERS}
       partTitle="Part 3 · 调制器篇"
-      playgroundPath="/playground/polarization"
-      prevChapter={{ path: '/learn/iq-modulator', title: 'IQ 调制器', icon: <BarChart3 className="w-4 h-4" /> }}
-      nextChapter={{ path: '/learn/dual-polarization', title: '高级调制', icon: <Zap className="w-4 h-4" /> }}
+      playgroundPath={ROUTES.PLAYGROUND.POLARIZATION}
+      prevChapter={prevChapter}
+      nextChapter={nextChapter}
     >
-      <section className="bg-lab-surface/30 border border-lab-border/50 rounded-2xl p-6">
-        <h2 className="text-xl font-bold font-display text-lab-text mb-4 flex items-center gap-2">
-          <Compass className="w-5 h-5 text-laser-red" />
-          光的偏振态
-        </h2>
+      <LearnSection icon={<Compass className="w-5 h-5 text-laser-red" />} title="光的偏振态">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             光是横电磁波，电场矢量的振动方向与传播方向垂直。
@@ -63,12 +65,9 @@ export default function LearnPolarization() {
             </div>
           </div>
         </div>
-      </section>
+      </LearnSection>
 
-      <section className="bg-lab-surface/30 border border-lab-border/50 rounded-2xl p-6">
-        <h2 className="text-xl font-bold font-display text-lab-text mb-4">
-          斯托克斯矢量与庞加莱球
-        </h2>
+      <LearnSection title="斯托克斯矢量与庞加莱球">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             <span className="text-laser-green font-semibold">斯托克斯矢量 (Stokes Vector)</span>
@@ -166,12 +165,9 @@ export default function LearnPolarization() {
             </div>
           </div>
         </div>
-      </section>
+      </LearnSection>
 
-      <section className="bg-lab-surface/30 border border-lab-border/50 rounded-2xl p-6">
-        <h2 className="text-xl font-bold font-display text-lab-text mb-4">
-          偏振控制器件
-        </h2>
+      <LearnSection title="偏振控制器件">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             在光通信系统中，经常需要对光的偏振态进行控制和转换。
@@ -244,12 +240,9 @@ export default function LearnPolarization() {
             常用于需要偏振稳定性的应用，如光纤传感器和某些调制器。
           </p>
         </div>
-      </section>
+      </LearnSection>
 
-      <section className="bg-lab-surface/30 border border-lab-border/50 rounded-2xl p-6">
-        <h2 className="text-xl font-bold font-display text-lab-text mb-4">
-          偏振复用 (PDM) 技术
-        </h2>
+      <LearnSection title="偏振复用 (PDM) 技术">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             <span className="text-laser-purple font-semibold">偏振复用 (Polarization Division Multiplexing, PDM)</span>
@@ -286,12 +279,9 @@ export default function LearnPolarization() {
             在接收端，使用 <TermNote term="偏振分束器" /> (PBS) 将两个偏振态分开，分别进行检测和处理。
           </p>
         </div>
-      </section>
+      </LearnSection>
 
-      <section className="bg-lab-surface/30 border border-lab-border/50 rounded-2xl p-6">
-        <h2 className="text-xl font-bold font-display text-lab-text mb-4">
-          实际挑战：<TermNote term="偏振模色散 (PMD)" />与<TermNote term="偏振相关损耗" />
-        </h2>
+      <LearnSection title="实际挑战：偏振模色散 (PMD)与偏振相关损耗">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             在实际的光纤传输中，偏振态并不是一成不变的。光纤的不完善性
@@ -318,12 +308,9 @@ export default function LearnPolarization() {
             可以在接收端实时跟踪和补偿偏振态的变化，使偏振复用成为实用的技术。
           </p>
         </div>
-      </section>
+      </LearnSection>
 
-      <section className="bg-lab-surface/30 border border-lab-border/50 rounded-2xl p-6">
-        <h2 className="text-xl font-bold font-display text-lab-text mb-4">
-          总结：从偏振复用走向高级调制
-        </h2>
+      <LearnSection title="总结：从偏振复用走向高级调制">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             让我们回顾一下光调制技术的演进路径：
@@ -370,7 +357,7 @@ export default function LearnPolarization() {
             <span className="text-laser-cyan font-semibold">高级调制</span>。
           </p>
         </div>
-      </section>
+      </LearnSection>
     </LearnLayout>
   );
 }

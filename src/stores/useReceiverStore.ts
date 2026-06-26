@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { ModulationFormat } from '@/utils/modulationMath';
+import type { ModulationFormat } from '@/types';
 import { getSymbols, theoreticalBer } from '@/utils/modulationMath';
 
 export interface ReceivedPoint {

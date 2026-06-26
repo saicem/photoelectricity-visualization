@@ -5,6 +5,7 @@ import {
   BarChart3, Compass, Radio, BookText, ChevronDown, Menu, X, Home, Zap,
 } from 'lucide-react';
 import { useState } from 'react';
+import { ROUTES } from '@/constants/routes';
 
 interface LearnSubItem {
   path: string;
@@ -21,46 +22,46 @@ const learnParts: LearnPart[] = [
   {
     label: 'Part 1 · 基础篇',
     items: [
-      { path: '/learn/physics-basics', label: '基础物理定义', icon: BookOpen },
-      { path: '/learn/light-basics', label: '光波基础', icon: Lightbulb },
+      { path: ROUTES.LEARN.PHYSICS_BASICS, label: '基础物理定义', icon: BookOpen },
+      { path: ROUTES.LEARN.LIGHT_BASICS, label: '光波基础', icon: Lightbulb },
     ],
   },
   {
     label: 'Part 2 · 光源篇',
     items: [
-      { path: '/learn/laser', label: '激光器', icon: Flame },
+      { path: ROUTES.LEARN.LASER, label: '激光器', icon: Flame },
     ],
   },
   {
     label: 'Part 3 · 调制器篇',
     items: [
-      { path: '/learn/interference', label: '干涉原理', icon: Waves },
-      { path: '/learn/mz-modulator', label: 'MZ 调制器', icon: CircuitBoard },
-      { path: '/learn/iq-modulator', label: 'IQ 调制器', icon: BarChart3 },
-      { path: '/learn/polarization', label: '偏振复用', icon: Compass },
-      { path: '/learn/dual-polarization', label: '高级调制', icon: Zap },
+      { path: ROUTES.LEARN.INTERFERENCE, label: '干涉原理', icon: Waves },
+      { path: ROUTES.LEARN.MZ_MODULATOR, label: 'MZ 调制器', icon: CircuitBoard },
+      { path: ROUTES.LEARN.IQ_MODULATOR, label: 'IQ 调制器', icon: BarChart3 },
+      { path: ROUTES.LEARN.POLARIZATION, label: '偏振复用', icon: Compass },
+      { path: ROUTES.LEARN.DUAL_POLARIZATION, label: '高级调制', icon: Zap },
     ],
   },
   {
     label: 'Part 4 · 接收篇',
     items: [
-      { path: '/learn/receiver', label: '光接收器', icon: Radio },
+      { path: ROUTES.LEARN.RECEIVER, label: '光接收器', icon: Radio },
     ],
   },
   {
     label: '附录',
     items: [
-      { path: '/learn/glossary', label: '术语表', icon: BookText },
+      { path: ROUTES.LEARN.GLOSSARY, label: '术语表', icon: BookText },
     ],
   },
 ];
 
 const playgroundItems = [
-  { path: '/playground/interference', label: '光波干涉', icon: Waves },
-  { path: '/playground/mz-modulator', label: 'MZ 调制器', icon: CircuitBoard },
-  { path: '/playground/iq-modulator', label: 'IQ 调制器', icon: BarChart3 },
-  { path: '/playground/polarization', label: '偏振复用', icon: Compass },
-  { path: '/playground/receiver', label: '光接收器', icon: Radio },
+  { path: ROUTES.PLAYGROUND.INTERFERENCE, label: '光波干涉', icon: Waves },
+  { path: ROUTES.PLAYGROUND.MZ_MODULATOR, label: 'MZ 调制器', icon: CircuitBoard },
+  { path: ROUTES.PLAYGROUND.IQ_MODULATOR, label: 'IQ 调制器', icon: BarChart3 },
+  { path: ROUTES.PLAYGROUND.POLARIZATION, label: '偏振复用', icon: Compass },
+  { path: ROUTES.PLAYGROUND.RECEIVER, label: '光接收器', icon: Radio },
 ];
 
 function NavItem({ to, icon: Icon, label, active }: { to: string; icon: React.ElementType; label: string; active: boolean }) {

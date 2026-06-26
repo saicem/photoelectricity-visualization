@@ -2,7 +2,10 @@ import { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { BookOpen, Search, Lightbulb, CircuitBoard, Compass, BarChart3, Radio, Flame, Zap, BookText } from 'lucide-react';
 import LearnLayout from '@/components/common/LearnLayout';
+import LearnSection from '@/components/common/LearnSection';
 import { glossaryData } from '@/data/glossaryData';
+import { ROUTES } from '@/constants/routes';
+import { CHAPTERS, TOTAL_CHAPTERS } from '@/constants/chapters';
 
 const iconMap: Record<string, React.ReactNode> = {
   Lightbulb: <Lightbulb className="w-5 h-5 text-laser-cyan" />,
@@ -49,16 +52,19 @@ export default function LearnGlossary() {
 
   const totalTerms = glossaryData.reduce((sum, cat) => sum + cat.terms.length, 0);
 
+  const currentIndex = CHAPTERS.findIndex(c => c.path === ROUTES.LEARN.GLOSSARY)
+  const prevChapter = currentIndex > 0 ? { path: CHAPTERS[currentIndex - 1].path, title: CHAPTERS[currentIndex - 1].title, icon: <BookOpen className="w-4 h-4" /> } : undefined
+
   return (
     <LearnLayout
       title="光通信术语表"
       subtitle={`快速查阅光通信领域的核心概念和术语，共 ${totalTerms} 个词条`}
-      currentIndex={9}
-      totalChapters={10}
+      currentIndex={currentIndex}
+      totalChapters={TOTAL_CHAPTERS}
       partTitle="附录"
-      prevChapter={{ path: '/learn/receiver', title: '光接收器', icon: <Radio className="w-4 h-4" /> }}
+      prevChapter={prevChapter}
     >
-      <section className="bg-lab-surface/30 border border-lab-border/50 rounded-2xl p-6">
+      <LearnSection icon={<BookText className="w-5 h-5 text-laser-cyan" />} title="光通信术语表">
         <div className="relative mb-6">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-lab-muted" />
           <input
@@ -149,7 +155,7 @@ export default function LearnGlossary() {
             </div>
           )}
         </div>
-      </section>
+      </LearnSection>
     </LearnLayout>
   );
 }

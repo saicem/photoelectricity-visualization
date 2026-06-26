@@ -1,25 +1,27 @@
-import { BarChart3, Compass, CircuitBoard } from 'lucide-react';
+import { BarChart3 } from 'lucide-react';
 import LearnLayout from '@/components/common/LearnLayout';
+import LearnSection from '@/components/common/LearnSection';
 import MathRenderer from '@/components/common/MathRenderer';
 import TermNote from '@/components/common/TermNote';
+import { ROUTES } from '@/constants/routes';
+import { CHAPTERS, TOTAL_CHAPTERS } from '@/constants/chapters';
 
 export default function LearnIQModulator() {
+  const currentIndex = CHAPTERS.findIndex(c => c.path === ROUTES.LEARN.IQ_MODULATOR)
+  const prevChapter = currentIndex > 0 ? { path: CHAPTERS[currentIndex - 1].path, title: CHAPTERS[currentIndex - 1].title, icon: <BarChart3 className="w-4 h-4" /> } : undefined
+  const nextChapter = currentIndex < TOTAL_CHAPTERS - 1 ? { path: CHAPTERS[currentIndex + 1].path, title: CHAPTERS[currentIndex + 1].title, icon: <BarChart3 className="w-4 h-4" /> } : undefined
   return (
     <LearnLayout
       title="IQ 调制器"
       subtitle="正交幅度调制、星座图与高阶调制格式，现代光通信的核心技术"
-      currentIndex={5}
-      totalChapters={10}
+      currentIndex={currentIndex}
+      totalChapters={TOTAL_CHAPTERS}
       partTitle="Part 3 · 调制器篇"
-      playgroundPath="/playground/iq-modulator"
-      prevChapter={{ path: '/learn/mz-modulator', title: 'MZ 调制器', icon: <CircuitBoard className="w-4 h-4" /> }}
-      nextChapter={{ path: '/learn/polarization', title: '偏振复用', icon: <Compass className="w-4 h-4" /> }}
+      playgroundPath={ROUTES.PLAYGROUND.IQ_MODULATOR}
+      prevChapter={prevChapter}
+      nextChapter={nextChapter}
     >
-      <section className="bg-lab-surface/30 border border-lab-border/50 rounded-2xl p-6">
-        <h2 className="text-xl font-bold font-display text-lab-text mb-4 flex items-center gap-2">
-          <BarChart3 className="w-5 h-5 text-laser-purple" />
-          什么是 IQ 调制？
-        </h2>
+      <LearnSection icon={<BarChart3 className="w-5 h-5 text-laser-purple" />} title="什么是 IQ 调制？">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             <span className="text-laser-purple font-semibold">IQ 调制（<TermNote term="QAM 调制" />正交调制）</span>
@@ -44,12 +46,9 @@ export default function LearnIQModulator() {
             <MathRenderer>{'$$A = \\sqrt{I^2 + Q^2}, \\quad \\phi = -\\arctan\\left(\\frac{Q}{I}\\right)$$'}</MathRenderer>
           </div>
         </div>
-      </section>
+      </LearnSection>
 
-      <section className="bg-lab-surface/30 border border-lab-border/50 rounded-2xl p-6">
-        <h2 className="text-xl font-bold font-display text-lab-text mb-4">
-          IQ 调制器的结构
-        </h2>
+      <LearnSection title="IQ 调制器的结构">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             一个典型的光 <TermNote term="IQ 调制器" />由以下部分组成：
@@ -128,12 +127,9 @@ export default function LearnIQModulator() {
             </div>
           </div>
         </div>
-      </section>
+      </LearnSection>
 
-      <section className="bg-lab-surface/30 border border-lab-border/50 rounded-2xl p-6">
-        <h2 className="text-xl font-bold font-display text-lab-text mb-4">
-          星座图：直观理解 IQ 调制
-        </h2>
+      <LearnSection title="星座图：直观理解 IQ 调制">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             <span className="text-laser-cyan font-semibold">星座图 (Constellation Diagram)</span>
@@ -242,12 +238,9 @@ export default function LearnIQModulator() {
             在实际系统中，需要根据信道条件选择合适的调制格式。
           </p>
         </div>
-      </section>
+      </LearnSection>
 
-      <section className="bg-lab-surface/30 border border-lab-border/50 rounded-2xl p-6">
-        <h2 className="text-xl font-bold font-display text-lab-text mb-4">
-          调制格式与频谱效率
-        </h2>
+      <LearnSection title="调制格式与频谱效率">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             频谱效率 (Spectral Efficiency, SE) 是衡量调制技术优劣的重要指标，
@@ -301,12 +294,9 @@ export default function LearnIQModulator() {
             * 实际频谱效率还与脉冲整形、编码开销等因素有关。
           </p>
         </div>
-      </section>
+      </LearnSection>
 
-      <section className="bg-lab-surface/30 border border-lab-border/50 rounded-2xl p-6">
-        <h2 className="text-xl font-bold font-display text-lab-text mb-4">
-          IQ 调制器的偏置控制
-        </h2>
+      <LearnSection title="IQ 调制器的偏置控制">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             IQ 调制器有三个需要精确控制的偏置点，它们对调制器的性能至关重要：
@@ -354,12 +344,9 @@ export default function LearnIQModulator() {
             通过监测输出光的特性来动态调整偏置电压，维持最佳工作状态。
           </p>
         </div>
-      </section>
+      </LearnSection>
 
-      <section className="bg-lab-surface/30 border border-lab-border/50 rounded-2xl p-6">
-        <h2 className="text-xl font-bold font-display text-lab-text mb-4">
-          IQ 不平衡及其影响
-        </h2>
+      <LearnSection title="IQ 不平衡及其影响">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             实际 IQ 调制器中，I 和 Q 两路可能存在幅度或相位的不平衡，
@@ -450,12 +437,9 @@ export default function LearnIQModulator() {
             配合接收端 DSP 补偿，可以有效抑制其影响。
           </p>
         </div>
-      </section>
+      </LearnSection>
 
-      <section className="bg-lab-surface/30 border border-lab-border/50 rounded-2xl p-6">
-        <h2 className="text-xl font-bold font-display text-lab-text mb-4">
-          下一步：偏振复用
-        </h2>
+      <LearnSection title="下一步：偏振复用">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             IQ 调制利用了光的幅度和相位维度，将频谱效率提升了数倍。
@@ -472,7 +456,7 @@ export default function LearnIQModulator() {
             <span className="text-laser-cyan font-semibold">高级调制 (Advanced Modulation)</span>。
           </p>
         </div>
-      </section>
+      </LearnSection>
     </LearnLayout>
   );
 }

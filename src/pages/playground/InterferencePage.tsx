@@ -1,14 +1,13 @@
-import { motion } from 'framer-motion';
-import { Waves, Info, BookOpen } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Waves, Info } from 'lucide-react';
 import { useInterferenceStore } from '@/stores/useInterferenceStore';
 import ControlPanel, { SliderControl, InfoItem } from '@/components/common/ControlPanel';
 import InterferenceCanvas from '@/components/interference/InterferenceCanvas';
 import { wavelengthToColor, interferenceIntensity } from '@/utils/waveMath';
 import MathRenderer from '@/components/common/MathRenderer';
+import PlaygroundLayout from '@/components/common/PlaygroundLayout';
+import { ROUTES } from '@/constants/routes';
 
 export default function InterferencePage() {
-  const navigate = useNavigate();
   const {
     wavelength,
     amplitude1,
@@ -36,37 +35,15 @@ export default function InterferencePage() {
   const formatPiRad = (v: number) => (v / Math.PI).toFixed(2) + ' π rad';
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="space-y-6"
-    >
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-laser-cyan/20 text-laser-cyan flex items-center justify-center">
-            <Waves className="w-5 h-5" />
-          </div>
-          <div>
-            <h1 className="text-2xl font-bold font-display text-lab-text">光波干涉</h1>
-            <p className="text-sm text-lab-muted">双光束干涉的实时可视化</p>
-          </div>
-        </div>
-        <button
-          onClick={() => navigate('/learn/interference')}
-          className="flex items-center gap-2 px-4 py-2 bg-lab-surface border border-lab-border rounded-xl text-sm text-lab-muted hover:text-laser-cyan hover:border-laser-cyan/30 transition-all"
-        >
-          <BookOpen className="w-4 h-4" />
-          学习原理
-        </button>
-      </div>
-
-      <div className="grid lg:grid-cols-[1fr_320px] gap-6">
-        <div className="bg-lab-surface/50 backdrop-blur-sm border border-lab-border rounded-2xl p-4 min-h-[400px]">
-          <InterferenceCanvas />
-        </div>
-
-        <div className="space-y-6">
+    <PlaygroundLayout
+      icon={<Waves className="w-5 h-5" />}
+      iconColor="#00d4ff"
+      title="光波干涉"
+      subtitle="双光束干涉的实时可视化"
+      learnPath={ROUTES.LEARN.INTERFERENCE}
+      canvas={<InterferenceCanvas />}
+      controlPanel={
+        <>
           <ControlPanel
             title="参数调节"
             isPlaying={isPlaying}
@@ -128,9 +105,9 @@ export default function InterferencePage() {
               <InfoItem label="条纹可见度" value={(visibility * 100).toFixed(1) + '%'} color="#a855f7" />
             </div>
           </div>
-        </div>
-      </div>
-
+        </>
+      }
+    >
       <div className="bg-lab-surface/30 border border-lab-border/50 rounded-2xl p-6">
         <h3 className="font-display font-semibold text-lab-text mb-3">干涉原理</h3>
         <div className="grid md:grid-cols-2 gap-6 text-sm text-lab-muted leading-relaxed">
@@ -154,6 +131,6 @@ export default function InterferencePage() {
           </div>
         </div>
       </div>
-    </motion.div>
+    </PlaygroundLayout>
   );
 }

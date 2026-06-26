@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { useMZStore } from '@/stores/useMZStore';
 import { mzOutputPower } from '@/utils/modulationMath';
 import { useAnimationFrame } from '@/hooks/useAnimationFrame';
+import { setupCanvas, drawGrid } from '@/lib/utils';
 
 export default function MZCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -26,31 +27,15 @@ export default function MZCanvas() {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const rect = canvas.getBoundingClientRect();
-    const dpr = window.devicePixelRatio || 1;
-    const W = rect.width;
-    const H = rect.height;
-    canvas.width = W * dpr;
-    canvas.height = H * dpr;
-    ctx.scale(dpr, dpr);
+    const dim = setupCanvas(canvas, ctx);
+    if (!dim) return;
+    const W = dim.width;
+    const H = dim.height;
 
     ctx.fillStyle = '#0a0e17';
     ctx.fillRect(0, 0, W, H);
 
-    ctx.strokeStyle = 'rgba(51, 65, 85, 0.2)';
-    ctx.lineWidth = 1;
-    for (let x = 0; x < W; x += 30) {
-      ctx.beginPath();
-      ctx.moveTo(x, 0);
-      ctx.lineTo(x, H);
-      ctx.stroke();
-    }
-    for (let y = 0; y < H; y += 30) {
-      ctx.beginPath();
-      ctx.moveTo(0, y);
-      ctx.lineTo(W, y);
-      ctx.stroke();
-    }
+    drawGrid(ctx, W, H, 30);
 
     const centerY = H / 2;
     const inputX = 40;

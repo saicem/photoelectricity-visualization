@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, BookOpen, ChevronRight, FlaskConical } from 'lucide-react';
 
 export interface LearnChapter {
@@ -102,9 +102,9 @@ export default function LearnLayout({
       <div className="mt-12 grid grid-cols-2 gap-4">
         <div>
           {prevChapter && (
-            <button
-              onClick={() => { window.scrollTo(0, 0); navigate(prevChapter.path); }}
-              className="w-full text-left block p-5 bg-lab-surface/50 border border-lab-border rounded-xl hover:border-laser-cyan/50 transition-all group"
+            <Link
+              to={prevChapter.path}
+              className="block p-5 bg-lab-surface/50 border border-lab-border rounded-xl hover:border-laser-cyan/50 transition-all group"
             >
               <div className="flex items-center gap-2 text-sm text-lab-muted mb-2">
                 <ArrowLeft className="w-4 h-4" />
@@ -114,14 +114,14 @@ export default function LearnLayout({
                 {prevChapter.icon}
                 {prevChapter.title}
               </div>
-            </button>
+            </Link>
           )}
         </div>
         <div className="text-right">
           {nextChapter && (
-            <button
-              onClick={() => { window.scrollTo(0, 0); navigate(nextChapter.path); }}
-              className="w-full text-right block p-5 bg-lab-surface/50 border border-lab-border rounded-xl hover:border-laser-purple/50 transition-all group"
+            <Link
+              to={nextChapter.path}
+              className="block p-5 bg-lab-surface/50 border border-lab-border rounded-xl hover:border-laser-purple/50 transition-all group"
             >
               <div className="flex items-center justify-end gap-2 text-sm text-lab-muted mb-2">
                 下一章
@@ -131,7 +131,7 @@ export default function LearnLayout({
                 {nextChapter.title}
                 {nextChapter.icon}
               </div>
-            </button>
+            </Link>
           )}
         </div>
       </div>

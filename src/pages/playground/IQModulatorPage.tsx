@@ -1,15 +1,14 @@
-import { motion } from 'framer-motion';
-import { BarChart3, Info, Shuffle, BookOpen } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { BarChart3, Info, Shuffle } from 'lucide-react';
 import { useIQStore } from '@/stores/useIQStore';
 import ControlPanel, { SliderControl, SelectControl, InfoItem } from '@/components/common/ControlPanel';
 import IQCanvas from '@/components/iq-modulator/IQCanvas';
 import { getSymbols, iqAmplitude } from '@/utils/modulationMath';
-import type { ModulationFormat } from '@/utils/modulationMath';
+import type { ModulationFormat } from '@/types';
 import MathRenderer from '@/components/common/MathRenderer';
+import PlaygroundLayout from '@/components/common/PlaygroundLayout';
+import { ROUTES } from '@/constants/routes';
 
 export default function IQModulatorPage() {
-  const navigate = useNavigate();
   const {
     modulationFormat,
     symbolIndex,
@@ -37,37 +36,15 @@ export default function IQModulatorPage() {
   const signalValue = symbolIndex.toString(2).padStart(bitsPerSymbol, '0');
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="space-y-6"
-    >
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-laser-purple/20 text-laser-purple flex items-center justify-center">
-            <BarChart3 className="w-5 h-5" />
-          </div>
-          <div>
-            <h1 className="text-2xl font-bold font-display text-lab-text">IQ 调制器</h1>
-            <p className="text-sm text-lab-muted">同相正交调制与星座图分析</p>
-          </div>
-        </div>
-        <button
-          onClick={() => navigate('/learn/iq-modulator')}
-          className="flex items-center gap-2 px-4 py-2 bg-lab-surface border border-lab-border rounded-xl text-sm text-lab-muted hover:text-laser-purple hover:border-laser-purple/30 transition-all"
-        >
-          <BookOpen className="w-4 h-4" />
-          学习原理
-        </button>
-      </div>
-
-      <div className="grid lg:grid-cols-[1fr_320px] gap-6">
-        <div className="bg-lab-surface/50 backdrop-blur-sm border border-lab-border rounded-2xl p-4 min-h-[900px]">
-          <IQCanvas />
-        </div>
-
-        <div className="space-y-6">
+    <PlaygroundLayout
+      icon={<BarChart3 className="w-5 h-5" />}
+      iconColor="#a855f7"
+      title="IQ 调制器"
+      subtitle="同相正交调制与星座图分析"
+      learnPath={ROUTES.LEARN.IQ_MODULATOR}
+      canvas={<IQCanvas />}
+      controlPanel={
+        <>
           <ControlPanel
             title="参数调节"
             isPlaying={isPlaying}
@@ -161,9 +138,9 @@ export default function IQModulatorPage() {
               <InfoItem label="每符号比特" value={bitsPerSymbol + ' bit'} color="#ff3366" />
             </div>
           </div>
-        </div>
-      </div>
-
+        </>
+      }
+    >
       <div className="bg-lab-surface/30 border border-lab-border/50 rounded-2xl p-6">
         <h3 className="font-display font-semibold text-lab-text mb-4">IQ 调制与解调原理</h3>
         <div className="grid md:grid-cols-2 gap-6 text-sm text-lab-muted leading-relaxed">
@@ -221,6 +198,6 @@ export default function IQModulatorPage() {
           </div>
         </div>
       </div>
-    </motion.div>
+    </PlaygroundLayout>
   );
 }

@@ -1,6 +1,6 @@
 # 光电通讯实验室 — 产品规格
 
-> 基于 React 的交互式光通信学习与实验平台。
+> 基于 React 的交互式光通信学习与实验平台，支持 PWA 离线访问。
 
 ## 产品概述
 
@@ -17,6 +17,7 @@
 - 将抽象的光电效应原理可视化
 - 通过交互式参数调节增强学习体验
 - 提供直观的调制器工作流程演示
+- 支持 PWA 安装到桌面，离线可用
 
 ---
 
@@ -25,8 +26,8 @@
 | 文档 | 内容 |
 |------|------|
 | [architecture.md](architecture.md) | 技术选型、架构图、性能优化 |
-| [routes.md](routes.md) | 完整路由定义 |
-| [components.md](components.md) | 组件目录结构与说明 |
+| [routes.md](routes.md) | 完整路由定义（含常量管理说明） |
+| [components.md](components.md) | 组件目录结构与公共组件说明 |
 | [stores.md](stores.md) | 各模块状态管理接口 |
 | [design.md](design.md) | UI 设计风格、配色、字体 |
 | [math.md](math.md) | 核心数学函数与公式 |
@@ -38,18 +39,36 @@
 
 ### Learn · 学习路径
 
-共 9 个章节，从光波基础到光接收器，形成完整学习路径：
+共 10 个章节，按 4 个 Part + 附录分组：
 
+**Part 1 · 基础篇**
 | 章节 | 内容 |
 |------|------|
-| 光波基础 | 光的本质、电磁波模型、波长与频率 |
-| 激光器 | 受激辐射、粒子数反转、谐振腔原理 |
-| 干涉原理 | 双光束干涉、相干条件、条纹可见度 |
-| MZ 调制器 | 马赫-曾德干涉仪、电光效应、强度调制、单臂/双臂/推挽三种模式 |
-| IQ 调制器 | 正交幅度调制、星座图、调制格式 |
+| 基础物理定义 | 光波基本关系、电场与磁场、功率与能量、电流电压与电阻、单位常数表 |
+| 光波基础 | 光的本质、电磁波模型、波长与频率、相位与相位差 |
+
+**Part 2 · 光源篇**
+| 章节 | 内容 |
+|------|------|
+| 激光器 | 受激辐射、粒子数反转、谐振腔原理、激光器类型 |
+
+**Part 3 · 调制器篇**
+| 章节 | 内容 |
+|------|------|
+| 干涉原理 | 双光束干涉、相干条件、条纹可见度、MZI 结构 |
+| MZ 调制器 | 马赫-曾德干涉仪、电光效应、三种调制模式、转移函数 |
+| IQ 调制器 | 正交幅度调制、星座图、QPSK/16QAM/64QAM |
 | 偏振复用 | 斯托克斯矢量、庞加莱球、偏振态 |
 | 高级调制 | Nyquist 脉冲整形、OFDM、概率星座整形 |
-| 光接收器 | 相干接收、SNR、BER、EVM |
+
+**Part 4 · 接收篇**
+| 章节 | 内容 |
+|------|------|
+| 光接收器 | 相干接收、SNR、BER、EVM、DSP |
+
+**附录**
+| 章节 | 内容 |
+|------|------|
 | 术语表 | 70+ 光通信术语，支持搜索与分类筛选 |
 
 ### Playground · 交互实验
@@ -64,6 +83,14 @@
 | 偏振复用 | 庞加莱球与偏振椭圆，斯托克斯参数实时计算 |
 | 光接收器 | AWGN 信道、BER vs SNR 曲线、EVM 计算 |
 
+### PWA 支持
+
+- 使用 `vite-plugin-pwa` 生成 Service Worker
+- Workbox 预缓存策略（30 个资源文件，约 1.3 MB）
+- Google Fonts CacheFirst 运行时缓存
+- Web App Manifest 配置：应用名称"光电通讯实验室"，主题色 `#0A0E17`，`standalone` 显示模式
+- 支持 iOS 添加到主屏幕（apple-touch-icon, apple-mobile-web-app meta 标签）
+
 ### 核心交互功能
 
 1. **参数实时调节**：通过滑块控制参数，实时更新可视化效果
@@ -77,12 +104,22 @@
 
 | 技术 | 用途 |
 |------|------|
-| React 18 + TypeScript | UI 框架 + 类型安全 |
-| Vite 5 | 构建工具 |
-| Tailwind CSS | 样式方案 |
-| Zustand | 状态管理 |
-| React Router v6 (HashRouter) | 路由管理 |
+| React 19 + TypeScript | UI 框架 + 类型安全 |
+| Vite 8 | 构建工具 |
+| Tailwind CSS v4 | 样式方案 |
+| Zustand 5 | 状态管理 |
+| React Router v7 (HashRouter) | 路由管理 |
 | Framer Motion | 动画库 |
 | KaTeX | 数学公式渲染 |
 | Canvas 2D + requestAnimationFrame | 可视化渲染 |
 | Lucide React | 图标库 |
+| vite-plugin-pwa + Workbox | PWA 离线支持 |
+
+---
+
+## 开发规范
+
+- **包管理器**：仅使用 pnpm
+- **提交格式**：遵循 Conventional Commits
+- **类型覆盖**：TypeScript strict mode 未启用
+- **代码风格**：使用 Tailwind CSS v4 工具类，Zustand 状态管理

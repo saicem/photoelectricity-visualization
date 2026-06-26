@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { useInterferenceStore } from '@/stores/useInterferenceStore';
 import { sineWave, superposeWaves, wavelengthToColor } from '@/utils/waveMath';
 import { useAnimationFrame } from '@/hooks/useAnimationFrame';
+import { setupCanvas, drawGrid } from '@/lib/utils';
 
 export default function InterferenceCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -26,31 +27,15 @@ export default function InterferenceCanvas() {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const rect = canvas.getBoundingClientRect();
-    const dpr = window.devicePixelRatio || 1;
-    const W = rect.width;
-    const H = rect.height;
-    canvas.width = W * dpr;
-    canvas.height = H * dpr;
-    ctx.scale(dpr, dpr);
+    const dim = setupCanvas(canvas, ctx);
+    if (!dim) return;
+    const W = dim.width;
+    const H = dim.height;
 
     ctx.fillStyle = '#0a0e17';
     ctx.fillRect(0, 0, W, H);
 
-    ctx.strokeStyle = 'rgba(51, 65, 85, 0.3)';
-    ctx.lineWidth = 1;
-    for (let x = 0; x < W; x += 40) {
-      ctx.beginPath();
-      ctx.moveTo(x, 0);
-      ctx.lineTo(x, H);
-      ctx.stroke();
-    }
-    for (let y = 0; y < H; y += 40) {
-      ctx.beginPath();
-      ctx.moveTo(0, y);
-      ctx.lineTo(W, y);
-      ctx.stroke();
-    }
+    drawGrid(ctx, W, H, 40, 'rgba(51, 65, 85, 0.3)');
 
     const centerY = H / 2;
     const waveY1 = centerY - 80;

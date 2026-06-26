@@ -1,14 +1,13 @@
-import { motion } from 'framer-motion';
-import { CircuitBoard, Info, BookOpen } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { CircuitBoard, Info } from 'lucide-react';
 import { useMZStore } from '@/stores/useMZStore';
 import ControlPanel, { SliderControl, SelectControl, InfoItem } from '@/components/common/ControlPanel';
 import MZCanvas from '@/components/mz-modulator/MZCanvas';
 import { mzOutputPower, mzTransferFunction } from '@/utils/modulationMath';
 import MathRenderer from '@/components/common/MathRenderer';
+import PlaygroundLayout from '@/components/common/PlaygroundLayout';
+import { ROUTES } from '@/constants/routes';
 
 export default function MZModulatorPage() {
-  const navigate = useNavigate();
   const {
     modulationDepth,
     modulationDepth2,
@@ -58,41 +57,19 @@ export default function MZModulatorPage() {
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="space-y-6"
-    >
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-laser-green/20 text-laser-green flex items-center justify-center">
-            <CircuitBoard className="w-5 h-5" />
-          </div>
-          <div>
-            <h1 className="text-2xl font-bold font-display text-lab-text">MZ 调制器</h1>
-            <p className="text-sm text-lab-muted">
-              {mode === 'single-arm' && '仅调制下臂，上臂为参考臂'}
-              {mode === 'dual-arm' && '两臂独立调制，分别施加不同驱动信号'}
-              {mode === 'push-pull' && '两臂施加反相信号 (V, -V)，相位差加倍'}
-            </p>
-          </div>
-        </div>
-        <button
-          onClick={() => navigate('/learn/mz-modulator')}
-          className="flex items-center gap-2 px-4 py-2 bg-lab-surface border border-lab-border rounded-xl text-sm text-lab-muted hover:text-laser-green hover:border-laser-green/30 transition-all"
-        >
-          <BookOpen className="w-4 h-4" />
-          学习原理
-        </button>
-      </div>
-
-      <div className="grid lg:grid-cols-[1fr_320px] gap-6">
-        <div className="bg-lab-surface/50 backdrop-blur-sm border border-lab-border rounded-2xl p-4 min-h-[400px]">
-          <MZCanvas />
-        </div>
-
-        <div className="space-y-6">
+    <PlaygroundLayout
+      icon={<CircuitBoard className="w-5 h-5" />}
+      iconColor="#22c55e"
+      title="MZ 调制器"
+      subtitle={
+        mode === 'single-arm' ? '仅调制下臂，上臂为参考臂' :
+        mode === 'dual-arm' ? '两臂独立调制，分别施加不同驱动信号' :
+        '两臂施加反相信号 (V, -V)，相位差加倍'
+      }
+      learnPath={ROUTES.LEARN.MZ_MODULATOR}
+      canvas={<MZCanvas />}
+      controlPanel={
+        <>
           <ControlPanel
             title="参数调节"
             isPlaying={isPlaying}
@@ -176,9 +153,9 @@ export default function MZModulatorPage() {
               <InfoItem label="消光比" value={extinctionRatio.toFixed(1) + ' dB'} color="#ff3366" />
             </div>
           </div>
-        </div>
-      </div>
-
+        </>
+      }
+    >
       <div className="bg-lab-surface/30 border border-lab-border/50 rounded-2xl p-6">
         <h3 className="font-display font-semibold text-lab-text mb-3">工作原理</h3>
         <div className="grid md:grid-cols-2 gap-6 text-sm text-lab-muted leading-relaxed">
@@ -348,6 +325,6 @@ export default function MZModulatorPage() {
           </div>
         </div>
       </div>
-    </motion.div>
+    </PlaygroundLayout>
   );
 }

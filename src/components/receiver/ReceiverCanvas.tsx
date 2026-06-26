@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useReceiverStore, addAwgnNoise, nearestSymbol } from '@/stores/useReceiverStore';
 import { getSymbols, iqAmplitude, iqPhase, iqModulation, generateBerCurve, theoreticalBer } from '@/utils/modulationMath';
-import type { ModulationFormat } from '@/utils/modulationMath';
+import type { ModulationFormat } from '@/types';
 import { useAnimationFrame } from '@/hooks/useAnimationFrame';
 
 export default function ReceiverCanvas() {

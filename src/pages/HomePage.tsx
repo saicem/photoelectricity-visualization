@@ -1,6 +1,8 @@
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { BookOpen, FlaskConical, Waves, CircuitBoard, BarChart3, Compass, Lightbulb, Sparkles, Zap, Target, ArrowRight, Flame, Radio, BookText, Library } from 'lucide-react';
+import { ROUTES } from '@/constants/routes';
+import { CHAPTERS } from '@/constants/chapters';
 
 const parts = [
   {
@@ -12,14 +14,14 @@ const parts = [
         description: '回顾光通信中常用的物理量：光、场、功率、能量、电流、电压与电阻。',
         icon: <BookOpen className="w-7 h-7" />,
         color: '#6366f1',
-        path: '/learn/physics-basics',
+        path: ROUTES.LEARN.PHYSICS_BASICS,
       },
       {
         title: '光波基础',
         description: '从光的本质出发，理解电磁波、波长、频率与相位的基本概念。',
         icon: <Lightbulb className="w-7 h-7" />,
         color: '#00d4ff',
-        path: '/learn/light-basics',
+        path: ROUTES.LEARN.LIGHT_BASICS,
       },
     ],
   },
@@ -32,7 +34,7 @@ const parts = [
         description: '受激辐射、激光谐振腔与常见激光器类型，光通信的光源基础。',
         icon: <Flame className="w-7 h-7" />,
         color: '#ff4444',
-        path: '/learn/laser',
+        path: ROUTES.LEARN.LASER,
       },
     ],
   },
@@ -45,35 +47,35 @@ const parts = [
         description: '理解光波的叠加与干涉现象，这是光调制器的物理基础。',
         icon: <Waves className="w-7 h-7" />,
         color: '#00ff88',
-        path: '/learn/interference',
+        path: ROUTES.LEARN.INTERFERENCE,
       },
       {
         title: 'MZ 调制器',
         description: '马赫-曾德电光调制器的工作原理、结构与性能指标。',
         icon: <CircuitBoard className="w-7 h-7" />,
         color: '#a855f7',
-        path: '/learn/mz-modulator',
+        path: ROUTES.LEARN.MZ_MODULATOR,
       },
       {
         title: 'IQ 调制器',
         description: '正交幅度调制、星座图与高阶调制格式，现代光通信的核心。',
         icon: <BarChart3 className="w-7 h-7" />,
         color: '#f59e0b',
-        path: '/learn/iq-modulator',
+        path: ROUTES.LEARN.IQ_MODULATOR,
       },
       {
         title: '偏振复用',
         description: '光的偏振态、斯托克斯矢量与偏振复用技术。',
         icon: <Compass className="w-7 h-7" />,
         color: '#ff3366',
-        path: '/learn/polarization',
+        path: ROUTES.LEARN.POLARIZATION,
       },
       {
         title: '高级调制',
         description: 'Nyquist 脉冲整形、OFDM、概率星座整形等现代高速光通信关键技术。',
         icon: <Zap className="w-7 h-7" />,
         color: '#06b6d4',
-        path: '/learn/dual-polarization',
+        path: ROUTES.LEARN.DUAL_POLARIZATION,
       },
     ],
   },
@@ -86,7 +88,7 @@ const parts = [
         description: '光电二极管、相干接收与数字信号处理，光信号的检测与恢复。',
         icon: <Radio className="w-7 h-7" />,
         color: '#22c55e',
-        path: '/learn/receiver',
+        path: ROUTES.LEARN.RECEIVER,
       },
     ],
   },
@@ -99,7 +101,7 @@ const parts = [
         description: '涵盖所有章节的核心术语，支持搜索与分类浏览。',
         icon: <BookText className="w-7 h-7" />,
         color: '#94a3b8',
-        path: '/learn/glossary',
+        path: ROUTES.LEARN.GLOSSARY,
       },
     ],
   },
@@ -111,35 +113,35 @@ const playgroundModules = [
     description: '双光束干涉的实时可视化，调节波长、振幅和相位差。',
     icon: <Waves className="w-7 h-7" />,
     color: '#00d4ff',
-    path: '/playground/interference',
+    path: ROUTES.PLAYGROUND.INTERFERENCE,
   },
   {
     title: 'MZ 调制器',
     description: '马赫-曾德调制器交互实验，观察转移函数和输出波形。',
     icon: <CircuitBoard className="w-7 h-7" />,
     color: '#00ff88',
-    path: '/playground/mz-modulator',
+    path: ROUTES.PLAYGROUND.MZ_MODULATOR,
   },
   {
     title: 'IQ 调制器',
     description: 'IQ 正交调制与解调原理，星座图与矢量分析。',
     icon: <BarChart3 className="w-7 h-7" />,
     color: '#a855f7',
-    path: '/playground/iq-modulator',
+    path: ROUTES.PLAYGROUND.IQ_MODULATOR,
   },
   {
     title: '偏振复用',
     description: '偏振态可视化与斯托克斯矢量，偏振椭圆与庞加莱球。',
     icon: <Compass className="w-7 h-7" />,
     color: '#ff3366',
-    path: '/playground/polarization',
+    path: ROUTES.PLAYGROUND.POLARIZATION,
   },
   {
     title: '光接收器',
     description: 'AWGN 信道噪声、接收星座图、BER 误码率分析。',
     icon: <Radio className="w-7 h-7" />,
     color: '#22c55e',
-    path: '/playground/receiver',
+    path: ROUTES.PLAYGROUND.RECEIVER,
   },
 ];
 
@@ -204,7 +206,7 @@ export default function HomePage() {
           className="flex flex-wrap justify-center gap-4"
         >
           <button
-            onClick={() => navigate('/learn/physics-basics')}
+            onClick={() => navigate(ROUTES.LEARN.PHYSICS_BASICS)}
             className="flex items-center gap-2 px-6 py-3 bg-laser-cyan text-lab-bg font-semibold rounded-xl hover:bg-laser-cyan/90 transition-all hover:shadow-glow-cyan"
           >
             <BookOpen className="w-5 h-5" />
@@ -212,7 +214,7 @@ export default function HomePage() {
             <ArrowRight className="w-4 h-4" />
           </button>
           <button
-            onClick={() => navigate('/playground/interference')}
+            onClick={() => navigate(ROUTES.PLAYGROUND.INTERFERENCE)}
             className="flex items-center gap-2 px-6 py-3 bg-lab-surface border border-lab-border text-lab-text font-semibold rounded-xl hover:border-laser-purple/50 hover:text-laser-purple transition-all"
           >
             <FlaskConical className="w-5 h-5" />

@@ -1,24 +1,26 @@
-import { Flame, Waves } from 'lucide-react';
+import { Flame } from 'lucide-react';
 import LearnLayout from '@/components/common/LearnLayout';
+import LearnSection from '@/components/common/LearnSection';
 import MathRenderer from '@/components/common/MathRenderer';
 import TermNote from '@/components/common/TermNote';
+import { ROUTES } from '@/constants/routes';
+import { CHAPTERS, TOTAL_CHAPTERS } from '@/constants/chapters';
 
 export default function LearnLaser() {
+  const currentIndex = CHAPTERS.findIndex(c => c.path === ROUTES.LEARN.LASER)
+  const prevChapter = currentIndex > 0 ? { path: CHAPTERS[currentIndex - 1].path, title: CHAPTERS[currentIndex - 1].title, icon: <Flame className="w-4 h-4" /> } : undefined
+  const nextChapter = currentIndex < TOTAL_CHAPTERS - 1 ? { path: CHAPTERS[currentIndex + 1].path, title: CHAPTERS[currentIndex + 1].title, icon: <Flame className="w-4 h-4" /> } : undefined
   return (
     <LearnLayout
       title="激光器原理"
       subtitle="光的产生：受激辐射、激光谐振腔与常见激光器类型"
-      currentIndex={2}
-      totalChapters={10}
+      currentIndex={currentIndex}
+      totalChapters={TOTAL_CHAPTERS}
       partTitle="Part 2 · 光源篇"
-      prevChapter={{ path: '/learn/light-basics', title: '光波基础', icon: <Waves className="w-4 h-4" /> }}
-      nextChapter={{ path: '/learn/interference', title: '干涉原理', icon: <Waves className="w-4 h-4" /> }}
+      prevChapter={prevChapter}
+      nextChapter={nextChapter}
     >
-      <section className="bg-lab-surface/30 border border-lab-border/50 rounded-2xl p-6">
-        <h2 className="text-xl font-bold font-display text-lab-text mb-4 flex items-center gap-2">
-          <Flame className="w-5 h-5 text-laser-red" />
-          从自发辐射到受激辐射
-        </h2>
+      <LearnSection icon={<Flame className="w-5 h-5 text-laser-red" />} title="从自发辐射到受激辐射">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             激光器（Laser）是"受激辐射光放大"（Light Amplification by Stimulated Emission of Radiation）的缩写。
@@ -55,12 +57,9 @@ export default function LearnLaser() {
             </p>
           </div>
         </div>
-      </section>
+      </LearnSection>
 
-      <section className="bg-lab-surface/30 border border-lab-border/50 rounded-2xl p-6">
-        <h2 className="text-xl font-bold font-display text-lab-text mb-4">
-          粒子数反转与光放大
-        </h2>
+      <LearnSection title="粒子数反转与光放大">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             在热平衡状态下，低能级的粒子数总是多于高能级的粒子数（玻尔兹曼分布），
@@ -170,12 +169,9 @@ export default function LearnLaser() {
             </div>
           </div>
         </div>
-      </section>
+      </LearnSection>
 
-      <section className="bg-lab-surface/30 border border-lab-border/50 rounded-2xl p-6">
-        <h2 className="text-xl font-bold font-display text-lab-text mb-4">
-          激光谐振腔
-        </h2>
+      <LearnSection title="激光谐振腔">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             仅有粒子数反转还不能产生激光，因为自发辐射产生的光子是随机的。
@@ -227,12 +223,9 @@ export default function LearnLaser() {
             </div>
           </div>
         </div>
-      </section>
+      </LearnSection>
 
-      <section className="bg-lab-surface/30 border border-lab-border/50 rounded-2xl p-6">
-        <h2 className="text-xl font-bold font-display text-lab-text mb-4">
-          激光器的类型
-        </h2>
+      <LearnSection title="激光器的类型">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             按增益介质分类，常见的激光器有：
@@ -270,12 +263,9 @@ export default function LearnLaser() {
             </div>
           </div>
         </div>
-      </section>
+      </LearnSection>
 
-      <section className="bg-lab-surface/30 border border-lab-border/50 rounded-2xl p-6">
-        <h2 className="text-xl font-bold font-display text-lab-text mb-4">
-          激光的特性与应用
-        </h2>
+      <LearnSection title="激光的特性与应用">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <div className="grid md:grid-cols-2 gap-6">
             <div>
@@ -321,12 +311,9 @@ export default function LearnLaser() {
             </div>
           </div>
         </div>
-      </section>
+      </LearnSection>
 
-      <section className="bg-lab-surface/30 border border-lab-border/50 rounded-2xl p-6">
-        <h2 className="text-xl font-bold font-display text-lab-text mb-4">
-          下一步：干涉原理
-        </h2>
+      <LearnSection title="下一步：干涉原理">
         <div className="space-y-4 text-lab-muted leading-relaxed">
           <p>
             有了激光这个相干光源，我们就可以观察到清晰的干涉现象。
@@ -334,7 +321,7 @@ export default function LearnLaser() {
             理解如何通过控制相位差来控制光强。
           </p>
         </div>
-      </section>
+      </LearnSection>
     </LearnLayout>
   );
 }
