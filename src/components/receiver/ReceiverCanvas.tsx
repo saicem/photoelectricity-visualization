@@ -314,7 +314,7 @@ export default function ReceiverCanvas() {
 
       const snrMin = 0;
       const snrMax = 30;
-      const berMin = 1e-6;
+      const berMin = 1e-2;
       const berMax = 0.5;
 
       ctx.strokeStyle = 'rgba(51, 65, 85, 0.5)';
@@ -333,7 +333,7 @@ export default function ReceiverCanvas() {
         ctx.textAlign = 'left';
       }
 
-      const berTicks = [1e-6, 1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 0.5];
+      const berTicks = [1e-2, 1e-1, 0.5];
       berTicks.forEach((ber) => {
         const logRatio = (Math.log10(ber) - Math.log10(berMin)) / (Math.log10(berMax) - Math.log10(berMin));
         const py = chartY + chartH - logRatio * chartH;
