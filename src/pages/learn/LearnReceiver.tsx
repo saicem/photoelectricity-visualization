@@ -8,8 +8,9 @@ export default function LearnReceiver() {
     <LearnLayout
       title="光接收器"
       subtitle="光信号的检测：光电二极管、相干接收与数字信号处理"
-      currentIndex={7}
-      totalChapters={9}
+      currentIndex={8}
+      totalChapters={10}
+      partTitle="Part 4 · 接收篇"
       playgroundPath="/playground/receiver"
       prevChapter={{ path: '/learn/dual-polarization', title: '高级调制', icon: <Zap className="w-4 h-4" /> }}
       nextChapter={{ path: '/learn/glossary', title: '术语表', icon: <BookText className="w-4 h-4" /> }}

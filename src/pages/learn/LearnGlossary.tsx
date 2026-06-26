@@ -53,8 +53,9 @@ export default function LearnGlossary() {
     <LearnLayout
       title="光通信术语表"
       subtitle={`快速查阅光通信领域的核心概念和术语，共 ${totalTerms} 个词条`}
-      currentIndex={8}
-      totalChapters={9}
+      currentIndex={9}
+      totalChapters={10}
+      partTitle="附录"
       prevChapter={{ path: '/learn/receiver', title: '光接收器', icon: <Radio className="w-4 h-4" /> }}
     >
       <section className="bg-lab-surface/30 border border-lab-border/50 rounded-2xl p-6">

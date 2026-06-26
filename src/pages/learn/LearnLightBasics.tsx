@@ -1,4 +1,4 @@
-import { Lightbulb, Flame } from 'lucide-react';
+import { BookOpen, Lightbulb, Flame } from 'lucide-react';
 import LearnLayout from '@/components/common/LearnLayout';
 import MathRenderer from '@/components/common/MathRenderer';
 import TermNote from '@/components/common/TermNote';
@@ -8,8 +8,10 @@ export default function LearnLightBasics() {
     <LearnLayout
       title="光波基础"
       subtitle="从光的本质出发，理解电磁波、波长、频率与相位"
-      currentIndex={0}
-      totalChapters={9}
+      currentIndex={1}
+      totalChapters={10}
+      partTitle="Part 1 · 基础篇"
+      prevChapter={{ path: '/learn/physics-basics', title: '基础物理定义', icon: <BookOpen className="w-4 h-4" /> }}
       nextChapter={{ path: '/learn/laser', title: '激光器', icon: <Flame className="w-4 h-4" /> }}
     >
       <section className="bg-lab-surface/30 border border-lab-border/50 rounded-2xl p-6">

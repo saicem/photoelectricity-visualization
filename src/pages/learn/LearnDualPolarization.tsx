@@ -8,8 +8,9 @@ export default function LearnDualPolarization() {
     <LearnLayout
       title="高级调制"
       subtitle="从 DP-IQ 到 Nyquist 整形、OFDM 与概率星座整形，逼近香农极限的调制技术"
-      currentIndex={6}
-      totalChapters={9}
+      currentIndex={7}
+      totalChapters={10}
+      partTitle="Part 3 · 调制器篇"
       prevChapter={{ path: '/learn/polarization', title: '偏振复用', icon: <Compass className="w-4 h-4" /> }}
       nextChapter={{ path: '/learn/receiver', title: '光接收器', icon: <Radio className="w-4 h-4" /> }}
     >

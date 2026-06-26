@@ -1,63 +1,107 @@
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { BookOpen, FlaskConical, Waves, CircuitBoard, BarChart3, Compass, Lightbulb, Sparkles, Zap, Target, ArrowRight, Flame, Radio } from 'lucide-react';
+import { BookOpen, FlaskConical, Waves, CircuitBoard, BarChart3, Compass, Lightbulb, Sparkles, Zap, Target, ArrowRight, Flame, Radio, BookText, Library } from 'lucide-react';
 
-const learnModules = [
+const parts = [
   {
-    title: '光波基础',
-    description: '从光的本质出发，理解电磁波、波长、频率与相位的基本概念。',
-    icon: <Lightbulb className="w-7 h-7" />,
-    color: '#00d4ff',
-    path: '/learn/light-basics',
+    title: 'Part 1 · 基础篇',
+    description: '从最基础的物理量开始，逐步建立对光波的理解',
+    modules: [
+      {
+        title: '基础物理定义',
+        description: '回顾光通信中常用的物理量：光、场、功率、能量、电流、电压与电阻。',
+        icon: <BookOpen className="w-7 h-7" />,
+        color: '#6366f1',
+        path: '/learn/physics-basics',
+      },
+      {
+        title: '光波基础',
+        description: '从光的本质出发，理解电磁波、波长、频率与相位的基本概念。',
+        icon: <Lightbulb className="w-7 h-7" />,
+        color: '#00d4ff',
+        path: '/learn/light-basics',
+      },
+    ],
   },
   {
-    title: '激光器',
-    description: '受激辐射、激光谐振腔与常见激光器类型，光通信的光源基础。',
-    icon: <Flame className="w-7 h-7" />,
-    color: '#ff4444',
-    path: '/learn/laser',
+    title: 'Part 2 · 光源篇',
+    description: '理解光的产生机制与激光器的工作原理',
+    modules: [
+      {
+        title: '激光器',
+        description: '受激辐射、激光谐振腔与常见激光器类型，光通信的光源基础。',
+        icon: <Flame className="w-7 h-7" />,
+        color: '#ff4444',
+        path: '/learn/laser',
+      },
+    ],
   },
   {
-    title: '干涉原理',
-    description: '理解光波的叠加与干涉现象，这是光调制器的物理基础。',
-    icon: <Waves className="w-7 h-7" />,
-    color: '#00ff88',
-    path: '/learn/interference',
+    title: 'Part 3 · 调制器篇',
+    description: '从干涉到调制，掌握光通信调制器与偏振复用的核心原理',
+    modules: [
+      {
+        title: '干涉原理',
+        description: '理解光波的叠加与干涉现象，这是光调制器的物理基础。',
+        icon: <Waves className="w-7 h-7" />,
+        color: '#00ff88',
+        path: '/learn/interference',
+      },
+      {
+        title: 'MZ 调制器',
+        description: '马赫-曾德电光调制器的工作原理、结构与性能指标。',
+        icon: <CircuitBoard className="w-7 h-7" />,
+        color: '#a855f7',
+        path: '/learn/mz-modulator',
+      },
+      {
+        title: 'IQ 调制器',
+        description: '正交幅度调制、星座图与高阶调制格式，现代光通信的核心。',
+        icon: <BarChart3 className="w-7 h-7" />,
+        color: '#f59e0b',
+        path: '/learn/iq-modulator',
+      },
+      {
+        title: '偏振复用',
+        description: '光的偏振态、斯托克斯矢量与偏振复用技术。',
+        icon: <Compass className="w-7 h-7" />,
+        color: '#ff3366',
+        path: '/learn/polarization',
+      },
+      {
+        title: '高级调制',
+        description: 'Nyquist 脉冲整形、OFDM、概率星座整形等现代高速光通信关键技术。',
+        icon: <Zap className="w-7 h-7" />,
+        color: '#06b6d4',
+        path: '/learn/dual-polarization',
+      },
+    ],
   },
   {
-    title: 'MZ 调制器',
-    description: '马赫-曾德电光调制器的工作原理、结构与性能指标。',
-    icon: <CircuitBoard className="w-7 h-7" />,
-    color: '#a855f7',
-    path: '/learn/mz-modulator',
+    title: 'Part 4 · 接收篇',
+    description: '光信号的检测、恢复与数字信号处理',
+    modules: [
+      {
+        title: '光接收器',
+        description: '光电二极管、相干接收与数字信号处理，光信号的检测与恢复。',
+        icon: <Radio className="w-7 h-7" />,
+        color: '#22c55e',
+        path: '/learn/receiver',
+      },
+    ],
   },
   {
-    title: 'IQ 调制器',
-    description: '正交幅度调制、星座图与高阶调制格式，现代光通信的核心。',
-    icon: <BarChart3 className="w-7 h-7" />,
-    color: '#f59e0b',
-    path: '/learn/iq-modulator',
-  },
-  {
-    title: '偏振复用',
-    description: '光的偏振态、斯托克斯矢量与偏振复用技术。',
-    icon: <Compass className="w-7 h-7" />,
-    color: '#ff3366',
-    path: '/learn/polarization',
-  },
-  {
-    title: '高级调制',
-    description: 'Nyquist 脉冲整形、OFDM、概率星座整形等现代高速光通信关键技术。',
-    icon: <Zap className="w-7 h-7" />,
-    color: '#06b6d4',
-    path: '/learn/dual-polarization',
-  },
-  {
-    title: '光接收器',
-    description: '光电二极管、相干接收与数字信号处理，光信号的检测与恢复。',
-    icon: <Radio className="w-7 h-7" />,
-    color: '#22c55e',
-    path: '/learn/receiver',
+    title: '附录',
+    description: '快速查阅光通信领域的核心概念和术语',
+    modules: [
+      {
+        title: '术语表',
+        description: '涵盖所有章节的核心术语，支持搜索与分类浏览。',
+        icon: <BookText className="w-7 h-7" />,
+        color: '#94a3b8',
+        path: '/learn/glossary',
+      },
+    ],
   },
 ];
 
@@ -160,7 +204,7 @@ export default function HomePage() {
           className="flex flex-wrap justify-center gap-4"
         >
           <button
-            onClick={() => navigate('/learn/light-basics')}
+            onClick={() => navigate('/learn/physics-basics')}
             className="flex items-center gap-2 px-6 py-3 bg-laser-cyan text-lab-bg font-semibold rounded-xl hover:bg-laser-cyan/90 transition-all hover:shadow-glow-cyan"
           >
             <BookOpen className="w-5 h-5" />
@@ -194,41 +238,57 @@ export default function HomePage() {
             </div>
           </div>
           <p className="text-lab-muted mb-6 text-sm">
-            从光波基础开始，逐步深入到干涉原理、MZ 调制器、IQ 调制、偏振复用，
-            最终掌握高级调制技术的完整知识体系。每一章都为下一章打下基础。
+            从基础到调制到系统，每一章都为下一章打下基础。
           </p>
-          <div className="space-y-3">
-            {learnModules.map((mod, index) => (
-              <motion.div
-                key={mod.path}
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: index * 0.05 }}
-              >
-                <button
-                  onClick={() => navigate(mod.path)}
-                  className="w-full flex items-center gap-4 p-4 bg-lab-surface/30 border border-lab-border/50 rounded-xl hover:border-laser-cyan/30 hover:bg-lab-surface/50 transition-all group text-left"
-                >
-                  <div
-                    className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
-                    style={{ backgroundColor: `${mod.color}15`, color: mod.color }}
-                  >
-                    {mod.icon}
+          <div className="space-y-8">
+            {parts.map((part, partIndex) => {
+              const flatStartIndex = parts.slice(0, partIndex).reduce((acc, p) => acc + p.modules.length, 0);
+              return (
+                <div key={part.title}>
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="h-px flex-1 bg-gradient-to-r from-laser-purple/40 to-transparent" />
+                    <span className="text-xs font-display font-bold text-laser-purple tracking-wider uppercase">
+                      {part.title}
+                    </span>
+                    <div className="h-px flex-1 bg-gradient-to-l from-laser-purple/40 to-transparent" />
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs font-mono text-lab-muted">{String(index + 1).padStart(2, '0')}</span>
-                      <span className="font-semibold text-lab-text group-hover:text-laser-cyan transition-colors">
-                        {mod.title}
-                      </span>
-                    </div>
-                    <p className="text-xs text-lab-muted mt-0.5">{mod.description}</p>
+                  <p className="text-xs text-lab-muted text-center mb-3">{part.description}</p>
+                  <div className="space-y-2">
+                    {part.modules.map((mod, modIndex) => (
+                      <motion.div
+                        key={mod.path}
+                        initial={{ opacity: 0, y: 10 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.4, delay: (flatStartIndex + modIndex) * 0.05 }}
+                      >
+                        <button
+                          onClick={() => navigate(mod.path)}
+                          className="w-full flex items-center gap-4 p-4 bg-lab-surface/30 border border-lab-border/50 rounded-xl hover:border-laser-cyan/30 hover:bg-lab-surface/50 transition-all group text-left"
+                        >
+                          <div
+                            className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
+                            style={{ backgroundColor: `${mod.color}15`, color: mod.color }}
+                          >
+                            {mod.icon}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2">
+                              <span className="text-xs font-mono text-lab-muted">{String(flatStartIndex + modIndex + 1).padStart(2, '0')}</span>
+                              <span className="font-semibold text-lab-text group-hover:text-laser-cyan transition-colors">
+                                {mod.title}
+                              </span>
+                            </div>
+                            <p className="text-xs text-lab-muted mt-0.5">{mod.description}</p>
+                          </div>
+                          <ArrowRight className="w-4 h-4 text-lab-muted group-hover:text-laser-cyan group-hover:translate-x-1 transition-all flex-shrink-0" />
+                        </button>
+                      </motion.div>
+                    ))}
                   </div>
-                  <ArrowRight className="w-4 h-4 text-lab-muted group-hover:text-laser-cyan group-hover:translate-x-1 transition-all flex-shrink-0" />
-                </button>
-              </motion.div>
-            ))}
+                </div>
+              );
+            })}
           </div>
         </motion.div>
 

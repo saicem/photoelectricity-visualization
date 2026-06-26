@@ -8,8 +8,9 @@ export default function LearnInterference() {
     <LearnLayout
       title="干涉原理"
       subtitle="理解光波的叠加与干涉现象，这是光调制器的物理基础"
-      currentIndex={2}
-      totalChapters={9}
+      currentIndex={3}
+      totalChapters={10}
+      partTitle="Part 3 · 调制器篇"
       playgroundPath="/playground/interference"
       prevChapter={{ path: '/learn/laser', title: '激光器', icon: <Flame className="w-4 h-4" /> }}
       nextChapter={{ path: '/learn/mz-modulator', title: 'MZ 调制器', icon: <CircuitBoard className="w-4 h-4" /> }}

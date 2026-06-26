@@ -1,5 +1,7 @@
 packages:
   - '**'
+allowBuilds:
+  sharp: true
 minimumReleaseAgeExclude:
   - framer-motion@12.42.0
   - motion-dom@12.42.0

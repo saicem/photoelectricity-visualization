@@ -3,6 +3,7 @@ import { AnimatePresence } from "framer-motion";
 import Layout from "@/components/common/Layout";
 import HomePage from "@/pages/HomePage";
 
+import LearnPhysicsBasics from "@/pages/learn/LearnPhysicsBasics";
 import LearnLightBasics from "@/pages/learn/LearnLightBasics";
 import LearnLaser from "@/pages/learn/LearnLaser";
 import LearnInterference from "@/pages/learn/LearnInterference";
@@ -27,6 +28,7 @@ function AnimatedRoutes() {
         <Route element={<Layout />}>
           <Route path="/" element={<HomePage />} />
 
+          <Route path="/learn/physics-basics" element={<LearnPhysicsBasics />} />
           <Route path="/learn/light-basics" element={<LearnLightBasics />} />
           <Route path="/learn/laser" element={<LearnLaser />} />
           <Route path="/learn/interference" element={<LearnInterference />} />

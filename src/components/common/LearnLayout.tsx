@@ -16,6 +16,7 @@ interface LearnLayoutProps {
   nextChapter?: LearnChapter;
   currentIndex: number;
   totalChapters: number;
+  partTitle?: string;
   playgroundPath?: string;
 }
 
@@ -27,6 +28,7 @@ export default function LearnLayout({
   nextChapter,
   currentIndex,
   totalChapters,
+  partTitle,
   playgroundPath,
 }: LearnLayoutProps) {
   const navigate = useNavigate();
@@ -39,10 +41,16 @@ export default function LearnLayout({
       className="max-w-4xl mx-auto"
     >
       <div className="mb-8">
-        <div className="flex items-center gap-2 text-sm text-lab-muted mb-4">
+        <div className="flex items-center gap-2 text-sm text-lab-muted mb-4 flex-wrap">
           <BookOpen className="w-4 h-4 text-laser-cyan" />
           <span>学习路径</span>
           <ChevronRight className="w-4 h-4" />
+          {partTitle && (
+            <>
+              <span className="text-laser-purple font-medium">{partTitle}</span>
+              <ChevronRight className="w-4 h-4" />
+            </>
+          )}
           <span className="text-laser-cyan">
             第 {currentIndex + 1} / {totalChapters} 章
           </span>
