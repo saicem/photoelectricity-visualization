@@ -1,4 +1,4 @@
-# 光电通讯实验室 — 产品规格
+# OptoElectro Lab — 产品规格
 
 > 基于 React 的交互式光通信学习与实验平台，支持 PWA 离线访问。
 
@@ -88,7 +88,7 @@
 - 使用 `vite-plugin-pwa` 生成 Service Worker
 - Workbox 预缓存策略（30 个资源文件，约 1.3 MB）
 - Google Fonts CacheFirst 运行时缓存
-- Web App Manifest 配置：应用名称"光电通讯实验室"，主题色 `#0A0E17`，`standalone` 显示模式
+- Web App Manifest 配置：应用名称"OptoElectro Lab"，主题色 `#0A0E17`，`standalone` 显示模式
 - 支持 iOS 添加到主屏幕（apple-touch-icon, apple-mobile-web-app meta 标签）
 
 ### 核心交互功能

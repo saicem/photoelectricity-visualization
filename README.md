@@ -1,4 +1,4 @@
-# 光电通讯实验室
+# OptoElectro Lab - 光电实验室
 
 一个基于 React 的交互式光通信学习与实验平台，通过精美的动画和实时参数控制，帮助理解光调制器件的工作原理。
 
@@ -6,7 +6,7 @@
 
 ## 在线访问
 
-**GitHub Pages**: https://saicem.github.io/photoelectricity-visualization/
+**GitHub Pages**: https://saicem.github.io/optoelectro-lab/
 
 ## 功能模块
 

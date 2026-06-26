@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/vite'
 import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
-  base: '/photoelectricity-visualization/',
+  base: '/optoelectro-lab/',
   resolve: {
     tsconfigPaths: true,
   },
@@ -18,14 +18,14 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg', 'icons/*.png'],
       manifest: {
-        name: '光电通讯实验室',
+        name: 'OptoElectro Lab',
         short_name: '光电实验室',
         description: '光电通讯虚拟仿真实验室 - 交互式学习平台',
         theme_color: '#0A0E17',
         background_color: '#0A0E17',
         display: 'standalone',
-        scope: '/photoelectricity-visualization/',
-        start_url: '/photoelectricity-visualization/',
+        scope: '/optoelectro-lab/',
+        start_url: '/optoelectro-lab/',
         lang: 'zh-CN',
         orientation: 'any',
         icons: [

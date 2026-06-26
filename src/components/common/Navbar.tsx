@@ -98,7 +98,7 @@ export default function Navbar() {
         <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-laser-cyan to-laser-purple flex items-center justify-center flex-shrink-0">
           <Waves className="w-5 h-5 text-white" />
         </div>
-        <span className="font-display font-bold text-base text-lab-text whitespace-nowrap">光电通讯实验室</span>
+        <span className="font-display font-bold text-base text-lab-text whitespace-nowrap">OptoElectro Lab</span>
       </Link>
 
       <nav className="flex-1 overflow-y-auto p-3 space-y-5">
@@ -166,7 +166,7 @@ export default function Navbar() {
           <Menu className="w-5 h-5" />
         </button>
         <Link to="/" className="font-display font-bold text-sm text-lab-text">
-          光电通讯实验室
+          光电实验室
         </Link>
       </div>
 
