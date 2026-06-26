@@ -6,16 +6,53 @@ import {
 } from 'lucide-react';
 import { useState } from 'react';
 
-const learnItems = [
-  { path: '/learn/light-basics', label: '光波基础', icon: Lightbulb },
-  { path: '/learn/laser', label: '激光器', icon: Flame },
-  { path: '/learn/interference', label: '干涉原理', icon: Waves },
-  { path: '/learn/mz-modulator', label: 'MZ 调制器', icon: CircuitBoard },
-  { path: '/learn/iq-modulator', label: 'IQ 调制器', icon: BarChart3 },
-  { path: '/learn/polarization', label: '偏振复用', icon: Compass },
-  { path: '/learn/dual-polarization', label: '高级调制', icon: Zap },
-  { path: '/learn/receiver', label: '光接收器', icon: Radio },
-  { path: '/learn/glossary', label: '术语表', icon: BookText },
+interface LearnSubItem {
+  path: string;
+  label: string;
+  icon: React.ElementType;
+}
+
+interface LearnPart {
+  label: string;
+  items: LearnSubItem[];
+}
+
+const learnParts: LearnPart[] = [
+  {
+    label: 'Part 1 · 基础篇',
+    items: [
+      { path: '/learn/physics-basics', label: '基础物理定义', icon: BookOpen },
+      { path: '/learn/light-basics', label: '光波基础', icon: Lightbulb },
+    ],
+  },
+  {
+    label: 'Part 2 · 光源篇',
+    items: [
+      { path: '/learn/laser', label: '激光器', icon: Flame },
+    ],
+  },
+  {
+    label: 'Part 3 · 调制器篇',
+    items: [
+      { path: '/learn/interference', label: '干涉原理', icon: Waves },
+      { path: '/learn/mz-modulator', label: 'MZ 调制器', icon: CircuitBoard },
+      { path: '/learn/iq-modulator', label: 'IQ 调制器', icon: BarChart3 },
+      { path: '/learn/polarization', label: '偏振复用', icon: Compass },
+      { path: '/learn/dual-polarization', label: '高级调制', icon: Zap },
+    ],
+  },
+  {
+    label: 'Part 4 · 接收篇',
+    items: [
+      { path: '/learn/receiver', label: '光接收器', icon: Radio },
+    ],
+  },
+  {
+    label: '附录',
+    items: [
+      { path: '/learn/glossary', label: '术语表', icon: BookText },
+    ],
+  },
 ];
 
 const playgroundItems = [
@@ -78,8 +115,17 @@ export default function Navbar() {
             <ChevronDown className={cn('w-3.5 h-3.5 transition-transform', learnOpen && 'rotate-180')} />
           </button>
           <div className={cn('mt-1 space-y-0.5', !learnOpen && 'hidden')}>
-            {learnItems.map((item) => (
-              <NavItem key={item.path} to={item.path} icon={item.icon} label={item.label} active={isActive(item.path)} />
+            {learnParts.map((part) => (
+              <div key={part.label} className="mb-2">
+                <div className="px-2 py-1 text-[10px] font-semibold text-laser-purple/60 uppercase tracking-widest">
+                  {part.label}
+                </div>
+                <div className="space-y-0.5">
+                  {part.items.map((item) => (
+                    <NavItem key={item.path} to={item.path} icon={item.icon} label={item.label} active={isActive(item.path)} />
+                  ))}
+                </div>
+              </div>
             ))}
           </div>
         </div>
