@@ -13,6 +13,9 @@ dist
 dist-ssr
 *.local
 
+# Planning documents
+todo.md
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
