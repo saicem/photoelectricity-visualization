@@ -8,6 +8,7 @@ import { ROUTES } from "@/constants/routes";
 import LearnWaveBasics from "@/pages/learn/LearnWaveBasics";
 import LearnLaser from "@/pages/learn/LearnLaser";
 import LearnFiberOptics from "@/pages/learn/LearnFiberOptics";
+import LearnModulationBasics from "@/pages/learn/LearnModulationBasics";
 import LearnInterference from "@/pages/learn/LearnInterference";
 import LearnMZModulator from "@/pages/learn/LearnMZModulator";
 import LearnIQModulator from "@/pages/learn/LearnIQModulator";
@@ -36,6 +37,7 @@ function AnimatedRoutes() {
           <Route path={ROUTES.LEARN.WAVE_BASICS} element={<LearnWaveBasics />} />
           <Route path={ROUTES.LEARN.LASER} element={<LearnLaser />} />
           <Route path={ROUTES.LEARN.FIBER_OPTICS} element={<LearnFiberOptics />} />
+          <Route path={ROUTES.LEARN.MODULATION_BASICS} element={<LearnModulationBasics />} />
           <Route path={ROUTES.LEARN.INTERFERENCE} element={<LearnInterference />} />
           <Route path={ROUTES.LEARN.MZ_MODULATOR} element={<LearnMZModulator />} />
           <Route path={ROUTES.LEARN.IQ_MODULATOR} element={<LearnIQModulator />} />

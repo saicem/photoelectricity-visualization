@@ -4,6 +4,7 @@ export const ROUTES = {
     WAVE_BASICS: '/learn/wave-basics',
     LASER: '/learn/laser',
     FIBER_OPTICS: '/learn/fiber-optics',
+    MODULATION_BASICS: '/learn/modulation-basics',
     INTERFERENCE: '/learn/interference',
     MZ_MODULATOR: '/learn/mz-modulator',
     IQ_MODULATOR: '/learn/iq-modulator',

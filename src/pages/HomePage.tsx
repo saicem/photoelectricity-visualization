@@ -43,6 +43,13 @@ const parts = [
     description: '从干涉到调制，掌握光通信调制器与偏振复用的核心原理',
     modules: [
       {
+        title: '光调制基础',
+        description: '振幅调制、相位调制、频率调制等基本调制类型与性能指标。',
+        icon: <Radio className="w-7 h-7" />,
+        color: '#f59e0b',
+        path: ROUTES.LEARN.MODULATION_BASICS,
+      },
+      {
         title: '干涉原理',
         description: '理解光波的叠加与干涉现象，这是光调制器的物理基础。',
         icon: <Waves className="w-7 h-7" />,
