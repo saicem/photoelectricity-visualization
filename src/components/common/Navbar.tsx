@@ -35,6 +35,7 @@ const learnParts: LearnPart[] = [
   {
     label: 'Part 3 · 调制器篇',
     items: [
+      { path: ROUTES.LEARN.MODULATION_BASICS, label: '光调制基础', icon: Radio },
       { path: ROUTES.LEARN.INTERFERENCE, label: '干涉原理', icon: Waves },
       { path: ROUTES.LEARN.MZ_MODULATOR, label: 'MZ 调制器', icon: CircuitBoard },
       { path: ROUTES.LEARN.IQ_MODULATOR, label: 'IQ 调制器', icon: BarChart3 },
