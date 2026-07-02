@@ -4,7 +4,7 @@ import {
   Waves, BookOpen, FlaskConical, Lightbulb, Flame, CircuitBoard,
   BarChart3, Compass, Radio, BookText, ChevronDown, Menu, X, Home, Zap, Cable, Network, Cpu,
 } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { ROUTES } from '@/constants/routes';
 
 interface LearnSubItem {
@@ -92,14 +92,28 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [learnOpen, setLearnOpen] = useState(true);
   const [playgroundOpen, setPlaygroundOpen] = useState(true);
+  const navRef = useRef<HTMLDivElement>(null);
+  const scrollTopRef = useRef(0);
 
   const isLearn = location.pathname.startsWith('/learn');
   const isPlayground = location.pathname.startsWith('/playground');
   const isActive = (path: string) => location.pathname === path;
 
+  const handleNavScroll = useCallback(() => {
+    if (navRef.current) {
+      scrollTopRef.current = navRef.current.scrollTop;
+    }
+  }, []);
+
   useEffect(() => {
     setMobileOpen(false);
   }, [location.pathname]);
+
+  useEffect(() => {
+    if (navRef.current && navRef.current.scrollTop !== scrollTopRef.current) {
+      navRef.current.scrollTop = scrollTopRef.current;
+    }
+  });
 
   const sidebarContent = (
     <div className="flex flex-col h-full">
@@ -110,7 +124,11 @@ export default function Navbar() {
         <span className="font-display font-bold text-base text-lab-text whitespace-nowrap">OptoElectro Lab</span>
       </Link>
 
-      <nav className="flex-1 overflow-y-auto p-3 space-y-5">
+      <nav
+        ref={navRef}
+        onScroll={handleNavScroll}
+        className="flex-1 overflow-y-auto p-3 space-y-5"
+      >
         <NavItem to="/" icon={Home} label="首页" active={location.pathname === '/'} />
 
         <div>
