@@ -6,7 +6,7 @@ let scheduled = false;
 function flush() {
   scheduled = false;
   queue.sort((a, b) => b.priority - a.priority);
-  const deadline = performance.now() + 10;
+  const deadline = performance.now() + 15;
   while (queue.length > 0 && performance.now() < deadline) {
     queue.shift()!.render();
   }
@@ -18,7 +18,7 @@ function flush() {
 function schedule() {
   scheduled = true;
   if (typeof requestIdleCallback === 'function') {
-    requestIdleCallback(flush, { timeout: 50 });
+    requestIdleCallback(flush, { timeout: 30 });
   } else {
     requestAnimationFrame(() => setTimeout(flush, 0));
   }
