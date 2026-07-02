@@ -12,7 +12,6 @@ interface PlaygroundLayoutProps {
   canvasMinHeight?: number;
   controlPanel: React.ReactNode;
   children?: React.ReactNode;
-  canvasMinHeight?: number;
 }
 
 export default function PlaygroundLayout({
@@ -25,7 +24,6 @@ export default function PlaygroundLayout({
   controlPanel,
   canvasMinHeight = 400,
   children,
-  canvasMinHeight = 450,
 }: PlaygroundLayoutProps) {
   const navigate = useNavigate();
 
