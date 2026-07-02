@@ -9,7 +9,7 @@ export default defineConfig({
     tsconfigPaths: true,
   },
   build: {
-    sourcemap: 'hidden',
+    sourcemap: false,
   },
   plugins: [
     react(),
