@@ -16,6 +16,7 @@ export default function TermNote({ term }: TermNoteProps) {
     const el = ref.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();
+    // eslint-disable-next-line react-hooks-extra/no-direct-set-state-in-use-effect
     setTooltipStyle({
       position: 'fixed',
       left: rect.left + rect.width / 2,

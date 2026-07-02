@@ -128,7 +128,7 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+    // eslint-disable-next-line react-hooks/set-state-in-effect, react-hooks-extra/no-direct-set-state-in-use-effect
     setMobileOpen(false);
   }, [location.pathname]);
 
