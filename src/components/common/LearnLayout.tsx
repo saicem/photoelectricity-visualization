@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, BookOpen, ChevronRight, FlaskConical, List } from 'lucide-react';
 import { prefetch } from '@/lib/routeLoaders';
@@ -63,12 +62,7 @@ export default function LearnLayout({
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="max-w-7xl mx-auto px-4 lg:px-8"
-    >
+    <div className="max-w-7xl mx-auto px-4 lg:px-8">
       <div className="max-w-6xl mx-auto">
         <div className="mb-8">
           <div className="flex items-center gap-2 text-sm text-lab-muted mb-4 flex-wrap">
@@ -88,48 +82,30 @@ export default function LearnLayout({
 
           <div className="flex items-start justify-between gap-4">
             <div>
-              <motion.h1
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.15 }}
-              className="text-3xl md:text-4xl font-bold font-display text-lab-text mb-2"
-            >
-              {title}
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.15, delay: 0.04 }}
-              className="text-lg text-lab-muted"
-            >
-              {subtitle}
-            </motion.p>
+              <h1 className="text-3xl md:text-4xl font-bold font-display text-lab-text mb-2">
+                {title}
+              </h1>
+              <p className="text-lg text-lab-muted">
+                {subtitle}
+              </p>
             </div>
             {playgroundPath && (
-              <motion.button
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.15, delay: 0.08 }}
+              <button
                 onClick={() => navigate(playgroundPath)}
                 className="flex items-center gap-2 px-4 py-2 bg-lab-surface border border-lab-border rounded-xl text-sm text-lab-muted hover:text-laser-cyan hover:border-laser-cyan/30 transition-all flex-shrink-0"
               >
                 <FlaskConical className="w-4 h-4" />
                 去实验
-              </motion.button>
+              </button>
             )}
           </div>
         </div>
 
         <div className="xl:flex xl:gap-10">
           <div className="flex-1 min-w-0 max-w-[896px]">
-            <motion.div
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.15 }}
-              className="space-y-6"
-            >
+            <div className="space-y-6">
               {children}
-            </motion.div>
+            </div>
 
             <div className="mt-12 grid grid-cols-2 gap-4">
               <div>
@@ -197,6 +173,6 @@ export default function LearnLayout({
           )}
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
