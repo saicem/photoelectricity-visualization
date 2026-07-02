@@ -4,7 +4,7 @@ import {
   Waves, BookOpen, FlaskConical, Lightbulb, Flame, CircuitBoard,
   BarChart3, Compass, Radio, BookText, ChevronDown, Menu, X, Home, Zap, Cable, Network, Cpu,
 } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ROUTES } from '@/constants/routes';
 
 interface LearnSubItem {
@@ -96,6 +96,10 @@ export default function Navbar() {
   const isLearn = location.pathname.startsWith('/learn');
   const isPlayground = location.pathname.startsWith('/playground');
   const isActive = (path: string) => location.pathname === path;
+
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [location.pathname]);
 
   const sidebarContent = (
     <div className="flex flex-col h-full">
