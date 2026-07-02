@@ -1,11 +1,14 @@
-const queue: Array<() => void> = [];
+type Task = { render: () => void; priority: number };
+
+const queue: Task[] = [];
 let scheduled = false;
 
 function flush() {
   scheduled = false;
-  const deadline = performance.now() + 5;
+  queue.sort((a, b) => b.priority - a.priority);
+  const deadline = performance.now() + 10;
   while (queue.length > 0 && performance.now() < deadline) {
-    queue.shift()!();
+    queue.shift()!.render();
   }
   if (queue.length > 0) {
     schedule();
@@ -15,13 +18,17 @@ function flush() {
 function schedule() {
   scheduled = true;
   if (typeof requestIdleCallback === 'function') {
-    requestIdleCallback(flush, { timeout: 80 });
+    requestIdleCallback(flush, { timeout: 50 });
   } else {
     requestAnimationFrame(() => setTimeout(flush, 0));
   }
 }
 
-export function scheduleKaTeX(render: () => void) {
-  queue.push(render);
+export function scheduleKaTeX(render: () => void, priority = 0) {
+  queue.push({ render, priority });
   if (!scheduled) schedule();
+}
+
+export function hasPendingTasks(): boolean {
+  return queue.length > 0;
 }
