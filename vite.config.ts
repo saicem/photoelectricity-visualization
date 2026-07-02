@@ -16,25 +16,19 @@ export default defineConfig({
     cssCodeSplit: true,
     rollupOptions: {
       output: {
-        codeSplitting: {
-          groups: [
-            {
-              test: /node_modules\/(react|react-dom|react-router-dom)/,
-              name: 'vendor',
-            },
-            {
-              test: /node_modules\/katex/,
-              name: 'katex',
-            },
-            {
-              test: /node_modules\/framer-motion/,
-              name: 'motion',
-            },
-            {
-              test: /node_modules\/zustand/,
-              name: 'zustand',
-            },
-          ],
+        manualChunks(id) {
+          if (id.includes('node_modules/react-dom') || id.includes('node_modules/react-router-dom') || id.includes('node_modules/react/')) {
+            return 'vendor'
+          }
+          if (id.includes('node_modules/katex')) {
+            return 'katex'
+          }
+          if (id.includes('node_modules/framer-motion')) {
+            return 'motion'
+          }
+          if (id.includes('node_modules/zustand')) {
+            return 'zustand'
+          }
         },
       },
     },
@@ -78,6 +72,7 @@ export default defineConfig({
       workbox: {
         skipWaiting: true,
         clientsClaim: true,
+        cleanupOutdatedCaches: true,
         globPatterns: ['**/*.{js,css,html,svg,png,ico,woff2}'],
         runtimeCaching: [
           {
